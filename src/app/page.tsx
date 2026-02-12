@@ -23,11 +23,19 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
+      {/* Skip to content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-cyan focus:text-background focus:rounded-lg focus:font-medium"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <header className="border-b border-border sticky top-0 z-50 bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <Monitor className="w-5 h-5 text-cyan" />
+            <Monitor className="w-5 h-5 text-cyan" aria-hidden="true" />
             <span className="font-semibold tracking-tight">
               PC Bottleneck Analyzer
             </span>
@@ -44,7 +52,7 @@ export default function Home() {
       </header>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div id="main-content" className="max-w-7xl mx-auto px-6 py-8">
         {!scan || !analysis ? (
           <div className="flex flex-col items-center justify-center min-h-[70vh]">
             <div className="text-center mb-10">

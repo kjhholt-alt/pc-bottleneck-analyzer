@@ -54,7 +54,9 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
                 if (el) tabRefs.current.set(tab.id, el);
               }}
               role="tab"
+              id={`tab-${tab.id}`}
               aria-selected={isActive}
+              aria-controls={`tabpanel-${tab.id}`}
               onClick={() => onTabChange(tab.id)}
               className={`
                 relative flex items-center gap-2 px-4 py-3 text-sm font-medium
@@ -68,6 +70,7 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
             >
               <Icon size={16} />
               <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sr-only sm:hidden">{tab.label}</span>
             </button>
           );
         })}

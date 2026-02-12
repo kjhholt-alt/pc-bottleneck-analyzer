@@ -139,6 +139,8 @@ function CollapsibleSection({
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-label={`${label} section. Click to ${isOpen ? "collapse" : "expand"}.`}
         className="w-full flex items-center gap-2 px-4 py-3 text-left transition-colors hover:bg-surface-raised/50"
       >
         <motion.div
@@ -184,21 +186,30 @@ export function RawDataViewer({ scan }: RawDataViewerProps) {
       .split("\n")
       .map((line) => `    ${line}`)
       .join("\n");
-    navigator.clipboard.writeText(redditFormatted).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    navigator.clipboard.writeText(redditFormatted).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      },
+      () => {
+        // Clipboard write failed (permissions or focus issue) -- silent fail
+      }
+    );
   }, [scan]);
 
   const handleDownload = useCallback(() => {
-    const formatted = JSON.stringify(scan, null, 2);
-    const blob = new Blob([formatted], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `bottleneck-report-${scan.scan_id || "export"}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    let url: string | null = null;
+    try {
+      const formatted = JSON.stringify(scan, null, 2);
+      const blob = new Blob([formatted], { type: "application/json" });
+      url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bottleneck-report-${scan.scan_id || "export"}.json`;
+      a.click();
+    } finally {
+      if (url) URL.revokeObjectURL(url);
+    }
   }, [scan]);
 
   const entries = Object.entries(scan);

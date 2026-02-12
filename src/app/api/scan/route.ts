@@ -1,15 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { SystemScan } from "@/lib/types";
 
-// In-memory store — will be replaced with persistence later
+// In-memory store — will be replaced with persistence later.
+// Note: On serverless (Vercel), this is ephemeral per instance. A future
+// session will add proper persistence (e.g. KV store or database).
 let latestScan: SystemScan | null = null;
+
+// Maximum request body size (2 MB) to prevent abuse
+const MAX_BODY_SIZE = 2 * 1024 * 1024;
 
 // ─── POST /api/scan ──────────────────────────────────────────────────────────
 // Accepts a system scan JSON payload, validates its shape, stores it, and
-// returns the scan_id with a redirect URL to the results page.
+// returns the scan_id.
 
 export async function POST(req: NextRequest) {
   try {
+    // Guard against oversized payloads
+    const contentLength = req.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
+      return NextResponse.json(
+        { error: "Request body too large. Maximum size is 2 MB." },
+        { status: 413 },
+      );
+    }
+
     const body = await req.json();
 
     // Basic shape validation
@@ -24,7 +38,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const scan = body as SystemScan;
+    // Sanitize string fields to prevent XSS in case data is rendered elsewhere
+    const sanitized = sanitizeObject(body);
+    const scan = sanitized as SystemScan;
 
     // Assign a scan_id if missing
     if (!scan.scan_id) {
@@ -42,7 +58,6 @@ export async function POST(req: NextRequest) {
       {
         ok: true,
         scan_id: scan.scan_id,
-        redirect: `/results?scan=${scan.scan_id}`,
       },
       { status: 201 },
     );
@@ -131,5 +146,42 @@ function validateScanShape(data: unknown): string[] {
     errors.push(`"ram.total_gb" is required and must be a number.`);
   }
 
+  // Reject prototype-pollution keys
+  if ("__proto__" in scan || "constructor" in scan || "prototype" in scan) {
+    errors.push("Request contains disallowed keys.");
+  }
+
   return errors;
+}
+
+// ─── Sanitization ───────────────────────────────────────────────────────────
+
+/**
+ * Recursively sanitize an object: strip HTML from all string values
+ * and limit nesting depth to prevent stack overflow.
+ */
+function sanitizeObject(obj: unknown, depth = 0): unknown {
+  if (depth > 10) return undefined;
+
+  if (typeof obj === "string") {
+    return obj.replace(/[<>]/g, "");
+  }
+  if (typeof obj === "number" || typeof obj === "boolean" || obj === null) {
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => sanitizeObject(item, depth + 1));
+  }
+  if (typeof obj === "object" && obj !== null) {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      // Skip prototype-pollution keys
+      if (key === "__proto__" || key === "constructor" || key === "prototype") {
+        continue;
+      }
+      result[key] = sanitizeObject(value, depth + 1);
+    }
+    return result;
+  }
+  return undefined;
 }

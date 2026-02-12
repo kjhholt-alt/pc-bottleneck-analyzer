@@ -34,6 +34,13 @@ export function ScanUploader({ onScanLoaded }: ScanUploaderProps) {
       setError(null);
       setIsLoading(true);
 
+      // Guard against excessively large files (max 2 MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setError("File is too large. Maximum size is 2 MB.");
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const text = await file.text();
         const data = JSON.parse(text);
@@ -124,6 +131,7 @@ export function ScanUploader({ onScanLoaded }: ScanUploaderProps) {
           accept=".json"
           onChange={handleFileSelect}
           className="hidden"
+          aria-label="Upload system scan JSON file"
         />
 
         <motion.div

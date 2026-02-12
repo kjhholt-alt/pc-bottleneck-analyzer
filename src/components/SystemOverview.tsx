@@ -215,26 +215,39 @@ export function SystemOverview({ scan, score }: SystemOverviewProps) {
           Score Breakdown
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          {Object.entries(score.breakdown).map(([key, value]) => (
-            <div key={key} className="text-center">
-              <div className="text-xs text-text-secondary uppercase mb-1">
-                {key}
+          {Object.entries(score.breakdown).map(([key, value]) => {
+            // Each sub-score has a different max, so compute percentage
+            const maxScores: Record<string, number> = {
+              cpu: 25,
+              gpu: 25,
+              ram: 20,
+              storage: 15,
+              settings: 15,
+            };
+            const max = maxScores[key] ?? 25;
+            const pct = Math.round((value / max) * 100);
+
+            return (
+              <div key={key} className="text-center">
+                <div className="text-xs text-text-secondary uppercase mb-1">
+                  {key}
+                </div>
+                <div
+                  className="text-lg font-bold font-mono"
+                  style={{
+                    color:
+                      pct >= 75
+                        ? "var(--green)"
+                        : pct >= 50
+                          ? "var(--amber)"
+                          : "var(--red)",
+                  }}
+                >
+                  {value}/{max}
+                </div>
               </div>
-              <div
-                className="text-lg font-bold font-mono"
-                style={{
-                  color:
-                    value >= 80
-                      ? "var(--green)"
-                      : value >= 60
-                        ? "var(--amber)"
-                        : "var(--red)",
-                }}
-              >
-                {value}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </motion.div>
 

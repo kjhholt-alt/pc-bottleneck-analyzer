@@ -71,6 +71,8 @@ function TierSection({
       {/* Section header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-label={`${config.label} - ${items.length} recommendation${items.length !== 1 ? "s" : ""}. Click to ${isOpen ? "collapse" : "expand"}.`}
         className="w-full flex items-center gap-3 p-4 text-left transition-colors duration-200 hover:bg-surface-raised/50"
       >
         <div

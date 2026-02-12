@@ -30,13 +30,13 @@ export function Dashboard({ scan, analysis }: DashboardProps) {
 
       <AnimatePresence mode="wait">
         {activeTab === "overview" && (
-          <motion.div key="overview" {...tabTransition}>
+          <motion.div key="overview" role="tabpanel" id="tabpanel-overview" aria-labelledby="tab-overview" {...tabTransition}>
             <SystemOverview scan={scan} score={analysis.score} />
           </motion.div>
         )}
 
         {activeTab === "bottlenecks" && (
-          <motion.div key="bottlenecks" {...tabTransition}>
+          <motion.div key="bottlenecks" role="tabpanel" id="tabpanel-bottlenecks" aria-labelledby="tab-bottlenecks" {...tabTransition}>
             <div className="space-y-3">
               {analysis.bottlenecks.length > 0 ? (
                 <>
@@ -73,7 +73,7 @@ export function Dashboard({ scan, analysis }: DashboardProps) {
         )}
 
         {activeTab === "recommendations" && (
-          <motion.div key="recommendations" {...tabTransition}>
+          <motion.div key="recommendations" role="tabpanel" id="tabpanel-recommendations" aria-labelledby="tab-recommendations" {...tabTransition}>
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-foreground">
                 Recommendations
@@ -87,7 +87,7 @@ export function Dashboard({ scan, analysis }: DashboardProps) {
         )}
 
         {activeTab === "raw" && (
-          <motion.div key="raw" {...tabTransition}>
+          <motion.div key="raw" role="tabpanel" id="tabpanel-raw" aria-labelledby="tab-raw" {...tabTransition}>
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-foreground">
                 Raw Scan Data

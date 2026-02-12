@@ -4,7 +4,7 @@
 - **Project:** PC Bottleneck Analyzer
 - **Current session:** 1 of 6
 - **Last updated:** 2026-02-12
-- **Overall health:** 🟢 Initial build — Sessions 1 & 2 complete
+- **Overall health:** 🟢 Polished — Sessions 1 & 2 complete, improvement pass done
 
 ## What's Working
 - Next.js 16 project scaffolded with Tailwind v4, dark theme
@@ -19,6 +19,12 @@
 - POST /api/scan endpoint for scanner-to-dashboard data flow
 - Dark theme with neon accent colors (cyan/amber/red/green)
 - Deployed on Vercel
+- Input validation & sanitization on API endpoint
+- ARIA accessibility attributes on all interactive components
+- Scanner output fields aligned with dashboard TypeScript interfaces
+- Score breakdown displays values with correct per-component max scales
+- File size limits on upload (2 MB max)
+- Feature specs for 3 planned features (upgrade simulator, scan history, share results)
 
 ## What's NOT Working / Incomplete
 - AI analysis (Session 3) — Claude API integration not started

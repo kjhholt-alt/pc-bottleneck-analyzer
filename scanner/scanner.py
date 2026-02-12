@@ -161,9 +161,9 @@ def scan_cpu() -> dict:
         "base_clock_ghz": None,
         "max_boost_clock_ghz": None,
         "current_clock_ghz": None,
-        "cache_l1_bytes": None,
-        "cache_l2_bytes": None,
-        "cache_l3_bytes": None,
+        "cache_l1": None,      # KB — matches dashboard CPUInfo interface
+        "cache_l2": None,      # KB
+        "cache_l3": None,      # KB
         "current_temp_c": None,
         "usage_per_core": [],
         "power_draw_w": None,
@@ -191,26 +191,28 @@ def scan_cpu() -> dict:
             l2 = info.get("l2_cache_size")
             l3 = info.get("l3_cache_size")
 
-            def _parse_cache(val):
+            def _parse_cache_kb(val):
+                """Parse cache size and return value in KB."""
                 if val is None:
                     return None
                 if isinstance(val, int):
-                    return val
+                    # If raw int, assume bytes and convert to KB
+                    return int(val / 1024) if val >= 1024 else val
                 s = str(val).upper().replace(",", "")
                 m = re.search(r"([\d.]+)\s*(KB|MB|GB|B)?", s)
                 if not m:
                     return None
                 num = float(m.group(1))
-                unit = m.group(2) or "B"
-                mult = {"B": 1, "KB": 1024, "MB": 1024**2, "GB": 1024**3}
-                return int(num * mult.get(unit, 1))
+                unit = m.group(2) or "KB"
+                mult_to_kb = {"B": 1/1024, "KB": 1, "MB": 1024, "GB": 1024**2}
+                return int(num * mult_to_kb.get(unit, 1))
 
             if l1_data or l1_inst:
-                l1d = _parse_cache(l1_data) or 0
-                l1i = _parse_cache(l1_inst) or 0
-                cpu["cache_l1_bytes"] = (l1d + l1i) if (l1d or l1i) else None
-            cpu["cache_l2_bytes"] = _parse_cache(l2)
-            cpu["cache_l3_bytes"] = _parse_cache(l3)
+                l1d = _parse_cache_kb(l1_data) or 0
+                l1i = _parse_cache_kb(l1_inst) or 0
+                cpu["cache_l1"] = (l1d + l1i) if (l1d or l1i) else None
+            cpu["cache_l2"] = _parse_cache_kb(l2)
+            cpu["cache_l3"] = _parse_cache_kb(l3)
     except Exception:
         pass
 
@@ -242,14 +244,14 @@ def scan_cpu() -> dict:
                 max_mhz = _safe_int(getattr(proc, "MaxClockSpeed", None))
                 if max_mhz and cpu["base_clock_ghz"] is None:
                     cpu["base_clock_ghz"] = round(max_mhz / 1000, 2)
-                if cpu["cache_l2_bytes"] is None:
+                if cpu["cache_l2"] is None:
                     l2_kb = _safe_int(getattr(proc, "L2CacheSize", None))
                     if l2_kb:
-                        cpu["cache_l2_bytes"] = l2_kb * 1024
-                if cpu["cache_l3_bytes"] is None:
+                        cpu["cache_l2"] = l2_kb  # Already in KB from WMI
+                if cpu["cache_l3"] is None:
                     l3_kb = _safe_int(getattr(proc, "L3CacheSize", None))
                     if l3_kb:
-                        cpu["cache_l3_bytes"] = l3_kb * 1024
+                        cpu["cache_l3"] = l3_kb  # Already in KB from WMI
                 break
     except Exception:
         pass
@@ -462,13 +464,8 @@ def scan_ram() -> dict:
         "num_sticks": None,
         "num_slots": None,
         "channel_mode": None,
-        "form_factor": None,
-        "timings": {
-            "cl": None,
-            "trcd": None,
-            "trp": None,
-            "tras": None,
-        },
+        "form_factor": None,          # Will include DDR gen, e.g. "DIMM DDR4"
+        "timings": None,              # String like "16-18-18-38" or null
         "current_used_gb": None,
         "usage_percent": None,
     }
@@ -500,6 +497,10 @@ def scan_ram() -> dict:
                 ff_code = _safe_int(getattr(stick, "FormFactor", None))
                 form_map = {8: "DIMM", 12: "SODIMM"}
                 info["form_factor"] = form_map.get(ff_code, f"code_{ff_code}" if ff_code else "unavailable")
+                # Detect DDR generation from SMBIOSMemoryType
+                mem_type = _safe_int(getattr(stick, "SMBIOSMemoryType", None))
+                ddr_map = {20: "DDR", 21: "DDR2", 22: "DDR2", 24: "DDR3", 26: "DDR4", 34: "DDR5"}
+                info["ddr_gen"] = ddr_map.get(mem_type)
                 sticks_detected.append(info)
 
             ram["num_sticks"] = len(sticks_detected)
@@ -511,8 +512,17 @@ def scan_ram() -> dict:
                 if rated:
                     ram["rated_speed_mhz"] = max(rated)
                 ffs = [s["form_factor"] for s in sticks_detected if s["form_factor"] != "unavailable"]
-                if ffs:
-                    ram["form_factor"] = ffs[0]
+                ddr_gens = [s["ddr_gen"] for s in sticks_detected if s.get("ddr_gen")]
+                ff_str = ffs[0] if ffs else "DIMM"
+                ddr_str = ddr_gens[0] if ddr_gens else None
+                # Fallback: guess DDR gen from speed
+                if not ddr_str:
+                    actual = ram.get("speed_mhz")
+                    if actual and actual >= 4800:
+                        ddr_str = "DDR5"
+                    elif actual:
+                        ddr_str = "DDR4"
+                ram["form_factor"] = f"{ff_str} {ddr_str}" if ddr_str else ff_str
 
             # Slot count
             try:
@@ -558,6 +568,8 @@ def scan_ram() -> dict:
             ram["channel_mode"] = "triple"
         elif n >= 4:
             ram["channel_mode"] = "quad"
+    else:
+        ram["channel_mode"] = "unknown"
 
     # --- Total fallback ---
     if ram["total_gb"] is None:

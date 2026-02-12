@@ -73,6 +73,8 @@ export function BottleneckCard({ bottleneck, index = 0 }: BottleneckCardProps) {
       {/* Collapsible header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-label={`${bottleneck.title} - ${severity.label}. Click to ${isExpanded ? "collapse" : "expand"} details.`}
         className="w-full flex items-center gap-3 p-4 text-left transition-colors duration-200 hover:bg-surface-raised/50"
       >
         {/* Severity icon */}
