@@ -18,7 +18,31 @@ export interface HardwareEntry {
 // ─── CPU Database ────────────────────────────────────────────────────────────
 
 export const cpuDatabase: Record<string, HardwareEntry> = {
-  // AMD — Zen 5 / Zen 4 X3D
+  // AMD — Zen 5 X3D
+  "amd ryzen 9 9950x3d": {
+    name: "AMD Ryzen 9 9950X3D",
+    tier: "very_high",
+    gaming_score: 97,
+    release_year: 2025,
+    msrp: 699,
+    current_price_approx: 699,
+  },
+  "amd ryzen 9 9900x3d": {
+    name: "AMD Ryzen 9 9900X3D",
+    tier: "very_high",
+    gaming_score: 96,
+    release_year: 2025,
+    msrp: 599,
+    current_price_approx: 599,
+  },
+  "amd ryzen 7 9850x3d": {
+    name: "AMD Ryzen 7 9850X3D",
+    tier: "very_high",
+    gaming_score: 99,
+    release_year: 2026,
+    msrp: 499,
+    current_price_approx: 499,
+  },
   "amd ryzen 7 9800x3d": {
     name: "AMD Ryzen 7 9800X3D",
     tier: "very_high",
@@ -175,7 +199,7 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
     gaming_score: 90,
     release_year: 2024,
     msrp: 589,
-    current_price_approx: 489,
+    current_price_approx: 449,
   },
   "intel core ultra 7 265k": {
     name: "Intel Core Ultra 7 265K",
@@ -183,7 +207,7 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
     gaming_score: 86,
     release_year: 2024,
     msrp: 394,
-    current_price_approx: 349,
+    current_price_approx: 249,
   },
   "intel core ultra 5 245k": {
     name: "Intel Core Ultra 5 245K",
@@ -191,7 +215,7 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
     gaming_score: 82,
     release_year: 2024,
     msrp: 309,
-    current_price_approx: 279,
+    current_price_approx: 209,
   },
 
   // Intel — 14th Gen
@@ -297,6 +321,14 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
   },
 
   // Budget / older
+  "intel core i3-14100f": {
+    name: "Intel Core i3-14100F",
+    tier: "low",
+    gaming_score: 60,
+    release_year: 2024,
+    msrp: 110,
+    current_price_approx: 89,
+  },
   "amd ryzen 5 5500": {
     name: "AMD Ryzen 5 5500",
     tier: "low",
@@ -358,6 +390,22 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     release_year: 2025,
     msrp: 549,
     current_price_approx: 629,
+  },
+  "nvidia geforce rtx 5060 ti": {
+    name: "NVIDIA GeForce RTX 5060 Ti",
+    tier: "high",
+    gaming_score: 70,
+    release_year: 2025,
+    msrp: 429,
+    current_price_approx: 429,
+  },
+  "nvidia geforce rtx 5060": {
+    name: "NVIDIA GeForce RTX 5060",
+    tier: "mid",
+    gaming_score: 58,
+    release_year: 2025,
+    msrp: 299,
+    current_price_approx: 299,
   },
 
   // NVIDIA — RTX 40-series
@@ -525,6 +573,14 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     msrp: 249,
     current_price_approx: 249,
   },
+  "intel arc b570": {
+    name: "Intel Arc B570",
+    tier: "mid",
+    gaming_score: 42,
+    release_year: 2025,
+    msrp: 219,
+    current_price_approx: 219,
+  },
   "intel arc a770": {
     name: "Intel Arc A770",
     tier: "mid",
@@ -550,6 +606,14 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     release_year: 2025,
     msrp: 449,
     current_price_approx: 479,
+  },
+  "amd radeon rx 9060 xt": {
+    name: "AMD Radeon RX 9060 XT",
+    tier: "mid",
+    gaming_score: 55,
+    release_year: 2025,
+    msrp: 349,
+    current_price_approx: 349,
   },
 
   // AMD — RX 7000-series
