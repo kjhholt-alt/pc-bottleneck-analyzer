@@ -15,10 +15,20 @@ export interface HardwareEntry {
   current_price_approx: number;
 }
 
-// ─── CPU Database (30 entries) ───────────────────────────────────────────────
+// ─── CPU Database ────────────────────────────────────────────────────────────
 
 export const cpuDatabase: Record<string, HardwareEntry> = {
-  // AMD — Zen 4 / Zen 5
+  // AMD — Zen 5 / Zen 4 X3D
+  "amd ryzen 7 9800x3d": {
+    name: "AMD Ryzen 7 9800X3D",
+    tier: "very_high",
+    gaming_score: 98,
+    release_year: 2024,
+    msrp: 479,
+    current_price_approx: 449,
+  },
+
+  // AMD — Zen 5
   "amd ryzen 9 9950x": {
     name: "AMD Ryzen 9 9950X",
     tier: "very_high",
@@ -100,7 +110,23 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
     current_price_approx: 179,
   },
 
-  // AMD — Zen 3
+  // AMD — Zen 3 / Zen 3 X3D
+  "amd ryzen 7 5700x3d": {
+    name: "AMD Ryzen 7 5700X3D",
+    tier: "high",
+    gaming_score: 83,
+    release_year: 2024,
+    msrp: 249,
+    current_price_approx: 189,
+  },
+  "amd ryzen 7 5700x": {
+    name: "AMD Ryzen 7 5700X",
+    tier: "high",
+    gaming_score: 75,
+    release_year: 2022,
+    msrp: 299,
+    current_price_approx: 149,
+  },
   "amd ryzen 9 5950x": {
     name: "AMD Ryzen 9 5950X",
     tier: "high",
@@ -142,7 +168,33 @@ export const cpuDatabase: Record<string, HardwareEntry> = {
     current_price_approx: 119,
   },
 
-  // Intel — 14th / 15th Gen
+  // Intel — Arrow Lake (Core Ultra 200)
+  "intel core ultra 9 285k": {
+    name: "Intel Core Ultra 9 285K",
+    tier: "very_high",
+    gaming_score: 90,
+    release_year: 2024,
+    msrp: 589,
+    current_price_approx: 489,
+  },
+  "intel core ultra 7 265k": {
+    name: "Intel Core Ultra 7 265K",
+    tier: "high",
+    gaming_score: 86,
+    release_year: 2024,
+    msrp: 394,
+    current_price_approx: 349,
+  },
+  "intel core ultra 5 245k": {
+    name: "Intel Core Ultra 5 245K",
+    tier: "high",
+    gaming_score: 82,
+    release_year: 2024,
+    msrp: 309,
+    current_price_approx: 279,
+  },
+
+  // Intel — 14th Gen
   "intel core i9-14900k": {
     name: "Intel Core i9-14900K",
     tier: "very_high",
@@ -383,6 +435,14 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
   },
 
   // NVIDIA — RTX 30-series
+  "nvidia geforce rtx 3090 ti": {
+    name: "NVIDIA GeForce RTX 3090 Ti",
+    tier: "high",
+    gaming_score: 75,
+    release_year: 2022,
+    msrp: 1999,
+    current_price_approx: 899,
+  },
   "nvidia geforce rtx 3090": {
     name: "NVIDIA GeForce RTX 3090",
     tier: "high",
@@ -391,6 +451,14 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     msrp: 1499,
     current_price_approx: 799,
   },
+  "nvidia geforce rtx 3080 ti": {
+    name: "NVIDIA GeForce RTX 3080 Ti",
+    tier: "high",
+    gaming_score: 70,
+    release_year: 2021,
+    msrp: 1199,
+    current_price_approx: 549,
+  },
   "nvidia geforce rtx 3080": {
     name: "NVIDIA GeForce RTX 3080",
     tier: "high",
@@ -398,6 +466,14 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     release_year: 2020,
     msrp: 699,
     current_price_approx: 499,
+  },
+  "nvidia geforce rtx 3070 ti": {
+    name: "NVIDIA GeForce RTX 3070 Ti",
+    tier: "mid",
+    gaming_score: 62,
+    release_year: 2021,
+    msrp: 599,
+    current_price_approx: 369,
   },
   "nvidia geforce rtx 3070": {
     name: "NVIDIA GeForce RTX 3070",
@@ -430,6 +506,32 @@ export const gpuDatabase: Record<string, HardwareEntry> = {
     release_year: 2019,
     msrp: 229,
     current_price_approx: 139,
+  },
+  "nvidia geforce gtx 1650": {
+    name: "NVIDIA GeForce GTX 1650",
+    tier: "very_low",
+    gaming_score: 20,
+    release_year: 2019,
+    msrp: 149,
+    current_price_approx: 99,
+  },
+
+  // Intel Arc
+  "intel arc b580": {
+    name: "Intel Arc B580",
+    tier: "mid",
+    gaming_score: 46,
+    release_year: 2024,
+    msrp: 249,
+    current_price_approx: 249,
+  },
+  "intel arc a770": {
+    name: "Intel Arc A770",
+    tier: "mid",
+    gaming_score: 42,
+    release_year: 2022,
+    msrp: 349,
+    current_price_approx: 219,
   },
 
   // AMD — RX 9000-series
