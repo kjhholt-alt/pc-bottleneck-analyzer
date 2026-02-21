@@ -1,11 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile, writeFile, mkdir } from "fs/promises";
+import { join } from "path";
+import { tmpdir } from "os";
 import type { SystemScan } from "@/lib/types";
 
-// In-memory store — will be replaced with persistence later.
-// Note: On serverless (Vercel), this is ephemeral per instance. A future
-// session will add proper persistence (e.g. KV store or database).
-let latestScan: SystemScan | null = null;
-let lastUpdated: string | null = null;
+// ─── Persistence ────────────────────────────────────────────────────────────
+// Uses /tmp file storage instead of pure in-memory. On Vercel serverless this
+// persists across requests within the same warm function instance (minutes),
+// which is a significant improvement over in-memory (lost on every cold start).
+// For full durability across cold starts, migrate to Vercel KV or a database.
+
+const SCAN_DIR = join(tmpdir(), "pcba-scans");
+const SCAN_FILE = join(SCAN_DIR, "latest-scan.json");
+
+interface StoredScan {
+  scan: SystemScan;
+  timestamp: string;
+}
+
+async function loadScan(): Promise<StoredScan | null> {
+  try {
+    const raw = await readFile(SCAN_FILE, "utf-8");
+    return JSON.parse(raw) as StoredScan;
+  } catch {
+    return null;
+  }
+}
+
+async function saveScan(scan: SystemScan): Promise<string> {
+  const timestamp = new Date().toISOString();
+  await mkdir(SCAN_DIR, { recursive: true });
+  await writeFile(
+    SCAN_FILE,
+    JSON.stringify({ scan, timestamp } satisfies StoredScan),
+    "utf-8",
+  );
+  return timestamp;
+}
 
 // Maximum request body size (2 MB) to prevent abuse
 const MAX_BODY_SIZE = 2 * 1024 * 1024;
@@ -53,8 +84,7 @@ export async function POST(req: NextRequest) {
       scan.timestamp = new Date().toISOString();
     }
 
-    latestScan = scan;
-    lastUpdated = new Date().toISOString();
+    await saveScan(scan);
 
     return NextResponse.json(
       {
@@ -75,7 +105,9 @@ export async function POST(req: NextRequest) {
 // Returns the latest stored scan, or 404 if none exists.
 
 export async function GET() {
-  if (!latestScan) {
+  const stored = await loadScan();
+
+  if (!stored) {
     return NextResponse.json(
       { error: "No scan data available. Submit a scan first via POST." },
       { status: 404 },
@@ -83,8 +115,8 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    scan: latestScan,
-    timestamp: lastUpdated,
+    scan: stored.scan,
+    timestamp: stored.timestamp,
   });
 }
 

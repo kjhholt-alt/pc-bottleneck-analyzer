@@ -810,13 +810,18 @@ function buildRecommendations(
       }
       desc += " Note: make sure the new CPU is compatible with your motherboard socket and chipset.";
 
+      const prices = upgrades.map((u) => u.current_price_approx).sort((a, b) => a - b);
+      const costStr = prices.length === 1
+        ? `~$${prices[0]}`
+        : `$${prices[0]} - $${prices[prices.length - 1]}`;
+
       recommendations.push({
         id: "rec-cpu-upgrade",
         tier: "upgrade",
         title: "CPU Upgrade",
         description: desc,
         impact: "Major FPS improvement in CPU-limited games",
-        estimated_cost: `$${Math.min(...upgrades.map((u) => u.current_price_approx))} - $${Math.max(...upgrades.map((u) => u.current_price_approx))}`,
+        estimated_cost: costStr,
         priority: priority++,
       });
     }
@@ -834,13 +839,18 @@ function buildRecommendations(
         desc += ` The ${altPick.name} (~$${altPick.current_price_approx}) offers even more headroom.`;
       }
 
+      const gpuPrices = upgrades.map((u) => u.current_price_approx).sort((a, b) => a - b);
+      const gpuCostStr = gpuPrices.length === 1
+        ? `~$${gpuPrices[0]}`
+        : `$${gpuPrices[0]} - $${gpuPrices[gpuPrices.length - 1]}`;
+
       recommendations.push({
         id: "rec-gpu-upgrade",
         tier: "upgrade",
         title: "GPU Upgrade",
         description: desc,
         impact: "The most direct way to increase gaming FPS",
-        estimated_cost: `$${Math.min(...upgrades.map((u) => u.current_price_approx))} - $${Math.max(...upgrades.map((u) => u.current_price_approx))}`,
+        estimated_cost: gpuCostStr,
         priority: priority++,
       });
     }

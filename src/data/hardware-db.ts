@@ -1499,25 +1499,42 @@ export function tierIndex(tier: HardwareTier): number {
 }
 
 /**
+ * Normalize a model name for matching by stripping common noise that Windows
+ * and WMI inject into hardware names. For example:
+ *   "12th Gen Intel(R) Core(TM) i5-12400F @ 2.50GHz" → "intel core i5-12400f"
+ *   "NVIDIA GeForce RTX 4070 Founders Edition"        → "nvidia geforce rtx 4070 founders edition"
+ */
+function normalizeModelName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\(r\)/gi, "")
+    .replace(/\(tm\)/gi, "")
+    .replace(/\d+th gen\s*/gi, "")
+    .replace(/\d+st gen\s*/gi, "")
+    .replace(/\d+nd gen\s*/gi, "")
+    .replace(/\d+rd gen\s*/gi, "")
+    .replace(/@\s*[\d.]+\s*ghz/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * Generic hardware lookup with improved fuzzy matching.
- * 1. Direct match on normalized key
- * 2. Substring match, but only if the match is specific enough (>= 60% overlap)
+ * 1. Normalize input (strip (R), (TM), generation prefix, @ clock speed)
+ * 2. Direct match on normalized key
+ * 3. Substring match with specificity guard (>= 60% overlap)
  *    to avoid false positives like "RTX 3060" matching "RTX 3060 Ti".
  */
 function lookupHardware(
   modelName: string,
   database: Record<string, HardwareEntry>,
 ): HardwareEntry | null {
-  const key = modelName.toLowerCase().trim();
+  const key = normalizeModelName(modelName);
 
   // Direct match
   if (database[key]) return database[key];
 
-  // Substring match with specificity guard:
-  // Require that the shorter string covers at least 60% of the longer string's
-  // length. This prevents "i3" from matching "i3-14100f" when the input is just
-  // a 2-char abbreviation, while still allowing "nvidia geforce rtx 4070"
-  // to match a scan string like "nvidia geforce rtx 4070 founders edition".
+  // Substring match with specificity guard and longest-match-wins:
   let bestMatch: HardwareEntry | null = null;
   let bestLength = 0;
 

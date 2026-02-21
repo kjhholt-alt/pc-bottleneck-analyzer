@@ -82,11 +82,20 @@ def _bytes_to_gb(b, decimals=2):
     return round(b / (1024 ** 3), decimals)
 
 
-def _run_cmd(cmd: str, timeout: int = 10, shell: bool = True) -> str:
-    """Run a shell command and return stripped stdout, or empty string on failure."""
+def _run_cmd(cmd: str | list[str], timeout: int = 10) -> str:
+    """Run a command and return stripped stdout, or empty string on failure.
+
+    Accepts either a list of args (preferred, no shell) or a string
+    (split via shlex, still no shell).
+    """
     try:
+        if isinstance(cmd, str):
+            import shlex
+            args = shlex.split(cmd, posix=False)
+        else:
+            args = cmd
         result = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=timeout, shell=shell
+            args, capture_output=True, text=True, timeout=timeout, shell=False
         )
         return result.stdout.strip()
     except Exception as e:
@@ -109,7 +118,7 @@ def _wmic(path: str, fields: str, timeout: int = 10) -> list[dict]:
     Query wmic and return a list of dicts.
     Example: _wmic("cpu", "Name,NumberOfCores")
     """
-    raw = _run_cmd(f"wmic {path} get {fields} /format:list", timeout=timeout)
+    raw = _run_cmd(["wmic", path, "get", fields, "/format:list"], timeout=timeout)
     if not raw:
         return []
     entries: list[dict] = []
@@ -437,7 +446,19 @@ def scan_gpu() -> dict:
     # wmic fallback
     if gpu["model_name"] == "unavailable":
         try:
-            rows = _wmic("path win32_videocontroller", "Name,AdapterRAM,DriverVersion")
+            raw = _run_cmd(["wmic", "path", "win32_videocontroller", "get", "Name,AdapterRAM,DriverVersion", "/format:list"])
+            rows = []
+            current: dict = {}
+            for line in raw.splitlines():
+                line = line.strip()
+                if "=" in line:
+                    key, _, value = line.partition("=")
+                    current[key.strip()] = value.strip()
+                elif not line and current:
+                    rows.append(current)
+                    current = {}
+            if current:
+                rows.append(current)
             if rows:
                 r = rows[0]
                 gpu["model_name"] = r.get("Name", gpu["model_name"])
