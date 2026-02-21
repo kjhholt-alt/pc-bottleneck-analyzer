@@ -162,6 +162,13 @@ export function useMonitor() {
   const poll = useCallback(async () => {
     try {
       const res = await fetch("/api/scan");
+
+      if (res.status === 404) {
+        // No scan data posted yet — scanner hasn't run yet, not an error.
+        // Stay in "waiting" and keep polling.
+        return;
+      }
+
       if (!res.ok) {
         errorCount.current++;
         if (errorCount.current >= MAX_ERRORS) {

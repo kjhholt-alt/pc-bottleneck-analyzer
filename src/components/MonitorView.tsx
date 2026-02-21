@@ -377,19 +377,27 @@ export function MonitorView() {
           />
         </motion.div>
       ) : (
-        !isActive && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Activity className="w-12 h-12 text-text-secondary/30 mb-4" />
-            <p className="text-text-secondary font-medium">
-              Real-time hardware monitoring
-            </p>
-            <p className="text-text-secondary/60 text-sm mt-1 max-w-sm">
-              Run the scanner in <code className="text-cyan">--monitor</code> mode
-              for live hardware stats, or try <strong className="text-purple">Demo Mode</strong> to
-              see simulated data.
-            </p>
-          </div>
-        )
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <Activity className={`w-12 h-12 mb-4 ${isActive ? "text-amber/50 animate-pulse" : "text-text-secondary/30"}`} />
+          {isActive ? (
+            <>
+              <p className="text-text-secondary font-medium">Waiting for scanner data…</p>
+              <p className="text-text-secondary/60 text-sm mt-1 max-w-sm">
+                Run the scanner with <code className="text-cyan">python scanner.py --upload</code> to
+                start streaming live stats here.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-text-secondary font-medium">Real-time hardware monitoring</p>
+              <p className="text-text-secondary/60 text-sm mt-1 max-w-sm">
+                Run the scanner in <code className="text-cyan">--monitor</code> mode
+                for live hardware stats, or try <strong className="text-purple">Demo Mode</strong> to
+                see simulated data.
+              </p>
+            </>
+          )}
+        </div>
       )}
 
       {/* Trend Charts */}
