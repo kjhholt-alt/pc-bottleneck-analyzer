@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench, ExternalLink } from "lucide-react";
 import { getAffiliateLinks } from "@/lib/affiliate";
+import { trackAffiliateClick } from "@/lib/track";
 import type { SystemScan, AnalysisResult, Bottleneck, UpgradeCategory } from "@/lib/types";
 import { simulateUpgrade, getCPUOptions, getGPUOptions, TIER_LABELS } from "@/lib/simulate";
 import { ScoreComparison } from "./ScoreComparison";
@@ -87,6 +88,7 @@ function HardwareSelect({
               href={getAffiliateLinks(value).amazon}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackAffiliateClick("amazon", value)}
               className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
             >
               Amazon
@@ -96,6 +98,7 @@ function HardwareSelect({
               href={getAffiliateLinks(value).newegg}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackAffiliateClick("newegg", value)}
               className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
             >
               Newegg

@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { DollarSign, TrendingUp, ArrowRight, ExternalLink } from "lucide-react";
 import { getAffiliateLinks } from "@/lib/affiliate";
+import { trackAffiliateClick } from "@/lib/track";
 import type { SystemScan } from "@/lib/types";
 import type { GameBenchmark, Resolution, QualityPreset } from "@/data/game-benchmarks";
 import { estimateFPS } from "@/lib/fps-estimator";
@@ -125,6 +126,7 @@ export function CostPerFPS({
                     href={getAffiliateLinks(opt.name).amazon}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackAffiliateClick("amazon", opt.name)}
                     className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
                   >
                     Amazon
@@ -134,6 +136,7 @@ export function CostPerFPS({
                     href={getAffiliateLinks(opt.name).newegg}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackAffiliateClick("newegg", opt.name)}
                     className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
                   >
                     Newegg

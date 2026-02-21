@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Gift, DollarSign, ArrowUpCircle, Wrench, ExternalLink } from "lucide-react";
 import type { Recommendation, UpgradeCategory } from "@/lib/types";
 import { getAffiliateLinks } from "@/lib/affiliate";
+import { trackAffiliateClick } from "@/lib/track";
 import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 
 interface RecommendationListProps {
@@ -169,6 +170,7 @@ function TierSection({
                               href={links.amazon}
                               target="_blank"
                               rel="noopener noreferrer"
+                              onClick={() => trackAffiliateClick("amazon", hw)}
                               className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
                             >
                               Amazon
@@ -178,6 +180,7 @@ function TierSection({
                               href={links.newegg}
                               target="_blank"
                               rel="noopener noreferrer"
+                              onClick={() => trackAffiliateClick("newegg", hw)}
                               className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
                             >
                               Newegg
