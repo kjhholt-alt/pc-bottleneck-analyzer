@@ -29,10 +29,18 @@ jobs:
         working-directory: scanner
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools            # Fix distutils (removed in Python 3.12+)
+          pip install setuptools
           pip install -r requirements.txt
           pip install pyinstaller
-          python -m pywin32_postinstall -install  # Register COM automation for WMI
+          # pywin32 post-install: find the script dynamically (path differs by runner)
+          $scripts = python -c "import sys, os; print(os.path.join(os.path.dirname(sys.executable), 'Scripts'))"
+          if (Test-Path "$scripts\pywin32_postinstall.py") {
+            python "$scripts\pywin32_postinstall.py" -install
+            Write-Host "pywin32 post-install complete"
+          } else {
+            Write-Host "pywin32_postinstall.py not found, skipping (non-fatal)"
+          }
+        shell: pwsh
 
       - name: Build EXE
         working-directory: scanner
