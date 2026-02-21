@@ -8,7 +8,7 @@
  */
 
 /** Amazon Associates tag — replace with real tag after approval. */
-const AMAZON_TAG = "bottleneck-20";
+const AMAZON_TAG = "bottleneck20-20";
 
 /** Newegg Impact Radius campaign ID — leave empty until approved. */
 const NEWEGG_AFF_ID = "";
