@@ -20,18 +20,7 @@ export default function Home() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [compareScans, setCompareScans] = useState<[SavedScan, SavedScan] | null>(null);
 
-  useEffect(() => {
-    if (isShareURL()) {
-      const fragment = getShareFragment();
-      const sharedScan = decodeScanFromURL(fragment);
-      if (sharedScan) {
-        handleScanLoaded(sharedScan);
-        window.history.replaceState(null, "", window.location.pathname);
-      }
-    }
-    // Only run once on mount  }, []);
-
-  function handleScanLoaded(data: SystemScan, buildPlan = false) {
+  const handleScanLoaded = useCallback((data: SystemScan, buildPlan = false) => {
     const result = analyzeScan(data);
     setScan(data);
     setAnalysis(result);
@@ -43,7 +32,20 @@ export default function Home() {
     } catch {
       // localStorage unavailable - continue without saving
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    if (isShareURL()) {
+      const fragment = getShareFragment();
+      const sharedScan = decodeScanFromURL(fragment);
+      if (sharedScan) {
+        setTimeout(() => {
+          handleScanLoaded(sharedScan);
+          window.history.replaceState(null, "", window.location.pathname);
+        }, 0);
+      }
+    }
+  }, [handleScanLoaded]);
 
   function handleReset() {
     setScan(null);
@@ -140,4 +142,3 @@ export default function Home() {
     </main>
   );
 }
-

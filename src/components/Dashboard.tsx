@@ -13,6 +13,7 @@ import { UpgradeSimulator } from "./UpgradeSimulator";
 import { UpgradeWalkthrough } from "./UpgradeWalkthrough";
 import { AIAnalysis } from "./AIAnalysis";
 import { GameFPSEstimator } from "./GameFPSEstimator";
+import { GoalUpgradePlanner } from "./GoalUpgradePlanner";
 import { ProGate } from "./ProGate";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
@@ -49,7 +50,6 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
     setWalkthroughState(null);
   }, []);
 
-  // Walkthrough overlay — replaces dashboard content when active
   if (walkthroughState) {
     return (
       <UpgradeWalkthrough
@@ -63,7 +63,6 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
 
   return (
     <div className="space-y-6">
-      {/* Build plan banner */}
       {isBuildPlan && (
         <motion.div
           className="flex items-center gap-3 px-4 py-3 bg-cyan-dim border border-cyan/30 rounded-xl"
@@ -75,7 +74,7 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
           <div>
             <span className="text-cyan font-semibold text-sm">Build Plan Analysis</span>
             <span className="text-text-secondary text-sm ml-2">
-              Imported from PCPartPicker — live usage data is unavailable; scores reflect expected hardware balance.
+              Imported from PCPartPicker - live usage data is unavailable; scores reflect expected hardware balance.
             </span>
           </div>
         </motion.div>
@@ -96,31 +95,17 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
               {analysis.bottlenecks.length > 0 ? (
                 <>
                   <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-lg font-semibold text-foreground">
-                      Detected Bottlenecks
-                    </h2>
-                    <span className="text-sm text-text-secondary font-mono">
-                      {analysis.bottlenecks.length} found
-                    </span>
+                    <h2 className="text-lg font-semibold text-foreground">Detected Bottlenecks</h2>
+                    <span className="text-sm text-text-secondary font-mono">{analysis.bottlenecks.length} found</span>
                   </div>
                   {analysis.bottlenecks.map((bottleneck, i) => (
-                    <BottleneckCard
-                      key={bottleneck.id}
-                      bottleneck={bottleneck}
-                      index={i}
-                    />
+                    <BottleneckCard key={bottleneck.id} bottleneck={bottleneck} index={i} />
                   ))}
                 </>
               ) : (
-                <motion.div
-                  className="text-center py-16 text-text-secondary"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
+                <motion.div className="text-center py-16 text-text-secondary" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <p className="text-lg font-medium">No bottlenecks detected</p>
-                  <p className="text-sm mt-1">
-                    Your system is running smoothly
-                  </p>
+                  <p className="text-sm mt-1">Your system is running smoothly</p>
                 </motion.div>
               )}
             </div>
@@ -130,14 +115,18 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
         {activeTab === "recommendations" && (
           <motion.div key="recommendations" role="tabpanel" id="tabpanel-recommendations" aria-labelledby="tab-recommendations" {...tabTransition}>
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Recommendations
-              </h2>
-              <p className="text-sm text-text-secondary mt-0.5">
-                Prioritized actions to improve performance
-              </p>
+              <h2 className="text-lg font-semibold text-foreground">Recommendations</h2>
+              <p className="text-sm text-text-secondary mt-0.5">Prioritized actions to improve performance</p>
             </div>
             <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
+          </motion.div>
+        )}
+
+        {activeTab === "planner" && (
+          <motion.div key="planner" role="tabpanel" id="tabpanel-planner" aria-labelledby="tab-planner" {...tabTransition}>
+            <ProGate feature="planner">
+              <GoalUpgradePlanner scan={scan} analysis={analysis} />
+            </ProGate>
           </motion.div>
         )}
 
@@ -169,12 +158,8 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
           <motion.div key="monitor" role="tabpanel" id="tabpanel-monitor" aria-labelledby="tab-monitor" {...tabTransition}>
             <ProGate feature="monitor">
               <div className="mb-4">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Live Monitor
-                </h2>
-                <p className="text-sm text-text-secondary mt-0.5">
-                  Real-time hardware stats from your scanner
-                </p>
+                <h2 className="text-lg font-semibold text-foreground">Live Monitor</h2>
+                <p className="text-sm text-text-secondary mt-0.5">Real-time hardware stats from your scanner</p>
               </div>
               <MonitorView />
             </ProGate>
@@ -184,12 +169,8 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
         {activeTab === "raw" && (
           <motion.div key="raw" role="tabpanel" id="tabpanel-raw" aria-labelledby="tab-raw" {...tabTransition}>
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Raw Scan Data
-              </h2>
-              <p className="text-sm text-text-secondary mt-0.5">
-                Full system scan output
-              </p>
+              <h2 className="text-lg font-semibold text-foreground">Raw Scan Data</h2>
+              <p className="text-sm text-text-secondary mt-0.5">Full system scan output</p>
             </div>
             <RawDataViewer scan={scan} />
           </motion.div>

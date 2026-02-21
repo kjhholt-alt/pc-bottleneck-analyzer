@@ -1,0 +1,130 @@
+===== Starting build (no pip upgrade) ===== 
+Sat 02/21/2026 
+02:07 PM
+--- Installing PyInstaller only --- 
+Requirement already satisfied: pyinstaller in c:\users\kruz\appdata\local\python\pythoncore-3.14-64\lib\site-packages (6.19.0)
+pip install pyinstaller exit: 0 
+--- Check PyInstaller installed --- 
+PyInstaller version: 6.19.0
+--- pywin32 postinstall --- 
+C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64\python.exe: No module named pywin32_postinstall
+--- Running PyInstaller build --- 
+243 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.1
+244 INFO: Python: 3.14.2
+302 INFO: Platform: Windows-11-10.0.26100-SP0
+302 INFO: Python environment: C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64
+306 INFO: Removing temporary files and cleaning cache in C:\Users\Kruz\AppData\Local\pyinstaller
+308 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\Kruz\\Desktop\\Projects\\pc-bottleneck-analyzer\\scanner',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\python314.zip',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\DLLs',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\win32',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\Kruz\\Desktop\\Projects\\pc-bottleneck-analyzer\\scanner']
+1042 INFO: checking Analysis
+1042 INFO: Building Analysis because Analysis-00.toc is non existent
+1042 INFO: Looking for Python shared library...
+1042 INFO: Using Python shared library: C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64\python314.dll
+1043 INFO: Running Analysis Analysis-00.toc
+1043 INFO: Target bytecode optimization level: 0
+1043 INFO: Initializing module dependency graph...
+1044 INFO: Initializing module graph hook caches...
+1070 INFO: Analyzing modules for base_library.zip ...
+3549 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+4707 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+17409 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+18285 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+25787 INFO: Caching module dependency graph...
+25897 INFO: Analyzing C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\scanner.py
+26149 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+26270 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+26304 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+26573 INFO: Processing standard module hook 'hook-psutil.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+26882 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+26886 INFO: SetuptoolsInfo: initializing cached setuptools info...
+27800 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+28096 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+28098 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+28154 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+28156 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+28745 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+29839 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+30128 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+34107 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+34731 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+34735 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+34776 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+34779 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+35542 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+35543 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+35650 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks'
+35915 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+35917 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+37268 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+37269 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+39793 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+39799 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\wmi.py:32: SyntaxWarning: "\_" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\_"? A raw string is also an option.
+  `GetObjectText\_` method being called, which usually produces
+C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\wmi.py:917: SyntaxWarning: "\_" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\_"? A raw string is also an option.
+  """This is the equivalent to the raw-WMI SpawnInstance\_
+40257 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+40817 INFO: Processing standard module hook 'hook-win32com.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+40842 INFO: Processing standard module hook 'hook-pythoncom.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+41018 INFO: Processing standard module hook 'hook-pywintypes.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+43442 INFO: Analyzing hidden import 'win32com.server'
+43467 INFO: Analyzing hidden import 'win32com.shell'
+43487 INFO: Analyzing hidden import 'pkg_resources'
+43488 ERROR: Hidden import 'pkg_resources' not found
+43488 INFO: Processing module hooks (post-graph stage)...
+47818 INFO: Performing binary vs. data reclassification (11 entries)
+47876 INFO: Looking for ctypes DLLs
+47994 INFO: Analyzing run-time hooks ...
+47999 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+48002 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+48005 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+48012 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+48016 INFO: Including run-time hook 'pyi_rth_pywintypes.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+48018 INFO: Including run-time hook 'pyi_rth_pythoncom.py' from 'C:\\Users\\Kruz\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+48031 INFO: Creating base_library.zip...
+48076 INFO: Looking for dynamic libraries
+48770 INFO: Extra DLL search directories (AddDllDirectory): []
+48770 INFO: Extra DLL search directories (PATH): []
+49652 INFO: Warnings written to C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\build\scanner\warn-scanner.txt
+49745 INFO: Graph cross-reference written to C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\build\scanner\xref-scanner.html
+49843 INFO: checking PYZ
+49843 INFO: Building PYZ because PYZ-00.toc is non existent
+49843 INFO: Building PYZ (ZlibArchive) C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\build\scanner\PYZ-00.pyz
+50424 INFO: Building PYZ (ZlibArchive) C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\build\scanner\PYZ-00.pyz completed successfully.
+50451 INFO: checking PKG
+50451 INFO: Building PKG because PKG-00.toc is non existent
+50451 INFO: Building PKG (CArchive) PC-Scanner.pkg
+52411 INFO: Building PKG (CArchive) PC-Scanner.pkg completed successfully.
+52417 INFO: Bootloader C:\Users\Kruz\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\run.exe
+52417 INFO: checking EXE
+52417 INFO: Building EXE because EXE-00.toc is non existent
+52417 INFO: Building EXE from EXE-00.toc
+52417 INFO: Copying bootloader EXE to C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\dist\PC-Scanner.exe
+52568 INFO: Copying icon to EXE
+52641 INFO: Copying 0 resources to EXE
+52641 INFO: Embedding manifest in EXE
+52703 INFO: Appending PKG archive to EXE
+52806 INFO: Fixing EXE headers
+56930 INFO: Building EXE from EXE-00.toc completed successfully.
+56934 INFO: Build complete! The results are available in: C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\dist
+pyinstaller exit: 0 
+--- Checking output --- 
+SUCCESS 
+ Volume in drive C has no label.
+ Volume Serial Number is C2DF-3823
+
+ Directory of C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer\scanner\dist
+
+02/21/2026  02:19 PM        15,309,720 PC-Scanner.exe
+               1 File(s)     15,309,720 bytes
+               0 Dir(s)  60,562,141,184 bytes free
+===== Done ===== 

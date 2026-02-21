@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   AlertTriangle,
@@ -12,6 +11,7 @@ import {
   Sparkles,
   Gamepad2,
   Lock,
+  Route,
 } from "lucide-react";
 import { isFeatureLocked } from "@/lib/pro";
 
@@ -19,6 +19,7 @@ const tabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
+  { id: "planner", label: "Goal Planner", icon: Route },
   { id: "ai", label: "AI Insights", icon: Sparkles },
   { id: "fps", label: "Game FPS", icon: Gamepad2 },
   { id: "simulate", label: "Upgrade Sim", icon: Sliders },
@@ -71,11 +72,7 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
               className={`
                 relative flex items-center gap-2 px-4 py-3 text-sm font-medium
                 whitespace-nowrap transition-colors duration-200
-                ${
-                  isActive
-                    ? "text-cyan"
-                    : "text-text-secondary hover:text-foreground"
-                }
+                ${isActive ? "text-cyan" : "text-text-secondary hover:text-foreground"}
               `}
             >
               <Icon size={16} />
@@ -89,11 +86,9 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
         })}
       </nav>
 
-      {/* Animated underline */}
-      <motion.div
-        className="absolute bottom-0 h-0.5 bg-cyan rounded-full"
-        animate={{ left: underline.left, width: underline.width }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      <div
+        className="absolute bottom-0 h-0.5 bg-cyan rounded-full transition-all duration-200"
+        style={{ left: underline.left, width: underline.width }}
       />
     </div>
   );

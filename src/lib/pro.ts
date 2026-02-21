@@ -11,7 +11,7 @@ export const GATES_ENABLED = false;
 const STORAGE_KEY = "pc-pro-status";
 
 /** Tab IDs that require Pro when gates are enabled. */
-const PRO_TABS = new Set(["ai", "fps", "simulate", "monitor"]);
+const PRO_TABS = new Set(["ai", "fps", "simulate", "monitor", "planner"]);
 
 /** Standalone Pro feature IDs (not tied to a tab). */
 const PRO_FEATURES = new Set(["pdf-export"]);
@@ -73,3 +73,4 @@ export function isFeatureLocked(featureId: string): boolean {
   if (!isProFeature(featureId)) return false;
   return !isProUser();
 }
+

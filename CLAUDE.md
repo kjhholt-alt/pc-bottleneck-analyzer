@@ -9,7 +9,8 @@ Desktop + web tool that scans PC hardware, detects bottlenecks, and provides AI-
 - **Dashboard**: Next.js 16, React 19, TypeScript, Tailwind CSS v4, framer-motion, recharts, lucide-react, next-themes
 - **Scanner**: Python 3.10+, psutil, GPUtil, WMI, py-cpuinfo
 - **AI Analysis**: Anthropic Claude API (Session 3+)
-- **Deploy**: Vercel
+- **Deploy**: Vercel — https://pcbottleneck.buildkit.store
+- **Amazon Affiliate Tag**: `bottleneck20-20`
 
 ## Architecture
 - `src/` — Next.js app (App Router, `src` directory)

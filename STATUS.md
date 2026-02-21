@@ -4,7 +4,7 @@
 - **Project:** PC Bottleneck Analyzer
 - **Last updated:** 2026-02-21
 - **Overall health:** 🟢 Feature-complete for Reddit launch — needs Stripe + EXE packaging
-- **Live URL:** Deployed on Vercel (kruz-holts-projects)
+- **Live URL:** https://pcbottleneck.buildkit.store (Vercel, kruz-holts-projects)
 - **GitHub:** kjhholt-alt/pc-bottleneck-analyzer
 
 ## What's Working
@@ -41,7 +41,7 @@
 ## What's NOT Working / Incomplete
 - **Stripe payments** — No paywall yet. All Pro features are accessible for free during beta.
 - **PyInstaller EXE distribution** — Build spec exists but no hosted .exe download on the site
-- **Custom domain** — Still on Vercel subdomain, no pcbottleneck.buildkit.store yet
+- ~~**Custom domain**~~ — ✅ Live at pcbottleneck.buildkit.store
 - **Reddit launch** — Content drafted but not posted
 
 ## Feature Tiers (Pro vs Free)
@@ -77,7 +77,7 @@
 ## What's Left Before Reddit Launch
 1. **Stripe integration** — Checkout + webhook, gate Pro features behind payment
 2. **PyInstaller EXE** — Host on GitHub Releases, add download button on landing page
-3. **Custom domain** — Set up pcbottleneck.buildkit.store or similar
+3. ~~**Custom domain**~~ — ✅ Done (pcbottleneck.buildkit.store)
 4. **Reddit launch** — Post on r/buildapc, r/pcmasterrace, r/hardware
 
 ## Architecture Decisions Log

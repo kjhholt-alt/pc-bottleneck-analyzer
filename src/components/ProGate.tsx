@@ -16,6 +16,7 @@ const FEATURE_LABELS: Record<string, string> = {
   fps: "Game FPS Estimator",
   simulate: "Upgrade Simulator",
   monitor: "Real-time Monitor",
+  planner: "Goal Upgrade Planner",
   "pdf-export": "PDF Report Export",
 };
 

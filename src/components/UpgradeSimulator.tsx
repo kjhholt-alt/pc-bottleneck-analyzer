@@ -86,7 +86,6 @@ function HardwareSelect({
           ? Math.round(((selected.score - currentScore) / currentScore) * 100)
           : 0;
         const isUpgrade = pct > 0;
-        const isDowngrade = pct < 0;
 
         return (
         <motion.div
@@ -309,7 +308,7 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
           </motion.div>
         ) : simResult ? (
           <motion.div
-            key="results"
+            key={`results-${selectedCPU}-${selectedGPU}`}
             className="space-y-6"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
