@@ -14,15 +14,17 @@ export default function Home() {
   const [scan, setScan] = useState<SystemScan | null>(null);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [currentScanId, setCurrentScanId] = useState<string | null>(null);
+  const [isBuildPlan, setIsBuildPlan] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [compareScans, setCompareScans] = useState<
     [SavedScan, SavedScan] | null
   >(null);
 
-  function handleScanLoaded(data: SystemScan) {
+  function handleScanLoaded(data: SystemScan, buildPlan = false) {
     const result = analyzeScan(data);
     setScan(data);
     setAnalysis(result);
+    setIsBuildPlan(buildPlan);
 
     try {
       const saved = saveToHistory(data, result);
@@ -37,6 +39,7 @@ export default function Home() {
     setAnalysis(null);
     setCurrentScanId(null);
     setCompareScans(null);
+    setIsBuildPlan(false);
   }
 
   const handleLoadScan = useCallback((savedScan: SavedScan) => {
@@ -118,7 +121,7 @@ export default function Home() {
             <ScanUploader onScanLoaded={handleScanLoaded} />
           </div>
         ) : (
-          <Dashboard scan={scan} analysis={analysis} />
+          <Dashboard scan={scan} analysis={analysis} isBuildPlan={isBuildPlan} />
         )}
       </div>
 

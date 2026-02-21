@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { List } from "lucide-react";
 import { DashboardTabs } from "./DashboardTabs";
 import { SystemOverview } from "./SystemOverview";
 import { BottleneckCard } from "./BottleneckCard";
@@ -13,6 +14,7 @@ import type { SystemScan, AnalysisResult } from "@/lib/types";
 interface DashboardProps {
   scan: SystemScan;
   analysis: AnalysisResult;
+  isBuildPlan?: boolean;
 }
 
 const tabTransition = {
@@ -22,11 +24,29 @@ const tabTransition = {
   transition: { duration: 0.25, ease: "easeInOut" as const },
 };
 
-export function Dashboard({ scan, analysis }: DashboardProps) {
+export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <div className="space-y-6">
+      {/* Build plan banner */}
+      {isBuildPlan && (
+        <motion.div
+          className="flex items-center gap-3 px-4 py-3 bg-cyan-dim border border-cyan/30 rounded-xl"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <List size={16} className="text-cyan shrink-0" />
+          <div>
+            <span className="text-cyan font-semibold text-sm">Build Plan Analysis</span>
+            <span className="text-text-secondary text-sm ml-2">
+              Imported from PCPartPicker — live usage data is unavailable; scores reflect expected hardware balance.
+            </span>
+          </div>
+        </motion.div>
+      )}
+
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       <AnimatePresence mode="wait">

@@ -2,12 +2,13 @@
 
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, FileJson, Play, AlertCircle } from "lucide-react";
+import { Upload, FileJson, Play, AlertCircle, List } from "lucide-react";
 import type { SystemScan } from "@/lib/types";
 import { sampleScan } from "@/data/sample-scan";
+import { PCPartPickerImporter } from "./PCPartPickerImporter";
 
 interface ScanUploaderProps {
-  onScanLoaded: (scan: SystemScan) => void;
+  onScanLoaded: (scan: SystemScan, isBuildPlan?: boolean) => void;
 }
 
 function validateScan(data: unknown): data is SystemScan {
@@ -27,6 +28,7 @@ export function ScanUploader({ onScanLoaded }: ScanUploaderProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPCPP, setShowPCPP] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFile = useCallback(
@@ -183,20 +185,54 @@ export function ScanUploader({ onScanLoaded }: ScanUploaderProps) {
         <div className="flex-1 h-px bg-border" />
       </div>
 
-      {/* Demo button */}
-      <motion.button
-        onClick={handleDemoClick}
-        disabled={isLoading}
-        className="flex items-center gap-2.5 px-6 py-3 bg-surface border border-border rounded-xl
-                   text-foreground font-medium transition-all duration-200
-                   hover:border-cyan/50 hover:bg-surface-raised hover:shadow-[0_0_20px_rgba(34,209,238,0.1)]
-                   disabled:opacity-50 disabled:cursor-not-allowed"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Play size={16} className="text-cyan" />
-        Try Demo
-      </motion.button>
+      {/* Actions row: PCPartPicker + Demo */}
+      <AnimatePresence mode="wait">
+        {showPCPP ? (
+          <PCPartPickerImporter
+            key="pcpp"
+            onScanLoaded={(scan) => onScanLoaded(scan, true)}
+            onCancel={() => setShowPCPP(false)}
+          />
+        ) : (
+          <motion.div
+            key="buttons"
+            className="flex flex-col items-center gap-3 w-full max-w-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <motion.button
+              onClick={() => setShowPCPP(true)}
+              disabled={isLoading}
+              className="flex items-center gap-2.5 px-6 py-3 w-full justify-center
+                         bg-surface border border-border rounded-xl
+                         text-foreground font-medium transition-all duration-200
+                         hover:border-cyan/50 hover:bg-surface-raised hover:shadow-[0_0_20px_rgba(34,209,238,0.1)]
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <List size={16} className="text-cyan" />
+              Import PCPartPicker Build
+            </motion.button>
+
+            <motion.button
+              onClick={handleDemoClick}
+              disabled={isLoading}
+              className="flex items-center gap-2.5 px-6 py-3 bg-surface border border-border rounded-xl
+                         text-foreground font-medium transition-all duration-200
+                         hover:border-cyan/50 hover:bg-surface-raised hover:shadow-[0_0_20px_rgba(34,209,238,0.1)]
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Play size={16} className="text-cyan" />
+              Try Demo
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Error message */}
       <AnimatePresence>
