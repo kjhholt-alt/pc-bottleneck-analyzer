@@ -7,6 +7,7 @@ import { SystemOverview } from "./SystemOverview";
 import { BottleneckCard } from "./BottleneckCard";
 import { RecommendationList } from "./RecommendationList";
 import { RawDataViewer } from "./RawDataViewer";
+import { MonitorView } from "./MonitorView";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 
 interface DashboardProps {
@@ -83,6 +84,20 @@ export function Dashboard({ scan, analysis }: DashboardProps) {
               </p>
             </div>
             <RecommendationList recommendations={analysis.recommendations} />
+          </motion.div>
+        )}
+
+        {activeTab === "monitor" && (
+          <motion.div key="monitor" role="tabpanel" id="tabpanel-monitor" aria-labelledby="tab-monitor" {...tabTransition}>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-foreground">
+                Live Monitor
+              </h2>
+              <p className="text-sm text-text-secondary mt-0.5">
+                Real-time hardware stats from your scanner
+              </p>
+            </div>
+            <MonitorView />
           </motion.div>
         )}
 

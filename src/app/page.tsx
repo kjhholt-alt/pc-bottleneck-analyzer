@@ -1,25 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 import { analyzeScan } from "@/lib/analysis";
+import { saveToHistory, type SavedScan } from "@/lib/history";
 import { ScanUploader } from "@/components/ScanUploader";
 import { Dashboard } from "@/components/Dashboard";
-import { Monitor } from "lucide-react";
+import { ScanHistory } from "@/components/ScanHistory";
+import { ScanCompare } from "@/components/ScanCompare";
+import { Monitor, History } from "lucide-react";
 
 export default function Home() {
   const [scan, setScan] = useState<SystemScan | null>(null);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+  const [currentScanId, setCurrentScanId] = useState<string | null>(null);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [compareScans, setCompareScans] = useState<
+    [SavedScan, SavedScan] | null
+  >(null);
 
   function handleScanLoaded(data: SystemScan) {
+    const result = analyzeScan(data);
     setScan(data);
-    setAnalysis(analyzeScan(data));
+    setAnalysis(result);
+
+    try {
+      const saved = saveToHistory(data, result);
+      setCurrentScanId(saved.id);
+    } catch {
+      // localStorage unavailable — continue without saving
+    }
   }
 
   function handleReset() {
     setScan(null);
     setAnalysis(null);
+    setCurrentScanId(null);
+    setCompareScans(null);
   }
+
+  const handleLoadScan = useCallback((savedScan: SavedScan) => {
+    const result = analyzeScan(savedScan.scan);
+    setScan(savedScan.scan);
+    setAnalysis(result);
+    setCurrentScanId(savedScan.id);
+    setCompareScans(null);
+    setIsHistoryOpen(false);
+  }, []);
+
+  const handleCompare = useCallback((scans: [SavedScan, SavedScan]) => {
+    setCompareScans(scans);
+    setIsHistoryOpen(false);
+  }, []);
 
   return (
     <main className="min-h-screen">
@@ -40,20 +72,38 @@ export default function Home() {
               PC Bottleneck Analyzer
             </span>
           </div>
-          {scan && (
+          <div className="flex items-center gap-3">
             <button
-              onClick={handleReset}
-              className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+              onClick={() => setIsHistoryOpen((prev) => !prev)}
+              className="flex items-center gap-1.5 text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+              aria-label="Toggle scan history"
             >
-              New Scan
+              <History className="w-4 h-4" />
+              <span className="hidden sm:inline">History</span>
             </button>
-          )}
+            {scan && (
+              <button
+                onClick={handleReset}
+                className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+              >
+                New Scan
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       {/* Content */}
       <div id="main-content" className="max-w-7xl mx-auto px-6 py-8">
-        {!scan || !analysis ? (
+        {compareScans ? (
+          <ScanCompare
+            scanA={compareScans[0].scan}
+            analysisA={analyzeScan(compareScans[0].scan)}
+            scanB={compareScans[1].scan}
+            analysisB={analyzeScan(compareScans[1].scan)}
+            onClose={() => setCompareScans(null)}
+          />
+        ) : !scan || !analysis ? (
           <div className="flex flex-col items-center justify-center min-h-[70vh]">
             <div className="text-center mb-10">
               <h1 className="text-4xl font-bold tracking-tight mb-3">
@@ -71,6 +121,15 @@ export default function Home() {
           <Dashboard scan={scan} analysis={analysis} />
         )}
       </div>
+
+      {/* History Sidebar */}
+      <ScanHistory
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        onLoadScan={handleLoadScan}
+        onCompare={handleCompare}
+        currentScanId={currentScanId ?? undefined}
+      />
     </main>
   );
 }

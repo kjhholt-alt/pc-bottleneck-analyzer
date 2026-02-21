@@ -7,12 +7,14 @@ import {
   AlertTriangle,
   Lightbulb,
   Code,
+  Activity,
 } from "lucide-react";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
+  { id: "monitor", label: "Live Monitor", icon: Activity },
   { id: "raw", label: "Raw Data", icon: Code },
 ] as const;
 

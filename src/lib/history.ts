@@ -1,8 +1,3 @@
-// TODO: Scan History - localStorage persistence for scan results
-//
-// This module handles saving, retrieving, and managing scan history
-// in the browser's localStorage.
-
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 
 const STORAGE_KEY = "pc-bottleneck-history";
@@ -21,44 +16,69 @@ export interface SavedScan {
 
 /**
  * Save the current scan and analysis to localStorage history.
+ * Returns the saved entry (with generated ID and timestamp).
  */
 export function saveToHistory(
-  _scan: SystemScan,
-  _analysis: AnalysisResult,
+  scan: SystemScan,
+  analysis: AnalysisResult,
 ): SavedScan {
-  // TODO: Implementation
-  // 1. Create a SavedScan object with metadata
-  // 2. Read existing history from localStorage
-  // 3. Prepend new scan
-  // 4. Trim to MAX_HISTORY
-  // 5. Write back to localStorage
-  // 6. Return the saved entry
-  void STORAGE_KEY;
-  void MAX_HISTORY;
-  throw new Error("Not implemented yet — planned for a future session");
+  if (!isStorageAvailable()) {
+    throw new Error("localStorage is not available");
+  }
+
+  const entry: SavedScan = {
+    id: crypto.randomUUID(),
+    savedAt: new Date().toISOString(),
+    scanId: scan.scan_id ?? `scan-${Date.now()}`,
+    totalScore: analysis.score.total,
+    grade: analysis.score.grade,
+    cpuName: scan.cpu.model_name,
+    gpuName: scan.gpu.model_name,
+    scan,
+  };
+
+  const history = getHistory();
+  history.unshift(entry);
+
+  // Cap at MAX_HISTORY (FIFO — oldest dropped)
+  const trimmed = history.slice(0, MAX_HISTORY);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+
+  return entry;
 }
 
 /**
  * Retrieve all saved scans from localStorage, sorted newest first.
  */
 export function getHistory(): SavedScan[] {
-  // TODO: Read and parse from localStorage
-  return [];
+  if (!isStorageAvailable()) return [];
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed as SavedScan[];
+  } catch {
+    return [];
+  }
 }
 
 /**
  * Delete a single scan from history by ID.
  */
-export function deleteScan(_id: string): void {
-  // TODO: Filter out the scan and write back
+export function deleteScan(id: string): void {
+  if (!isStorageAvailable()) return;
+
+  const history = getHistory().filter((s) => s.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
 }
 
 /**
  * Export entire history as a JSON string for backup.
  */
 export function exportHistory(): string {
-  // TODO: Return JSON.stringify of full history
-  return "[]";
+  return JSON.stringify(getHistory(), null, 2);
 }
 
 /**

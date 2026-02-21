@@ -5,6 +5,7 @@ import type { SystemScan } from "@/lib/types";
 // Note: On serverless (Vercel), this is ephemeral per instance. A future
 // session will add proper persistence (e.g. KV store or database).
 let latestScan: SystemScan | null = null;
+let lastUpdated: string | null = null;
 
 // Maximum request body size (2 MB) to prevent abuse
 const MAX_BODY_SIZE = 2 * 1024 * 1024;
@@ -53,6 +54,7 @@ export async function POST(req: NextRequest) {
     }
 
     latestScan = scan;
+    lastUpdated = new Date().toISOString();
 
     return NextResponse.json(
       {
@@ -80,7 +82,10 @@ export async function GET() {
     );
   }
 
-  return NextResponse.json(latestScan);
+  return NextResponse.json({
+    scan: latestScan,
+    timestamp: lastUpdated,
+  });
 }
 
 // ─── Validation ──────────────────────────────────────────────────────────────
