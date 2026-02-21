@@ -219,10 +219,14 @@ export function RawDataViewer({ scan }: RawDataViewerProps) {
     // Try modern clipboard API first, fall back to textarea for HTTP contexts
     if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(redditFormatted).then(onSuccess, () => {
-        fallbackCopy(redditFormatted) && onSuccess();
+        if (fallbackCopy(redditFormatted)) {
+          onSuccess();
+        }
       });
     } else {
-      fallbackCopy(redditFormatted) && onSuccess();
+      if (fallbackCopy(redditFormatted)) {
+          onSuccess();
+        }
     }
   }, [formattedJson]);
 
@@ -291,3 +295,7 @@ export function RawDataViewer({ scan }: RawDataViewerProps) {
     </motion.div>
   );
 }
+
+
+
+

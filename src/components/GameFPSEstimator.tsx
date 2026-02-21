@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, ChevronDown, Zap } from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 import {
   gameBenchmarks,
@@ -273,7 +273,6 @@ export function GameFPSEstimator({ scan, analysis }: GameFPSEstimatorProps) {
             {/* Cost-per-FPS upgrade calculator */}
             <CostPerFPS
               scan={scan}
-              analysis={analysis}
               game={selectedGame}
               resolution={resolution}
               quality={quality}
@@ -296,3 +295,5 @@ export function GameFPSEstimator({ scan, analysis }: GameFPSEstimatorProps) {
     </div>
   );
 }
+
+

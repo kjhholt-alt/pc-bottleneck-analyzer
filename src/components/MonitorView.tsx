@@ -233,9 +233,9 @@ export function MonitorView() {
   }
 
   // Build chart data
-  const now = Date.now();
+  const referenceTime = latest?.timestamp ?? history[history.length - 1]?.timestamp ?? 0;
   const chartData = history.map((snap) => ({
-    time: formatTime(snap.timestamp, now),
+    time: formatTime(snap.timestamp, referenceTime),
     "CPU Temp": snap.cpu.temp ?? 0,
     "GPU Temp": snap.gpu.temp ?? 0,
     "CPU %": snap.cpu.usage,
@@ -425,3 +425,4 @@ export function MonitorView() {
     </div>
   );
 }
+

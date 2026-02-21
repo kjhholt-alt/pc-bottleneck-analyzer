@@ -26,12 +26,6 @@ const CHIPSET_SOCKET: Record<string, string> = {
 
 // ─── DDR Gen from Chipset ────────────────────────────────────────────────────
 
-const DDR5_CHIPSETS = new Set([
-  "B650", "B650E", "X670", "X670E", "B850", "B850E", "X870", "X870E",
-  "Z690", "B660", "H670", "H610", "Z790", "B760", "H770",
-  "Z890", "B860", "H810",
-]);
-
 // ─── GPU Power Requirements ──────────────────────────────────────────────────
 
 function estimateGPUPower(gpuName: string): { wattage: number; connector: string } {
@@ -316,3 +310,4 @@ function resolveSocket(chipset: string): string | null {
 
   return null;
 }
+

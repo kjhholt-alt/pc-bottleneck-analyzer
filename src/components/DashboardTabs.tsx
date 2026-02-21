@@ -11,7 +11,9 @@ import {
   Sliders,
   Sparkles,
   Gamepad2,
+  Lock,
 } from "lucide-react";
+import { isFeatureLocked } from "@/lib/pro";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -79,6 +81,9 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
               <Icon size={16} />
               <span className="hidden sm:inline">{tab.label}</span>
               <span className="sr-only sm:hidden">{tab.label}</span>
+              {isFeatureLocked(tab.id) && (
+                <Lock size={12} className="text-text-secondary/50" />
+              )}
             </button>
           );
         })}

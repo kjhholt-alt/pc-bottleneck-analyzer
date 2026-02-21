@@ -9,6 +9,7 @@ import {
   CircuitBoard,
   Laptop,
   FileDown,
+  Lock,
 } from "lucide-react";
 import { ScoreGauge } from "./ScoreGauge";
 import { HardwareCard } from "./HardwareCard";
@@ -18,6 +19,7 @@ import { DriverCheck } from "./DriverCheck";
 import { MAX_SCORES, getBreakdownColor } from "@/lib/score-utils";
 import { getPercentiles } from "@/lib/percentile";
 import { generateReport } from "@/lib/pdf-report";
+import { isFeatureLocked } from "@/lib/pro";
 import type { SystemScan, PerformanceScore, AnalysisResult } from "@/lib/types";
 
 interface SystemOverviewProps {
@@ -211,14 +213,27 @@ export function SystemOverview({ scan, score, analysis }: SystemOverviewProps) {
         transition={{ duration: 0.4 }}
       >
         <ScoreGauge score={score} />
-        <button
-          onClick={() => generateReport(scan, analysis)}
-          className="flex items-center gap-2 px-4 py-2 text-xs font-mono text-text-secondary
-                     border border-border rounded-xl hover:border-cyan/40 hover:text-cyan transition-colors"
-        >
-          <FileDown size={14} />
-          Download Report (PDF)
-        </button>
+        {isFeatureLocked("pdf-export") ? (
+          <button
+            disabled
+            title="Upgrade to Pro to export PDF reports"
+            className="flex items-center gap-2 px-4 py-2 text-xs font-mono text-text-secondary/50
+                       border border-border/50 rounded-xl cursor-not-allowed"
+          >
+            <Lock size={14} />
+            Download Report (PDF)
+            <span className="text-[10px] font-semibold text-cyan bg-cyan/10 px-1.5 py-0.5 rounded">PRO</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => generateReport(scan, analysis)}
+            className="flex items-center gap-2 px-4 py-2 text-xs font-mono text-text-secondary
+                       border border-border rounded-xl hover:border-cyan/40 hover:text-cyan transition-colors"
+          >
+            <FileDown size={14} />
+            Download Report (PDF)
+          </button>
+        )}
       </motion.div>
 
       {/* Score breakdown bar */}
@@ -256,7 +271,7 @@ export function SystemOverview({ scan, score, analysis }: SystemOverviewProps) {
       <PercentileBar percentiles={percentiles} />
 
       {/* Score history trend chart */}
-      <ScoreHistoryChart currentScore={score.total} />
+      <ScoreHistoryChart />
 
       {/* Driver status check */}
       <DriverCheck scan={scan} />
@@ -277,3 +292,4 @@ export function SystemOverview({ scan, score, analysis }: SystemOverviewProps) {
     </div>
   );
 }
+

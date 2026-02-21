@@ -14,11 +14,6 @@ function slugId(): string {
 }
 
 /** Extract a number from a string like "3600 MHz" → 3600, "32 GB" → 32 */
-function parseNum(s: string): number {
-  const m = s.match(/[\d.]+/);
-  return m ? parseFloat(m[0]) : 0;
-}
-
 // ─── CPU Parser ───────────────────────────────────────────────────────────────
 
 interface RawPart {
@@ -362,3 +357,4 @@ export function isPCPartPickerURL(url: string): boolean {
     return false;
   }
 }
+

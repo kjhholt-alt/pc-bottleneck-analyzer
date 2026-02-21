@@ -2,64 +2,94 @@
 
 ## Quick Status
 - **Project:** PC Bottleneck Analyzer
-- **Current session:** 1 of 6
-- **Last updated:** 2026-02-12
-- **Overall health:** 🟢 Polished — Sessions 1 & 2 complete, improvement pass done
+- **Last updated:** 2026-02-21
+- **Overall health:** 🟢 Feature-complete for Reddit launch — needs Stripe + EXE packaging
+- **Live URL:** Deployed on Vercel (kruz-holts-projects)
+- **GitHub:** kjhholt-alt/pc-bottleneck-analyzer
 
 ## What's Working
-- Next.js 16 project scaffolded with Tailwind v4, dark theme
+- Next.js 16 project with Tailwind v4, dark theme, Framer Motion animations
 - Python system scanner (`scanner/scanner.py`) — detects CPU, GPU, RAM, storage, motherboard, OS, network, BIOS settings
-- Web dashboard with drag-and-drop JSON upload
-- Demo mode with realistic sample data (mid-range gaming PC with intentional bottlenecks)
-- Rule-based bottleneck analysis engine (CPU, GPU, RAM, storage, thermal, settings)
+- Scanner `--monitor` mode for continuous live data posting
+- Marketing landing page at `/` with hero, how-it-works, feature grid, pricing, FAQ
+- Dashboard at `/dashboard` with full analysis suite
+- Web dashboard with drag-and-drop JSON upload + demo mode
+- Rule-based bottleneck analysis engine (15+ detection rules)
 - Performance scoring system (/100 with letter grade)
-- Hardware comparison database (30+ CPUs and GPUs)
+- Hardware comparison database (~80 CPUs, ~85 GPUs with tiers, pricing, gaming scores)
 - Prioritized recommendations (free fixes → cheap fixes → upgrades)
-- Four dashboard tabs: Overview, Bottleneck Analysis, Recommendations, Raw Data
-- POST /api/scan endpoint for scanner-to-dashboard data flow
-- Dark theme with neon accent colors (cyan/amber/red/green)
+- **AI Analysis tab** — Claude Haiku streaming, cached in localStorage
+- **PDF Report Export** — Professional client-side PDF (jsPDF + jspdf-autotable), Pro feature
+- **Game FPS Estimator** — 20 popular games, resolution/quality selectors, FPS gauge, upgrade suggestions
+- **Percentile Ranking** — "Better than X% of systems" with animated bar, per-component breakdowns
+- **Score History Chart** — Recharts LineChart showing score trend across saved scans
+- **Driver Check** — Flags outdated GPU drivers (NVIDIA/AMD/Intel) with download links
+- **Cost-per-FPS Calculator** — Shows $/FPS for top 5 GPU upgrades per game
+- **Real-time Monitor** — Live CPU/GPU temps + usage via polling, with Demo Mode (simulated gaming session)
+- Dashboard tabs: Overview, Bottlenecks, Recommendations, Simulate, Game FPS, AI Analysis, Monitor, Raw Data
+- POST /api/scan endpoint with validation + sanitization
+- Scan history + comparison (localStorage, max 20)
+- Share via URL (base64-encoded)
+- PCPartPicker build import
+- Upgrade Simulator (what-if CPU/GPU swap)
+- Upgrade Walkthrough (step-by-step guides for CPU/GPU/RAM/Storage)
+- Compatibility checker (socket, DDR gen, PSU)
+- Per-motherboard BIOS optimization guides (7 brands + generic)
+- PyInstaller packaging (.exe build spec exists)
 - Deployed on Vercel
-- Input validation & sanitization on API endpoint
-- ARIA accessibility attributes on all interactive components
-- Scanner output fields aligned with dashboard TypeScript interfaces
-- Score breakdown displays values with correct per-component max scales
-- File size limits on upload (2 MB max)
-- Feature specs for 3 planned features (upgrade simulator, scan history, share results)
 
 ## What's NOT Working / Incomplete
-- AI analysis (Session 3) — Claude API integration not started
-- AI chat follow-up interface not built
-- BIOS optimization guide not built
-- Real-time monitoring mode (Session 4) — no WebSocket/live charts yet
-- Benchmark engine (Session 5) — not started
-- PyInstaller packaging (Session 6) — scanner is .py only, no .exe yet
-- Landing page (Session 6) — not started
+- **Stripe payments** — No paywall yet. All Pro features are accessible for free during beta.
+- **PyInstaller EXE distribution** — Build spec exists but no hosted .exe download on the site
+- **Custom domain** — Still on Vercel subdomain, no pcbottleneck.buildkit.store yet
+- **Reddit launch** — Content drafted but not posted
+
+## Feature Tiers (Pro vs Free)
+
+### Free Tier
+- Run scanner + upload scan
+- Basic score + letter grade
+- Top 3 bottlenecks
+- Top 3 recommendations
+- Raw data viewer
+- Demo mode
+
+### Pro Tier ($4.99 one-time — NOT YET GATED)
+- AI Deep Analysis (Claude Haiku streaming)
+- PDF Report Export ("Download Full Report")
+- Game FPS Estimator (20 games)
+- Percentile Ranking
+- Score History Chart
+- Driver Check
+- Cost-per-FPS Calculator
+- Real-time Monitor
+- Upgrade Simulator
+- Full recommendations list
 
 ## Last Session Summary
-**Date:** 2026-02-12
-**Goal:** Session 1 (Python scanner) + Session 2 (Web dashboard)
-
+**Date:** 2026-02-21
 **What got done:**
-- Created GitHub repo (kjhholt-alt/pc-bottleneck-analyzer)
-- Scaffolded Next.js 16 + Tailwind v4 project
-- Built Python scanner with comprehensive hardware detection
-- Built full web dashboard with analysis engine
-- Created hardware comparison database
-- Deployed to Vercel
+- Built 3 medium-impact features: Score History Chart, Driver Check, Cost-per-FPS Calculator
+- Wired up Real-time Monitor: scanner `--monitor` mode + Demo Mode with simulated gaming session
+- Saved marketing gameplan to Obsidian notes
+- Updated all project notes
 
-## Next Session Plan
-**Session 3 — AI-Powered Deep Analysis**
-- Add "Get AI Analysis" button that sends scan data to Claude API
-- Build AI chat follow-up interface
-- Generate BIOS optimization guide per motherboard manufacturer
-- Cache AI responses (don't re-analyze same scan)
+## What's Left Before Reddit Launch
+1. **Stripe integration** — Checkout + webhook, gate Pro features behind payment
+2. **PyInstaller EXE** — Host on GitHub Releases, add download button on landing page
+3. **Custom domain** — Set up pcbottleneck.buildkit.store or similar
+4. **Reddit launch** — Post on r/buildapc, r/pcmasterrace, r/hardware
 
 ## Architecture Decisions Log
 | Date | Decision | Why | Alternative |
 |------|----------|-----|-------------|
-| 2026-02-12 | Option A: lightweight agent + web dashboard | Plays to Next.js strengths, faster to ship | Full Electron app (more complex to distribute) |
-| 2026-02-12 | Tailwind v4 with CSS variables | Comes with create-next-app, modern approach | Tailwind v3 with config file |
-| 2026-02-12 | Rule-based analysis first, AI later | Works offline, instant results, no API costs | AI-only analysis (slower, costs per scan) |
+| 2026-02-12 | Lightweight agent + web dashboard | Plays to Next.js strengths, faster to ship | Full Electron app |
+| 2026-02-12 | Tailwind v4 with CSS variables | Comes with create-next-app, modern approach | Tailwind v3 config |
+| 2026-02-12 | Rule-based analysis first, AI later | Works offline, instant results, no API costs | AI-only analysis |
+| 2026-02-21 | HTTP polling for monitor (not WebSocket) | Works on Vercel serverless, simpler | WebSocket (needs persistent server) |
+| 2026-02-21 | Client-side PDF (jsPDF) | No API route needed, instant generation | Server-side PDF or html2canvas |
+| 2026-02-21 | FPS estimation from hardware DB scores | No external API, instant, works offline | External benchmark API |
+| 2026-02-21 | Percentile from hardware DB distribution | No database needed, realistic curve | User-submitted data (needs scale) |
 
 ## Environment Notes
 - OS: Windows 11 Enterprise
@@ -67,9 +97,12 @@
 - Next.js: 16.1.6
 - Deploy: Vercel (kruz-holts-projects)
 - GitHub: kjhholt-alt/pc-bottleneck-analyzer
-- Local path: C:\Users\GQETCUM\Desktop\Projects\pc-bottleneck-analyzer
+- Local path: C:\Users\Kruz\Desktop\Projects\pc-bottleneck-analyzer
 
 ## Session History
 | # | Date | Goal | Result | Notes |
 |---|------|------|--------|-------|
 | 1 | 2026-02-12 | Scanner + Dashboard | ✅ Complete | Sessions 1 & 2 combined |
+| 2 | 2026-02-21 | AI Analysis + Landing Page | ✅ Complete | Claude Haiku streaming, marketing landing page |
+| 3 | 2026-02-21 | Pro Features (PDF, FPS, Percentile) | ✅ Complete | 3 high-impact Pro features |
+| 4 | 2026-02-21 | Medium Features + Monitor | ✅ Complete | Score history, driver check, cost/FPS, monitor wiring |

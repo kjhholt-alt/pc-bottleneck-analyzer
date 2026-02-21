@@ -23,7 +23,7 @@ interface DataPoint {
   gpu: string;
 }
 
-export function ScoreHistoryChart({ currentScore }: { currentScore: number }) {
+export function ScoreHistoryChart() {
   const data = useMemo(() => {
     const history = getHistory();
     if (history.length < 2) return null;
@@ -140,3 +140,4 @@ export function ScoreHistoryChart({ currentScore }: { currentScore: number }) {
     </motion.div>
   );
 }
+

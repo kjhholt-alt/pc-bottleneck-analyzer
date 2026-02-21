@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { DollarSign, TrendingUp, ArrowRight } from "lucide-react";
-import type { SystemScan, AnalysisResult } from "@/lib/types";
+import type { SystemScan } from "@/lib/types";
 import type { GameBenchmark, Resolution, QualityPreset } from "@/data/game-benchmarks";
 import { estimateFPS } from "@/lib/fps-estimator";
 import { gpuDatabase, lookupGPU } from "@/data/hardware-db";
@@ -11,7 +11,6 @@ import { simulateUpgrade } from "@/lib/simulate";
 
 interface CostPerFPSProps {
   scan: SystemScan;
-  analysis: AnalysisResult;
   game: GameBenchmark;
   resolution: Resolution;
   quality: QualityPreset;
@@ -29,7 +28,6 @@ interface UpgradeOption {
 
 export function CostPerFPS({
   scan,
-  analysis,
   game,
   resolution,
   quality,
@@ -42,12 +40,9 @@ export function CostPerFPS({
     const candidates: UpgradeOption[] = [];
 
     for (const entry of Object.values(gpuDatabase)) {
-      // Only show GPUs that are actually an upgrade
       if (entry.gaming_score <= currentScore) continue;
-      // Skip GPUs with no meaningful price
       if (entry.current_price_approx <= 0) continue;
 
-      // Simulate the upgrade to get new analysis
       const simAnalysis = simulateUpgrade(scan, undefined, entry.name);
       const result = estimateFPS(
         { ...scan, gpu: { ...scan.gpu, model_name: entry.name } },
@@ -65,14 +60,13 @@ export function CostPerFPS({
         price: entry.current_price_approx,
         estimatedFPS: result.estimated,
         fpsGain,
-        costPerFPS: Math.round(entry.current_price_approx / fpsGain * 100) / 100,
+        costPerFPS: Math.round((entry.current_price_approx / fpsGain) * 100) / 100,
         tier: entry.tier,
       });
     }
 
-    // Sort by cost-per-FPS (best value first), take top 5
     return candidates.sort((a, b) => a.costPerFPS - b.costPerFPS).slice(0, 5);
-  }, [scan, analysis, game, resolution, quality, currentFPS]);
+  }, [scan, game, resolution, quality, currentFPS]);
 
   if (options.length === 0) return null;
 
@@ -101,15 +95,12 @@ export function CostPerFPS({
             <motion.div
               key={opt.name}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors ${
-                isTop
-                  ? "bg-cyan/5 border-cyan/30"
-                  : "bg-surface-raised border-border"
+                isTop ? "bg-cyan/5 border-cyan/30" : "bg-surface-raised border-border"
               }`}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2, delay: i * 0.05 }}
             >
-              {/* Rank */}
               <span
                 className="text-xs font-bold font-mono w-5 text-center"
                 style={{ color: isTop ? "var(--cyan)" : "var(--text-secondary)" }}
@@ -117,28 +108,20 @@ export function CostPerFPS({
                 {i + 1}
               </span>
 
-              {/* GPU Name */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">
-                  {opt.name}
-                </p>
+                <p className="text-sm font-medium text-foreground truncate">{opt.name}</p>
                 <div className="flex items-center gap-1 mt-0.5">
                   <span className="text-xs text-text-secondary">{currentFPS} FPS</span>
                   <ArrowRight size={10} className="text-text-secondary" />
                   <span className="text-xs font-mono" style={{ color: "var(--green)" }}>
                     {opt.estimatedFPS} FPS
                   </span>
-                  <span className="text-[10px] text-text-secondary ml-1">
-                    (+{opt.fpsGain})
-                  </span>
+                  <span className="text-[10px] text-text-secondary ml-1">(+{opt.fpsGain})</span>
                 </div>
               </div>
 
-              {/* Price */}
               <div className="text-right shrink-0">
-                <p className="text-sm font-mono text-foreground">
-                  ~${opt.price.toLocaleString()}
-                </p>
+                <p className="text-sm font-mono text-foreground">~${opt.price.toLocaleString()}</p>
                 <p
                   className="text-[10px] font-mono"
                   style={{ color: isTop ? "var(--cyan)" : "var(--text-secondary)" }}
@@ -147,7 +130,6 @@ export function CostPerFPS({
                 </p>
               </div>
 
-              {/* Best value badge */}
               {isTop && (
                 <div className="flex items-center gap-1 px-2 py-0.5 bg-cyan/10 border border-cyan/30 rounded-md">
                   <TrendingUp size={10} className="text-cyan" />

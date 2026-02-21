@@ -13,6 +13,7 @@ import { UpgradeSimulator } from "./UpgradeSimulator";
 import { UpgradeWalkthrough } from "./UpgradeWalkthrough";
 import { AIAnalysis } from "./AIAnalysis";
 import { GameFPSEstimator } from "./GameFPSEstimator";
+import { ProGate } from "./ProGate";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
@@ -142,33 +143,41 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
 
         {activeTab === "ai" && (
           <motion.div key="ai" role="tabpanel" id="tabpanel-ai" aria-labelledby="tab-ai" {...tabTransition}>
-            <AIAnalysis scan={scan} analysis={analysis} />
+            <ProGate feature="ai">
+              <AIAnalysis scan={scan} analysis={analysis} />
+            </ProGate>
           </motion.div>
         )}
 
         {activeTab === "fps" && (
           <motion.div key="fps" role="tabpanel" id="tabpanel-fps" aria-labelledby="tab-fps" {...tabTransition}>
-            <GameFPSEstimator scan={scan} analysis={analysis} />
+            <ProGate feature="fps">
+              <GameFPSEstimator scan={scan} analysis={analysis} />
+            </ProGate>
           </motion.div>
         )}
 
         {activeTab === "simulate" && (
           <motion.div key="simulate" role="tabpanel" id="tabpanel-simulate" aria-labelledby="tab-simulate" {...tabTransition}>
-            <UpgradeSimulator scan={scan} currentAnalysis={analysis} onStartWalkthrough={handleStartWalkthrough} />
+            <ProGate feature="simulate">
+              <UpgradeSimulator scan={scan} currentAnalysis={analysis} onStartWalkthrough={handleStartWalkthrough} />
+            </ProGate>
           </motion.div>
         )}
 
         {activeTab === "monitor" && (
           <motion.div key="monitor" role="tabpanel" id="tabpanel-monitor" aria-labelledby="tab-monitor" {...tabTransition}>
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Live Monitor
-              </h2>
-              <p className="text-sm text-text-secondary mt-0.5">
-                Real-time hardware stats from your scanner
-              </p>
-            </div>
-            <MonitorView />
+            <ProGate feature="monitor">
+              <div className="mb-4">
+                <h2 className="text-lg font-semibold text-foreground">
+                  Live Monitor
+                </h2>
+                <p className="text-sm text-text-secondary mt-0.5">
+                  Real-time hardware stats from your scanner
+                </p>
+              </div>
+              <MonitorView />
+            </ProGate>
           </motion.div>
         )}
 
