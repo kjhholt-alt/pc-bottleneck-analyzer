@@ -14,6 +14,7 @@ import {
   cpuDatabase,
   gpuDatabase,
 } from "@/data/hardware-db";
+import { getBIOSGuide } from "@/data/bios-guides";
 
 // ─── Main Entry Point ────────────────────────────────────────────────────────
 
@@ -299,6 +300,7 @@ function detectRAMBottlenecks(
   const isDDR5 = scan.ram.form_factor.toLowerCase().includes("ddr5");
 
   if (isDDR4 && scan.ram.speed_mhz < 3000) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     bottlenecks.push({
       id: "ram-slow-speed",
       category: "ram",
@@ -312,15 +314,16 @@ function detectRAMBottlenecks(
         "You're losing 10-20% FPS in games, especially on AMD Ryzen CPUs where the " +
         "Infinity Fabric speed is tied to RAM speed.",
       fix:
-        "Restart your PC, enter BIOS (usually Delete or F2 at boot), find the XMP or " +
-        "DOCP setting, and enable it. It's one toggle and takes 30 seconds. This is " +
-        "genuinely free performance you paid for but aren't getting.",
+        `Press ${guide.enterKey} at boot to enter ${guide.biosName}, then go to ` +
+        `${guide.xmp.menuPath}. It's one toggle and takes 30 seconds — this is ` +
+        `genuinely free performance you paid for but aren't getting.`,
       difficulty: "Easy",
       estimated_cost: "$0",
     });
   }
 
   if (isDDR5 && scan.ram.speed_mhz < 4800) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     bottlenecks.push({
       id: "ram-slow-speed-ddr5",
       category: "ram",
@@ -330,7 +333,9 @@ function detectRAMBottlenecks(
         `Your DDR5 RAM is clocked at ${scan.ram.speed_mhz} MHz. DDR5 base spec starts ` +
         `at 4800 MHz, and most kits are rated for 5600-6000+ MHz with XMP/EXPO enabled.`,
       impact: "Significant performance left on the table, especially in CPU-limited scenarios.",
-      fix: "Enable XMP or EXPO in your BIOS to run your RAM at its rated speed.",
+      fix:
+        `In your ${guide.biosName}: ${guide.xmp.menuPath}. ` +
+        `Enable the XMP or EXPO profile to run at rated speed.`,
       difficulty: "Easy",
       estimated_cost: "$0",
     });
@@ -555,6 +560,7 @@ function detectSettingsBottlenecks(
 
   // XMP / DOCP
   if (scan.bios_settings.xmp_enabled === false) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     bottlenecks.push({
       id: "settings-xmp-off",
       category: "settings",
@@ -568,8 +574,10 @@ function detectSettingsBottlenecks(
         "10-20% FPS loss in games. Even bigger impact on AMD Ryzen systems where " +
         "the Infinity Fabric clock is linked to memory speed.",
       fix:
-        "Restart → enter BIOS (Del or F2) → find XMP/DOCP/EXPO → Enable → Save & Exit. " +
-        "Takes 30 seconds. You already paid for this speed.",
+        `Restart → press ${guide.enterKey} to enter ${guide.biosName} → ` +
+        `${guide.xmp.menuPath} → Save & Exit (F10). ` +
+        `Takes 30 seconds. You already paid for this speed.` +
+        (guide.xmp.notes ? ` Tip: ${guide.xmp.notes}` : ""),
       difficulty: "Easy",
       estimated_cost: "$0",
     });
@@ -577,6 +585,7 @@ function detectSettingsBottlenecks(
 
   // Resizable BAR
   if (scan.bios_settings.resizable_bar === false) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     bottlenecks.push({
       id: "settings-rebar-off",
       category: "settings",
@@ -587,8 +596,8 @@ function detectSettingsBottlenecks(
         "instead of in small 256 MB chunks. It's a free BIOS toggle that helps in some games.",
       impact: "0-10% FPS improvement depending on the game. Some titles see no difference.",
       fix:
-        "Enable in BIOS (look for Resizable BAR, Above 4G Decoding, or AMD SAM). " +
-        "Also make sure it's enabled in your GPU driver.",
+        `In your ${guide.biosName}: ${guide.resizableBar.menuPath}. ` +
+        `Also make sure it's enabled in your GPU driver (NVIDIA Control Panel or AMD Adrenalin).`,
       difficulty: "Easy",
       estimated_cost: "$0",
     });
