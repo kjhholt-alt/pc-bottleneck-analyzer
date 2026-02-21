@@ -1375,6 +1375,89 @@ def upload_scan(data: dict, url: str = "http://localhost:3000/api/scan"):
 # Main
 # ---------------------------------------------------------------------------
 
+def quick_snapshot(base_scan: dict) -> dict:
+    """
+    Lightweight snapshot for --monitor mode.
+    Only reads live metrics (temps, usage, clocks, VRAM, RAM) — skips all
+    slow WMI/cpuinfo/detection calls. Returns a full scan-shaped object
+    so the dashboard API accepts it without changes.
+    """
+    snap = json.loads(json.dumps(base_scan))  # deep copy
+    snap["timestamp"] = datetime.now(timezone.utc).isoformat()
+    snap["scan_id"] = f"monitor-{int(time.time())}"
+
+    # --- CPU live metrics ---
+    if psutil:
+        try:
+            per_core = psutil.cpu_percent(interval=0.3, percpu=True)
+            snap["cpu"]["usage_per_core"] = [round(c, 1) for c in per_core]
+        except Exception:
+            pass
+        # CPU frequency
+        try:
+            freq = psutil.cpu_freq()
+            if freq:
+                snap["cpu"]["current_clock_ghz"] = round(freq.current / 1000, 2)
+        except Exception:
+            pass
+        # CPU temp
+        try:
+            temps = psutil.sensors_temperatures()
+            for name in ("coretemp", "k10temp", "zenpower", "cpu_thermal"):
+                if name in temps and temps[name]:
+                    snap["cpu"]["current_temp_c"] = round(temps[name][0].current, 1)
+                    break
+        except Exception:
+            pass
+        # RAM
+        try:
+            vm = psutil.virtual_memory()
+            snap["ram"]["current_used_gb"] = round(vm.used / (1024 ** 3), 2)
+            snap["ram"]["usage_percent"] = round(vm.percent, 1)
+        except Exception:
+            pass
+
+    # --- GPU live metrics ---
+    if GPUtil:
+        try:
+            gpus = GPUtil.getGPUs()
+            if gpus:
+                g = gpus[0]
+                snap["gpu"]["current_temp_c"] = round(g.temperature, 1) if g.temperature else None
+                snap["gpu"]["gpu_utilization_pct"] = round(g.load * 100, 1) if g.load is not None else 0
+                snap["gpu"]["vram_used_gb"] = round(g.memoryUsed / 1024, 2) if g.memoryUsed else 0
+                snap["gpu"]["gpu_clock_mhz"] = 0  # GPUtil doesn't provide clocks directly
+        except Exception:
+            pass
+
+    # Try nvidia-smi for clock and more accurate data
+    try:
+        smi = _run_cmd(
+            'nvidia-smi --query-gpu=temperature.gpu,utilization.gpu,memory.used,clocks.current.graphics '
+            '--format=csv,noheader,nounits',
+            timeout=5,
+        )
+        if smi:
+            parts = [p.strip() for p in smi.split(",")]
+            if len(parts) >= 4:
+                t = _safe_float(parts[0])
+                if t is not None:
+                    snap["gpu"]["current_temp_c"] = round(t, 1)
+                u = _safe_float(parts[1])
+                if u is not None:
+                    snap["gpu"]["gpu_utilization_pct"] = round(u, 1)
+                m = _safe_float(parts[2])
+                if m is not None:
+                    snap["gpu"]["vram_used_gb"] = round(m / 1024, 2)
+                c = _safe_float(parts[3])
+                if c is not None:
+                    snap["gpu"]["gpu_clock_mhz"] = round(c)
+    except Exception:
+        pass
+
+    return snap
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="PC Bottleneck Analyzer - System Scanner"
@@ -1400,6 +1483,18 @@ def main():
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose/debug logging for troubleshooting",
+    )
+    parser.add_argument(
+        "--monitor",
+        action="store_true",
+        help="Continuous monitoring mode: do a full scan once, then POST "
+             "lightweight snapshots every few seconds",
+    )
+    parser.add_argument(
+        "--interval",
+        type=float,
+        default=3.0,
+        help="Seconds between monitor snapshots (default: 3.0)",
     )
     args = parser.parse_args()
 
@@ -1473,9 +1568,39 @@ def main():
     print()
 
     # --- Upload if requested ---
-    if args.upload:
+    if args.upload or args.monitor:
         print("Uploading scan results...")
         upload_scan(result, url=args.upload_url)
+
+    # --- Monitor mode ---
+    if args.monitor:
+        print(f"\n{'='*60}")
+        print(f"  LIVE MONITOR MODE — posting every {args.interval}s")
+        print(f"  URL: {args.upload_url}")
+        print(f"  Press Ctrl+C to stop")
+        print(f"{'='*60}\n")
+
+        cycle = 0
+        try:
+            while True:
+                time.sleep(args.interval)
+                cycle += 1
+                try:
+                    snap = quick_snapshot(result)
+                    upload_scan(snap, url=args.upload_url)
+                    cpu_t = snap["cpu"].get("current_temp_c", "?")
+                    gpu_t = snap["gpu"].get("current_temp_c", "?")
+                    gpu_u = snap["gpu"].get("gpu_utilization_pct", "?")
+                    ram_u = snap["ram"].get("usage_percent", "?")
+                    print(
+                        f"  [{cycle:>4}] CPU:{cpu_t}°C  GPU:{gpu_t}°C/{gpu_u}%  "
+                        f"RAM:{ram_u}%",
+                        flush=True,
+                    )
+                except Exception as e:
+                    print(f"  [{cycle:>4}] Error: {e}", flush=True)
+        except KeyboardInterrupt:
+            print(f"\n\nMonitor stopped after {cycle} snapshots.")
 
 
 if __name__ == "__main__":

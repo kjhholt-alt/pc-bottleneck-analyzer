@@ -10,6 +10,7 @@ import {
   MemoryStick,
   MonitorCog,
   Gauge,
+  Sparkles,
 } from "lucide-react";
 import {
   AreaChart,
@@ -35,6 +36,7 @@ function StatusIndicator({ status }: { status: MonitorStatus }) {
     idle: { color: "var(--text-secondary)", label: "Ready", pulse: false },
     waiting: { color: "var(--amber)", label: "Waiting for scanner...", pulse: true },
     live: { color: "var(--green)", label: "Live — receiving data", pulse: true },
+    demo: { color: "var(--purple)", label: "Demo — simulated data", pulse: true },
     error: { color: "var(--red)", label: "Error", pulse: false },
     stopped: { color: "var(--red)", label: "Scanner stopped", pulse: false },
   };
@@ -211,10 +213,10 @@ function TrendChart({
 }
 
 export function MonitorView() {
-  const { status, latest, history, error, snapshotCount, maxSnapshots, start, stop } =
+  const { status, latest, history, error, snapshotCount, maxSnapshots, start, startDemo, stop } =
     useMonitor();
 
-  const isActive = status === "waiting" || status === "live";
+  const isActive = status === "waiting" || status === "live" || status === "demo";
 
   // Compute deltas (compare latest to 10 snapshots ago = ~30s)
   const deltaRef =
@@ -253,26 +255,38 @@ export function MonitorView() {
             </span>
           )}
         </div>
-        <button
-          onClick={isActive ? stop : start}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            isActive
-              ? "bg-red/15 text-red hover:bg-red/25 border border-red/30"
-              : "bg-cyan/15 text-cyan hover:bg-cyan/25 border border-cyan/30"
-          }`}
-        >
-          {isActive ? (
-            <>
-              <Square className="w-4 h-4" />
-              Stop Monitoring
-            </>
-          ) : (
-            <>
-              <Play className="w-4 h-4" />
-              Start Monitoring
-            </>
+        <div className="flex items-center gap-2">
+          {!isActive && (
+            <button
+              onClick={startDemo}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                         bg-purple/15 text-purple hover:bg-purple/25 border border-purple/30"
+            >
+              <Sparkles className="w-4 h-4" />
+              Demo Mode
+            </button>
           )}
-        </button>
+          <button
+            onClick={isActive ? stop : start}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive
+                ? "bg-red/15 text-red hover:bg-red/25 border border-red/30"
+                : "bg-cyan/15 text-cyan hover:bg-cyan/25 border border-cyan/30"
+            }`}
+          >
+            {isActive ? (
+              <>
+                <Square className="w-4 h-4" />
+                Stop
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                Start Monitoring
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -370,9 +384,9 @@ export function MonitorView() {
               Real-time hardware monitoring
             </p>
             <p className="text-text-secondary/60 text-sm mt-1 max-w-sm">
-              Start monitoring to see live CPU, GPU, and RAM stats. Run the
-              scanner in <code className="text-cyan">--monitor</code> mode for
-              continuous updates.
+              Run the scanner in <code className="text-cyan">--monitor</code> mode
+              for live hardware stats, or try <strong className="text-purple">Demo Mode</strong> to
+              see simulated data.
             </p>
           </div>
         )
