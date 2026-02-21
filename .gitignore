@@ -46,5 +46,9 @@ scanner/__pycache__/
 scanner/*.pyc
 scanner/system_scan.json
 scanner/venv/
+scanner/.venv/
+scanner/dist/
+scanner/build/
+scanner/*.egg-info
 
 .vercel

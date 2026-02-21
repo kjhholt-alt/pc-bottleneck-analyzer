@@ -1,0 +1,94 @@
+name: Build PC-Scanner.exe
+
+# Triggers on any push to master/main that touches scanner/ files
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'scanner/**'
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write   # Needed to create/update releases
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: scanner/requirements.txt
+
+      - name: Install dependencies
+        working-directory: scanner
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools            # Fix distutils (removed in Python 3.12+)
+          pip install -r requirements.txt
+          pip install pyinstaller
+          python -m pywin32_postinstall -install  # Register COM automation for WMI
+
+      - name: Build EXE
+        working-directory: scanner
+        run: pyinstaller scanner.spec --noconfirm --clean
+
+      - name: Verify EXE exists
+        run: |
+          if (Test-Path "scanner/dist/PC-Scanner.exe") {
+            $size = (Get-Item "scanner/dist/PC-Scanner.exe").Length / 1MB
+            Write-Host "PC-Scanner.exe built successfully ($([math]::Round($size, 1)) MB)"
+          } else {
+            Write-Error "Build failed - PC-Scanner.exe not found"
+            exit 1
+          }
+        shell: pwsh
+
+      # Delete old scanner-latest release so we can recreate it fresh
+      - name: Delete old release (if exists)
+        run: gh release delete scanner-latest --yes 2>$null; exit 0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+
+      # Delete old tag so it can be recreated pointing to the new commit
+      - name: Delete old tag (if exists)
+        run: git push origin :refs/tags/scanner-latest 2>$null; exit 0
+        shell: pwsh
+
+      # Create fresh release with the new .exe
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: scanner-latest
+          name: "PC Scanner — Latest Build"
+          body: |
+            ## PC Bottleneck Scanner
+
+            **Download PC-Scanner.exe and run it — no installation needed.**
+
+            ### Instructions
+            1. Download `PC-Scanner.exe` below
+            2. Double-click to run (or run from terminal for options)
+            3. It saves `system_scan.json` to the same folder
+            4. Upload that file at [pcbottleneck.buildkit.store](https://pcbottleneck.buildkit.store) for analysis
+
+            ### CLI Options
+            ```
+            PC-Scanner.exe                          # Scan + save system_scan.json
+            PC-Scanner.exe --output C:\scan.json    # Custom output path
+            PC-Scanner.exe --upload                 # Scan + auto-upload to analyzer
+            PC-Scanner.exe --verbose                # Debug output
+            ```
+
+            ---
+            Built from commit `${{ github.sha }}` on `${{ github.run_id }}`
+          files: scanner/dist/PC-Scanner.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
