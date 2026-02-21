@@ -8,15 +8,20 @@ import {
   HardDrive,
   CircuitBoard,
   Laptop,
+  FileDown,
 } from "lucide-react";
 import { ScoreGauge } from "./ScoreGauge";
 import { HardwareCard } from "./HardwareCard";
+import { PercentileBar } from "./PercentileBar";
 import { MAX_SCORES, getBreakdownColor } from "@/lib/score-utils";
-import type { SystemScan, PerformanceScore } from "@/lib/types";
+import { getPercentiles } from "@/lib/percentile";
+import { generateReport } from "@/lib/pdf-report";
+import type { SystemScan, PerformanceScore, AnalysisResult } from "@/lib/types";
 
 interface SystemOverviewProps {
   scan: SystemScan;
   score: PerformanceScore;
+  analysis: AnalysisResult;
 }
 
 function tempStatus(temp: number | null): "good" | "warning" | "critical" | undefined {
@@ -37,7 +42,8 @@ function formatCache(kb: number | null): string {
   return `${kb} KB`;
 }
 
-export function SystemOverview({ scan, score }: SystemOverviewProps) {
+export function SystemOverview({ scan, score, analysis }: SystemOverviewProps) {
+  const percentiles = getPercentiles(scan, analysis);
   const bootDrive = scan.storage.find((s) => s.is_boot_drive) ?? scan.storage[0];
 
   const cards = [
@@ -197,12 +203,20 @@ export function SystemOverview({ scan, score }: SystemOverviewProps) {
     <div className="space-y-8">
       {/* Score gauge */}
       <motion.div
-        className="flex justify-center py-4"
+        className="flex flex-col items-center py-4 gap-4"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <ScoreGauge score={score} />
+        <button
+          onClick={() => generateReport(scan, analysis)}
+          className="flex items-center gap-2 px-4 py-2 text-xs font-mono text-text-secondary
+                     border border-border rounded-xl hover:border-cyan/40 hover:text-cyan transition-colors"
+        >
+          <FileDown size={14} />
+          Download Report (PDF)
+        </button>
       </motion.div>
 
       {/* Score breakdown bar */}
@@ -235,6 +249,9 @@ export function SystemOverview({ scan, score }: SystemOverviewProps) {
           })}
         </div>
       </motion.div>
+
+      {/* Percentile ranking */}
+      <PercentileBar percentiles={percentiles} />
 
       {/* Hardware cards grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

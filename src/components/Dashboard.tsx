@@ -12,6 +12,7 @@ import { MonitorView } from "./MonitorView";
 import { UpgradeSimulator } from "./UpgradeSimulator";
 import { UpgradeWalkthrough } from "./UpgradeWalkthrough";
 import { AIAnalysis } from "./AIAnalysis";
+import { GameFPSEstimator } from "./GameFPSEstimator";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
@@ -84,7 +85,7 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
       <AnimatePresence mode="wait">
         {activeTab === "overview" && (
           <motion.div key="overview" role="tabpanel" id="tabpanel-overview" aria-labelledby="tab-overview" {...tabTransition}>
-            <SystemOverview scan={scan} score={analysis.score} />
+            <SystemOverview scan={scan} score={analysis.score} analysis={analysis} />
           </motion.div>
         )}
 
@@ -142,6 +143,12 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
         {activeTab === "ai" && (
           <motion.div key="ai" role="tabpanel" id="tabpanel-ai" aria-labelledby="tab-ai" {...tabTransition}>
             <AIAnalysis scan={scan} analysis={analysis} />
+          </motion.div>
+        )}
+
+        {activeTab === "fps" && (
+          <motion.div key="fps" role="tabpanel" id="tabpanel-fps" aria-labelledby="tab-fps" {...tabTransition}>
+            <GameFPSEstimator scan={scan} analysis={analysis} />
           </motion.div>
         )}
 

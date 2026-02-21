@@ -10,6 +10,7 @@ import {
   Activity,
   Sliders,
   Sparkles,
+  Gamepad2,
 } from "lucide-react";
 
 const tabs = [
@@ -17,6 +18,7 @@ const tabs = [
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
   { id: "ai", label: "AI Insights", icon: Sparkles },
+  { id: "fps", label: "Game FPS", icon: Gamepad2 },
   { id: "simulate", label: "Upgrade Sim", icon: Sliders },
   { id: "monitor", label: "Live Monitor", icon: Activity },
   { id: "raw", label: "Raw Data", icon: Code },
