@@ -2,14 +2,15 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle } from "lucide-react";
-import type { SystemScan, AnalysisResult, Bottleneck } from "@/lib/types";
+import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench } from "lucide-react";
+import type { SystemScan, AnalysisResult, Bottleneck, UpgradeCategory } from "@/lib/types";
 import { simulateUpgrade, getCPUOptions, getGPUOptions, TIER_LABELS } from "@/lib/simulate";
 import { ScoreComparison } from "./ScoreComparison";
 
 interface UpgradeSimulatorProps {
   scan: SystemScan;
   currentAnalysis: AnalysisResult;
+  onStartWalkthrough?: (category: UpgradeCategory, targetHardware?: string) => void;
 }
 
 // ─── Styled select ────────────────────────────────────────────────────────────
@@ -144,7 +145,7 @@ function BottleneckDiff({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function UpgradeSimulator({ scan, currentAnalysis }: UpgradeSimulatorProps) {
+export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: UpgradeSimulatorProps) {
   const [selectedCPU, setSelectedCPU] = useState("");
   const [selectedGPU, setSelectedGPU] = useState("");
 
@@ -285,6 +286,40 @@ export function UpgradeSimulator({ scan, currentAnalysis }: UpgradeSimulatorProp
                 after={simResult.bottlenecks}
               />
             </div>
+
+            {/* Upgrade walkthrough CTA */}
+            {onStartWalkthrough && (
+              <div className="flex flex-col sm:flex-row gap-2">
+                {selectedCPU && (
+                  <motion.button
+                    onClick={() => onStartWalkthrough("cpu", selectedCPU)}
+                    className="flex items-center gap-2 px-4 py-3 bg-cyan/10 border border-cyan/30
+                               rounded-xl text-sm font-medium text-cyan hover:bg-cyan/20 transition-colors flex-1"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Wrench size={15} />
+                    CPU Upgrade Guide
+                  </motion.button>
+                )}
+                {selectedGPU && (
+                  <motion.button
+                    onClick={() => onStartWalkthrough("gpu", selectedGPU)}
+                    className="flex items-center gap-2 px-4 py-3 bg-cyan/10 border border-cyan/30
+                               rounded-xl text-sm font-medium text-cyan hover:bg-cyan/20 transition-colors flex-1"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Wrench size={15} />
+                    GPU Upgrade Guide
+                  </motion.button>
+                )}
+              </div>
+            )}
           </motion.div>
         ) : null}
       </AnimatePresence>

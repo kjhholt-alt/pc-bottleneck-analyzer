@@ -2,12 +2,21 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Gift, DollarSign, ArrowUpCircle } from "lucide-react";
-import type { Recommendation } from "@/lib/types";
+import { ChevronDown, Gift, DollarSign, ArrowUpCircle, Wrench } from "lucide-react";
+import type { Recommendation, UpgradeCategory } from "@/lib/types";
 
 interface RecommendationListProps {
   recommendations: Recommendation[];
+  onStartWalkthrough?: (category: UpgradeCategory) => void;
 }
+
+const REC_ID_TO_CATEGORY: Record<string, UpgradeCategory> = {
+  "rec-cpu-upgrade": "cpu",
+  "rec-gpu-upgrade": "gpu",
+  "rec-ssd-boot": "storage",
+  "rec-second-ram-stick": "ram",
+  "rec-more-ram": "ram",
+};
 
 interface TierConfig {
   id: "free" | "cheap" | "upgrade";
@@ -50,11 +59,13 @@ function TierSection({
   items,
   defaultOpen,
   tierIndex,
+  onStartWalkthrough,
 }: {
   config: TierConfig;
   items: Recommendation[];
   defaultOpen: boolean;
   tierIndex: number;
+  onStartWalkthrough?: (category: UpgradeCategory) => void;
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const Icon = config.icon;
@@ -138,10 +149,24 @@ function TierSection({
                     </p>
                   </div>
 
-                  {/* Cost */}
-                  <span className="shrink-0 text-xs font-mono text-text-secondary">
-                    {rec.estimated_cost}
-                  </span>
+                  {/* Cost + Walkthrough link */}
+                  <div className="shrink-0 flex flex-col items-end gap-1">
+                    <span className="text-xs font-mono text-text-secondary">
+                      {rec.estimated_cost}
+                    </span>
+                    {onStartWalkthrough && REC_ID_TO_CATEGORY[rec.id] && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onStartWalkthrough(REC_ID_TO_CATEGORY[rec.id]);
+                        }}
+                        className="flex items-center gap-1 text-[11px] font-mono text-cyan hover:text-cyan/80 transition-colors"
+                      >
+                        <Wrench size={10} />
+                        How to Upgrade
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -154,6 +179,7 @@ function TierSection({
 
 export function RecommendationList({
   recommendations,
+  onStartWalkthrough,
 }: RecommendationListProps) {
   const grouped = tiers.map((tier) => ({
     config: tier,
@@ -174,6 +200,7 @@ export function RecommendationList({
           items={group.items}
           defaultOpen={i === firstNonEmptyIndex}
           tierIndex={i}
+          onStartWalkthrough={onStartWalkthrough}
         />
       ))}
 

@@ -142,3 +142,37 @@ export interface AnalysisResult {
   bottlenecks: Bottleneck[];
   recommendations: Recommendation[];
 }
+
+// ─── Upgrade Walkthrough Types ──────────────────────────────────────────────
+
+export type UpgradeCategory = "cpu" | "gpu" | "ram" | "storage";
+
+export interface UpgradeGuide {
+  category: UpgradeCategory;
+  title: string;
+  estimatedTime: string;
+  difficulty: "Beginner" | "Intermediate" | "Advanced";
+  phases: UpgradePhase[];
+}
+
+export interface UpgradePhase {
+  id: string;
+  title: string;
+  steps: UpgradeStep[];
+}
+
+export interface UpgradeStep {
+  id: string;
+  title: string;
+  description: string;
+  detail?: string;
+  warning?: string;
+  tip?: string;
+}
+
+export interface CompatibilityCheck {
+  id: string;
+  status: "ok" | "warning" | "error" | "unknown";
+  title: string;
+  description: string;
+}

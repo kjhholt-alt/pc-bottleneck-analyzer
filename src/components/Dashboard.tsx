@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { List } from "lucide-react";
 import { DashboardTabs } from "./DashboardTabs";
@@ -10,12 +10,18 @@ import { RecommendationList } from "./RecommendationList";
 import { RawDataViewer } from "./RawDataViewer";
 import { MonitorView } from "./MonitorView";
 import { UpgradeSimulator } from "./UpgradeSimulator";
-import type { SystemScan, AnalysisResult } from "@/lib/types";
+import { UpgradeWalkthrough } from "./UpgradeWalkthrough";
+import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
   scan: SystemScan;
   analysis: AnalysisResult;
   isBuildPlan?: boolean;
+}
+
+interface WalkthroughState {
+  category?: UpgradeCategory;
+  targetHardware?: string;
 }
 
 const tabTransition = {
@@ -27,6 +33,30 @@ const tabTransition = {
 
 export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
   const [activeTab, setActiveTab] = useState("overview");
+  const [walkthroughState, setWalkthroughState] = useState<WalkthroughState | null>(null);
+
+  const handleStartWalkthrough = useCallback(
+    (category: UpgradeCategory, targetHardware?: string) => {
+      setWalkthroughState({ category, targetHardware });
+    },
+    [],
+  );
+
+  const handleCloseWalkthrough = useCallback(() => {
+    setWalkthroughState(null);
+  }, []);
+
+  // Walkthrough overlay — replaces dashboard content when active
+  if (walkthroughState) {
+    return (
+      <UpgradeWalkthrough
+        scan={scan}
+        category={walkthroughState.category}
+        targetHardware={walkthroughState.targetHardware}
+        onClose={handleCloseWalkthrough}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -104,13 +134,13 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
                 Prioritized actions to improve performance
               </p>
             </div>
-            <RecommendationList recommendations={analysis.recommendations} />
+            <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
           </motion.div>
         )}
 
         {activeTab === "simulate" && (
           <motion.div key="simulate" role="tabpanel" id="tabpanel-simulate" aria-labelledby="tab-simulate" {...tabTransition}>
-            <UpgradeSimulator scan={scan} currentAnalysis={analysis} />
+            <UpgradeSimulator scan={scan} currentAnalysis={analysis} onStartWalkthrough={handleStartWalkthrough} />
           </motion.div>
         )}
 
