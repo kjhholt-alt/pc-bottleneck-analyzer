@@ -11,6 +11,7 @@ import {
   type QualityPreset,
 } from "@/data/game-benchmarks";
 import { estimateFPS, type FPSResult } from "@/lib/fps-estimator";
+import { CostPerFPS } from "./CostPerFPS";
 
 interface GameFPSEstimatorProps {
   scan: SystemScan;
@@ -268,6 +269,16 @@ export function GameFPSEstimator({ scan, analysis }: GameFPSEstimatorProps) {
                 )}
               </div>
             </div>
+
+            {/* Cost-per-FPS upgrade calculator */}
+            <CostPerFPS
+              scan={scan}
+              analysis={analysis}
+              game={selectedGame}
+              resolution={resolution}
+              quality={quality}
+              currentFPS={result.estimated}
+            />
           </motion.div>
         )}
       </AnimatePresence>

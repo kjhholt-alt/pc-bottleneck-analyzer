@@ -13,6 +13,8 @@ import {
 import { ScoreGauge } from "./ScoreGauge";
 import { HardwareCard } from "./HardwareCard";
 import { PercentileBar } from "./PercentileBar";
+import { ScoreHistoryChart } from "./ScoreHistoryChart";
+import { DriverCheck } from "./DriverCheck";
 import { MAX_SCORES, getBreakdownColor } from "@/lib/score-utils";
 import { getPercentiles } from "@/lib/percentile";
 import { generateReport } from "@/lib/pdf-report";
@@ -252,6 +254,12 @@ export function SystemOverview({ scan, score, analysis }: SystemOverviewProps) {
 
       {/* Percentile ranking */}
       <PercentileBar percentiles={percentiles} />
+
+      {/* Score history trend chart */}
+      <ScoreHistoryChart currentScore={score.total} />
+
+      {/* Driver status check */}
+      <DriverCheck scan={scan} />
 
       {/* Hardware cards grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
