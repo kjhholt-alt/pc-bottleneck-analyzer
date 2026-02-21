@@ -2,11 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench, ExternalLink } from "lucide-react";
+import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench, ExternalLink, TrendingUp, TrendingDown } from "lucide-react";
 import { getAffiliateLinks } from "@/lib/affiliate";
 import { trackAffiliateClick } from "@/lib/track";
 import type { SystemScan, AnalysisResult, Bottleneck, UpgradeCategory } from "@/lib/types";
 import { simulateUpgrade, getCPUOptions, getGPUOptions, TIER_LABELS } from "@/lib/simulate";
+import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 import { ScoreComparison } from "./ScoreComparison";
 
 interface UpgradeSimulatorProps {
@@ -21,6 +22,7 @@ function HardwareSelect({
   icon: Icon,
   label,
   currentName,
+  currentScore,
   value,
   onChange,
   options,
@@ -28,6 +30,7 @@ function HardwareSelect({
   icon: React.ElementType;
   label: string;
   currentName: string;
+  currentScore: number;
   value: string;
   onChange: (v: string) => void;
   options: ReturnType<typeof getCPUOptions>;
@@ -63,25 +66,52 @@ function HardwareSelect({
           if (!items?.length) return null;
           return (
             <optgroup key={tier} label={TIER_LABELS[tier] ?? tier}>
-              {items.map((o) => (
-                <option key={o.name} value={o.name}>
-                  {o.name} — ${o.price}
-                </option>
-              ))}
+              {items.map((o) => {
+                const pct = currentScore > 0 ? Math.round(((o.score - currentScore) / currentScore) * 100) : 0;
+                const arrow = pct > 0 ? "▲" : pct < 0 ? "▼" : "—";
+                const pctStr = pct > 0 ? `+${pct}%` : pct < 0 ? `${pct}%` : "0%";
+                return (
+                  <option key={o.name} value={o.name}>
+                    {o.name} — ${o.price} ({arrow} {pctStr})
+                  </option>
+                );
+              })}
             </optgroup>
           );
         })}
       </select>
-      {value && (
+      {value && (() => {
+        const selected = options.find((o) => o.name === value);
+        const pct = selected && currentScore > 0
+          ? Math.round(((selected.score - currentScore) / currentScore) * 100)
+          : 0;
+        const isUpgrade = pct > 0;
+        const isDowngrade = pct < 0;
+
+        return (
         <motion.div
           className="text-xs text-text-secondary"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <p>
-            Selected:{" "}
-            <span className="text-cyan font-medium">{value}</span>
-          </p>
+          <div className="flex items-center gap-2">
+            <p>
+              Selected:{" "}
+              <span className="text-cyan font-medium">{value}</span>
+            </p>
+            {pct !== 0 && (
+              <span
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold ${
+                  isUpgrade
+                    ? "text-green-400 bg-green-400/10 border border-green-400/30 shadow-[0_0_8px_rgba(74,222,128,0.15)]"
+                    : "text-red-400 bg-red-400/10 border border-red-400/30 shadow-[0_0_8px_rgba(248,113,113,0.15)]"
+                }`}
+              >
+                {isUpgrade ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
+                {isUpgrade ? "+" : ""}{pct}%
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-1 mt-0.5">
             <ExternalLink size={9} className="text-text-secondary/60" />
             <a
@@ -105,7 +135,8 @@ function HardwareSelect({
             </a>
           </div>
         </motion.div>
-      )}
+      );
+      })()}
     </div>
   );
 }
@@ -242,6 +273,7 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
           icon={Cpu}
           label="CPU"
           currentName={scan.cpu.model_name}
+          currentScore={lookupCPU(scan.cpu.model_name)?.gaming_score ?? 50}
           value={selectedCPU}
           onChange={setSelectedCPU}
           options={cpuOptions}
@@ -250,6 +282,7 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
           icon={Monitor}
           label="GPU"
           currentName={scan.gpu.model_name}
+          currentScore={lookupGPU(scan.gpu.model_name)?.gaming_score ?? 50}
           value={selectedGPU}
           onChange={setSelectedGPU}
           options={gpuOptions}
