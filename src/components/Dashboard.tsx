@@ -9,6 +9,7 @@ import { BottleneckCard } from "./BottleneckCard";
 import { RecommendationList } from "./RecommendationList";
 import { RawDataViewer } from "./RawDataViewer";
 import { MonitorView } from "./MonitorView";
+import { UpgradeSimulator } from "./UpgradeSimulator";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 
 interface DashboardProps {
@@ -104,6 +105,12 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
               </p>
             </div>
             <RecommendationList recommendations={analysis.recommendations} />
+          </motion.div>
+        )}
+
+        {activeTab === "simulate" && (
+          <motion.div key="simulate" role="tabpanel" id="tabpanel-simulate" aria-labelledby="tab-simulate" {...tabTransition}>
+            <UpgradeSimulator scan={scan} currentAnalysis={analysis} />
           </motion.div>
         )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 import { analyzeScan } from "@/lib/analysis";
 import { saveToHistory, type SavedScan } from "@/lib/history";
@@ -8,6 +8,8 @@ import { ScanUploader } from "@/components/ScanUploader";
 import { Dashboard } from "@/components/Dashboard";
 import { ScanHistory } from "@/components/ScanHistory";
 import { ScanCompare } from "@/components/ScanCompare";
+import { ShareButton } from "@/components/ShareButton";
+import { isShareURL, getShareFragment, decodeScanFromURL } from "@/lib/share";
 import { Monitor, History } from "lucide-react";
 
 export default function Home() {
@@ -19,6 +21,21 @@ export default function Home() {
   const [compareScans, setCompareScans] = useState<
     [SavedScan, SavedScan] | null
   >(null);
+
+  // Auto-load scan from share URL on first mount
+  useEffect(() => {
+    if (isShareURL()) {
+      const fragment = getShareFragment();
+      const sharedScan = decodeScanFromURL(fragment);
+      if (sharedScan) {
+        handleScanLoaded(sharedScan);
+        // Clean the hash so it doesn't re-trigger on navigation
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+    // Only run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleScanLoaded(data: SystemScan, buildPlan = false) {
     const result = analyzeScan(data);
@@ -84,6 +101,7 @@ export default function Home() {
               <History className="w-4 h-4" />
               <span className="hidden sm:inline">History</span>
             </button>
+            {scan && <ShareButton scan={scan} />}
             {scan && (
               <button
                 onClick={handleReset}
