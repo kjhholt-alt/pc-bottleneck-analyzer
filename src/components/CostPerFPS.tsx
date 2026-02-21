@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { DollarSign, TrendingUp, ArrowRight } from "lucide-react";
+import { DollarSign, TrendingUp, ArrowRight, ExternalLink } from "lucide-react";
+import { getAffiliateLinks } from "@/lib/affiliate";
 import type { SystemScan } from "@/lib/types";
 import type { GameBenchmark, Resolution, QualityPreset } from "@/data/game-benchmarks";
 import { estimateFPS } from "@/lib/fps-estimator";
@@ -117,6 +118,26 @@ export function CostPerFPS({
                     {opt.estimatedFPS} FPS
                   </span>
                   <span className="text-[10px] text-text-secondary ml-1">(+{opt.fpsGain})</span>
+                </div>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <ExternalLink size={9} className="text-text-secondary/60" />
+                  <a
+                    href={getAffiliateLinks(opt.name).amazon}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+                  >
+                    Amazon
+                  </a>
+                  <span className="text-[10px] text-text-secondary/40">&middot;</span>
+                  <a
+                    href={getAffiliateLinks(opt.name).newegg}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+                  >
+                    Newegg
+                  </a>
                 </div>
               </div>
 

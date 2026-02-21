@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench } from "lucide-react";
+import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench, ExternalLink } from "lucide-react";
+import { getAffiliateLinks } from "@/lib/affiliate";
 import type { SystemScan, AnalysisResult, Bottleneck, UpgradeCategory } from "@/lib/types";
 import { simulateUpgrade, getCPUOptions, getGPUOptions, TIER_LABELS } from "@/lib/simulate";
 import { ScoreComparison } from "./ScoreComparison";
@@ -71,14 +72,36 @@ function HardwareSelect({
         })}
       </select>
       {value && (
-        <motion.p
+        <motion.div
           className="text-xs text-text-secondary"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          Selected:{" "}
-          <span className="text-cyan font-medium">{value}</span>
-        </motion.p>
+          <p>
+            Selected:{" "}
+            <span className="text-cyan font-medium">{value}</span>
+          </p>
+          <div className="flex items-center gap-1 mt-0.5">
+            <ExternalLink size={9} className="text-text-secondary/60" />
+            <a
+              href={getAffiliateLinks(value).amazon}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+            >
+              Amazon
+            </a>
+            <span className="text-[10px] text-text-secondary/40">&middot;</span>
+            <a
+              href={getAffiliateLinks(value).newegg}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+            >
+              Newegg
+            </a>
+          </div>
+        </motion.div>
       )}
     </div>
   );

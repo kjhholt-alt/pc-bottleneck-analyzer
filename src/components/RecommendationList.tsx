@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Gift, DollarSign, ArrowUpCircle, Wrench } from "lucide-react";
+import { ChevronDown, Gift, DollarSign, ArrowUpCircle, Wrench, ExternalLink } from "lucide-react";
 import type { Recommendation, UpgradeCategory } from "@/lib/types";
+import { getAffiliateLinks } from "@/lib/affiliate";
+import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 
 interface RecommendationListProps {
   recommendations: Recommendation[];
@@ -149,11 +151,42 @@ function TierSection({
                     </p>
                   </div>
 
-                  {/* Cost + Walkthrough link */}
+                  {/* Cost + Walkthrough link + Affiliate links */}
                   <div className="shrink-0 flex flex-col items-end gap-1">
                     <span className="text-xs font-mono text-text-secondary">
                       {rec.estimated_cost}
                     </span>
+                    {rec.tier === "upgrade" && (() => {
+                      // Try to extract hardware name from title for affiliate links
+                      const match = rec.title.match(/upgrade\s+(?:to\s+)?(.+)/i);
+                      const hw = match?.[1];
+                      if (hw && (lookupGPU(hw) || lookupCPU(hw))) {
+                        const links = getAffiliateLinks(hw);
+                        return (
+                          <div className="flex items-center gap-1">
+                            <ExternalLink size={9} className="text-text-secondary/60" />
+                            <a
+                              href={links.amazon}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+                            >
+                              Amazon
+                            </a>
+                            <span className="text-[10px] text-text-secondary/40">&middot;</span>
+                            <a
+                              href={links.newegg}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] font-mono text-text-secondary hover:text-cyan transition-colors"
+                            >
+                              Newegg
+                            </a>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                     {onStartWalkthrough && REC_ID_TO_CATEGORY[rec.id] && (
                       <button
                         onClick={(e) => {
