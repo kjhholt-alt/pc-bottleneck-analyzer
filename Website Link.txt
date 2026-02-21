@@ -1,0 +1,4 @@
+PC Bottleneck Analyzer - Website Links
+
+Live Site: https://pc-bottleneck-analyzer.vercel.app
+GitHub: https://github.com/kjhholt-alt/pc-bottleneck-analyzer

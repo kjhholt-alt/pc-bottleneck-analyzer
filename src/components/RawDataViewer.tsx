@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -49,8 +49,12 @@ function JsonValue({ value }: { value: unknown }) {
   return null;
 }
 
+const MAX_JSON_DEPTH = 10;
+
 function JsonBlock({ data, indent = 0 }: { data: unknown; indent?: number }) {
-  const pad = "  ".repeat(indent);
+  if (indent >= MAX_JSON_DEPTH) {
+    return <span className="text-text-secondary italic">...</span>;
+  }
 
   if (Array.isArray(data)) {
     return (
@@ -68,7 +72,7 @@ function JsonBlock({ data, indent = 0 }: { data: unknown; indent?: number }) {
             )}
           </div>
         ))}
-        <span className="text-text-secondary">{pad}]</span>
+        <span className="text-text-secondary">]</span>
       </div>
     );
   }
@@ -177,40 +181,61 @@ function CollapsibleSection({
   );
 }
 
+/**
+ * Fallback copy for non-HTTPS contexts where navigator.clipboard is unavailable.
+ */
+function fallbackCopy(text: string): boolean {
+  try {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(textarea);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
 export function RawDataViewer({ scan }: RawDataViewerProps) {
   const [copied, setCopied] = useState(false);
 
+  const formattedJson = useMemo(() => JSON.stringify(scan, null, 2), [scan]);
+
   const handleCopyReddit = useCallback(() => {
-    const formatted = JSON.stringify(scan, null, 2);
-    const redditFormatted = formatted
+    const redditFormatted = formattedJson
       .split("\n")
       .map((line) => `    ${line}`)
       .join("\n");
-    navigator.clipboard.writeText(redditFormatted).then(
-      () => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      },
-      () => {
-        // Clipboard write failed (permissions or focus issue) -- silent fail
-      }
-    );
-  }, [scan]);
+
+    const onSuccess = () => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    };
+
+    // Try modern clipboard API first, fall back to textarea for HTTP contexts
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(redditFormatted).then(onSuccess, () => {
+        fallbackCopy(redditFormatted) && onSuccess();
+      });
+    } else {
+      fallbackCopy(redditFormatted) && onSuccess();
+    }
+  }, [formattedJson]);
 
   const handleDownload = useCallback(() => {
-    let url: string | null = null;
-    try {
-      const formatted = JSON.stringify(scan, null, 2);
-      const blob = new Blob([formatted], { type: "application/json" });
-      url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `bottleneck-report-${scan.scan_id || "export"}.json`;
-      a.click();
-    } finally {
-      if (url) URL.revokeObjectURL(url);
-    }
-  }, [scan]);
+    const blob = new Blob([formattedJson], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bottleneck-report-${scan.scan_id || "export"}.json`;
+    a.click();
+    // Delay revocation to give the browser time to initiate the download
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, [formattedJson, scan.scan_id]);
 
   const entries = Object.entries(scan);
 

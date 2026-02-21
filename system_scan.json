@@ -1,0 +1,114 @@
+{
+  "scan_id": "4c385faa-f8f8-4c97-b1f3-c5169d85923f",
+  "timestamp": "2026-02-20T09:11:28.237030+00:00",
+  "scan_duration_seconds": 22026.81,
+  "cpu": {
+    "model_name": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "architecture": "AMD64",
+    "physical_cores": 8,
+    "logical_cores": 16,
+    "base_clock_ghz": 3.575,
+    "max_boost_clock_ghz": 3.58,
+    "current_clock_ghz": 3.58,
+    "cache_l1": null,
+    "cache_l2": 64,
+    "cache_l3": null,
+    "current_temp_c": null,
+    "usage_per_core": [
+      18.2,
+      3.0,
+      34.4,
+      0.0,
+      3.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "power_draw_w": null
+  },
+  "gpu": {
+    "model_name": "NVIDIA GeForce RTX 3090",
+    "vram_total_gb": 24.0,
+    "vram_used_gb": 1.97,
+    "gpu_clock_mhz": 210.0,
+    "memory_clock_mhz": 405.0,
+    "current_temp_c": 37.0,
+    "fan_speed_pct": 0.0,
+    "driver_version": "591.59",
+    "gpu_utilization_pct": 16.0,
+    "pcie_generation": 1,
+    "pcie_link_width": 16
+  },
+  "ram": {
+    "total_gb": 31.92,
+    "speed_mhz": null,
+    "rated_speed_mhz": null,
+    "num_sticks": null,
+    "num_slots": null,
+    "channel_mode": "unknown",
+    "form_factor": null,
+    "timings": null,
+    "current_used_gb": 22.71,
+    "usage_percent": 71.1
+  },
+  "storage": [
+    {
+      "model": "Samsung SSD 860 EVO 250GB",
+      "type": "SATA SSD",
+      "capacity_gb": 232.88,
+      "used_gb": null,
+      "free_gb": null,
+      "interface": "SATA",
+      "health_status": null,
+      "is_boot_drive": true
+    },
+    {
+      "model": "Samsung SSD 870 QVO 2TB",
+      "type": "SATA SSD",
+      "capacity_gb": 1863.01,
+      "used_gb": null,
+      "free_gb": null,
+      "interface": "SATA",
+      "health_status": null,
+      "is_boot_drive": false
+    }
+  ],
+  "motherboard": {
+    "model": "unavailable",
+    "chipset": "AMD SMBus",
+    "bios_version": "unavailable",
+    "bios_date": null
+  },
+  "os": {
+    "windows_version": "Windows 11 Core 24H2",
+    "build_number": "10.0.26100",
+    "is_up_to_date": null,
+    "power_plan": "Balanced",
+    "game_mode": true,
+    "hw_accelerated_gpu_scheduling": null,
+    "virtual_memory_gb": 25.24
+  },
+  "network": {
+    "connection_type": "Ethernet",
+    "speed_mbps": 1000,
+    "latency_ms": 50.0
+  },
+  "bios_settings": {
+    "xmp_enabled": null,
+    "resizable_bar": null,
+    "tpm_status": null,
+    "virtualization": null,
+    "secure_boot": null
+  },
+  "issues": [
+    "Power plan set to \"Balanced\" -- switch to \"High Performance\" for gaming"
+  ]
+}

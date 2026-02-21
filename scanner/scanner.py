@@ -18,11 +18,10 @@ Some features (temps, SMART health, detailed power) may need elevated access.
 
 import argparse
 import json
+import logging
 import os
 import platform
 import re
-import socket
-import struct
 import subprocess
 import sys
 import time
@@ -90,7 +89,8 @@ def _run_cmd(cmd: str, timeout: int = 10, shell: bool = True) -> str:
             cmd, capture_output=True, text=True, timeout=timeout, shell=shell
         )
         return result.stdout.strip()
-    except Exception:
+    except Exception as e:
+        logging.debug("_run_cmd(%r) failed: %s", cmd, e)
         return ""
 
 
@@ -213,8 +213,8 @@ def scan_cpu() -> dict:
                 cpu["cache_l1"] = (l1d + l1i) if (l1d or l1i) else None
             cpu["cache_l2"] = _parse_cache_kb(l2)
             cpu["cache_l3"] = _parse_cache_kb(l3)
-    except Exception:
-        pass
+    except Exception as e:
+        logging.debug("cpuinfo failed: %s", e)
 
     # --- psutil ---
     try:
@@ -231,8 +231,8 @@ def scan_cpu() -> dict:
                     cpu["base_clock_ghz"] = round(freqs.min / 1000, 2)
             per_core = psutil.cpu_percent(interval=0.5, percpu=True)
             cpu["usage_per_core"] = per_core if per_core else []
-    except Exception:
-        pass
+    except Exception as e:
+        logging.debug("psutil CPU scan failed: %s", e)
 
     # --- WMI for base clock ---
     try:
@@ -515,13 +515,17 @@ def scan_ram() -> dict:
                 ddr_gens = [s["ddr_gen"] for s in sticks_detected if s.get("ddr_gen")]
                 ff_str = ffs[0] if ffs else "DIMM"
                 ddr_str = ddr_gens[0] if ddr_gens else None
-                # Fallback: guess DDR gen from speed
+                # Fallback: guess DDR gen from speed ONLY if SMBIOS type was unavailable.
+                # Don't override SMBIOS — high-speed DDR4 (4800+MHz OC) exists.
                 if not ddr_str:
                     actual = ram.get("speed_mhz")
-                    if actual and actual >= 4800:
+                    if actual and actual >= 5200:
+                        # 5200+ is almost certainly DDR5 (DDR4 OC rarely exceeds 5000)
                         ddr_str = "DDR5"
-                    elif actual:
+                    elif actual and actual < 4000:
+                        # Below 4000 is certainly DDR4 (or older)
                         ddr_str = "DDR4"
+                    # 4000-5199: ambiguous zone, don't guess
                 ram["form_factor"] = f"{ff_str} {ddr_str}" if ddr_str else ff_str
 
             # Slot count
@@ -558,16 +562,23 @@ def scan_ram() -> dict:
             pass
 
     # --- Channel mode heuristic ---
+    # Consumer platforms (mainstream Intel/AMD desktop) use dual-channel.
+    # 4 sticks on a consumer board = dual-channel (2 DIMMs per channel), NOT quad.
+    # Quad-channel is only on HEDT (Threadripper, Xeon, Core X).
     if ram["num_sticks"]:
         n = ram["num_sticks"]
         if n == 1:
             ram["channel_mode"] = "single"
-        elif n == 2:
+        elif n in (2, 4):
+            # 2 sticks = dual, 4 sticks on consumer = dual (2 per channel)
             ram["channel_mode"] = "dual"
         elif n in (3, 6):
             ram["channel_mode"] = "triple"
-        elif n >= 4:
+        elif n == 8:
+            # 8 sticks likely HEDT quad-channel (2 per channel)
             ram["channel_mode"] = "quad"
+        else:
+            ram["channel_mode"] = "dual"
     else:
         ram["channel_mode"] = "unknown"
 
@@ -1256,8 +1267,13 @@ def print_summary(cpu, gpu, ram, storage, os_info, bios_settings, issues):
     xmp = bios_settings.get("xmp_enabled")
     ram_line = f"  RAM: {total}GB" if total else "  RAM: Unknown"
     if speed:
-        # Rough DDR generation detection
-        if speed >= 4800:
+        # Use form_factor for DDR gen if available, else guess from speed
+        form = ram.get("form_factor", "")
+        if "DDR5" in form:
+            ram_line += f" DDR5-{speed}"
+        elif "DDR4" in form:
+            ram_line += f" DDR4-{speed}"
+        elif speed >= 5200:
             ram_line += f" DDR5-{speed}"
         else:
             ram_line += f" DDR4-{speed}"
@@ -1380,7 +1396,17 @@ def main():
         default="http://localhost:3000/api/scan",
         help="Custom upload URL (default: http://localhost:3000/api/scan)",
     )
+    parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Enable verbose/debug logging for troubleshooting",
+    )
     args = parser.parse_args()
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.WARNING,
+        format="[%(levelname)s] %(message)s",
+    )
 
     print("Scanning system hardware... please wait.\n")
     start = time.time()

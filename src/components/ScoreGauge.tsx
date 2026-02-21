@@ -2,22 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { getScoreColor, getScoreGlow } from "@/lib/score-utils";
 import type { PerformanceScore } from "@/lib/types";
 
 interface ScoreGaugeProps {
   score: PerformanceScore;
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 80) return "var(--green)";
-  if (score >= 60) return "var(--amber)";
-  return "var(--red)";
-}
-
-function getScoreGlow(score: number): string {
-  if (score >= 80) return "0 0 40px rgba(16, 185, 129, 0.3)";
-  if (score >= 60) return "0 0 40px rgba(245, 158, 11, 0.3)";
-  return "0 0 40px rgba(239, 68, 68, 0.3)";
 }
 
 export function ScoreGauge({ score }: ScoreGaugeProps) {
@@ -61,6 +50,8 @@ export function ScoreGauge({ score }: ScoreGaugeProps) {
           viewBox={`0 0 ${size} ${size}`}
           className="-rotate-90"
           style={{ filter: `drop-shadow(${glow})` }}
+          role="img"
+          aria-label={`Performance score: ${score.total} out of 100, grade ${score.grade}`}
         >
           {/* Background track */}
           <circle

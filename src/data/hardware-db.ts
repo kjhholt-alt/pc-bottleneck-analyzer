@@ -711,41 +711,62 @@ export function tierIndex(tier: HardwareTier): number {
 }
 
 /**
- * Attempts to look up a CPU in the database using a normalized, fuzzy match.
- * Strips common suffixes and tries substring matching as a fallback.
+ * Generic hardware lookup with improved fuzzy matching.
+ * 1. Direct match on normalized key
+ * 2. Substring match, but only if the match is specific enough (>= 60% overlap)
+ *    to avoid false positives like "RTX 3060" matching "RTX 3060 Ti".
  */
-export function lookupCPU(modelName: string): HardwareEntry | null {
+function lookupHardware(
+  modelName: string,
+  database: Record<string, HardwareEntry>,
+): HardwareEntry | null {
   const key = modelName.toLowerCase().trim();
 
   // Direct match
-  if (cpuDatabase[key]) return cpuDatabase[key];
+  if (database[key]) return database[key];
 
-  // Substring match — find entries whose key is contained in the input or vice-versa
-  for (const [dbKey, entry] of Object.entries(cpuDatabase)) {
-    if (key.includes(dbKey) || dbKey.includes(key)) return entry;
+  // Substring match with specificity guard:
+  // Require that the shorter string covers at least 60% of the longer string's
+  // length. This prevents "i3" from matching "i3-14100f" when the input is just
+  // a 2-char abbreviation, while still allowing "nvidia geforce rtx 4070"
+  // to match a scan string like "nvidia geforce rtx 4070 founders edition".
+  let bestMatch: HardwareEntry | null = null;
+  let bestLength = 0;
+
+  for (const [dbKey, entry] of Object.entries(database)) {
+    if (key.includes(dbKey) || dbKey.includes(key)) {
+      const shorter = Math.min(key.length, dbKey.length);
+      const longer = Math.max(key.length, dbKey.length);
+      if (shorter / longer >= 0.6 && dbKey.length > bestLength) {
+        bestMatch = entry;
+        bestLength = dbKey.length;
+      }
+    }
   }
 
-  return null;
+  return bestMatch;
+}
+
+/**
+ * Attempts to look up a CPU in the database using a normalized, fuzzy match.
+ */
+export function lookupCPU(modelName: string): HardwareEntry | null {
+  return lookupHardware(modelName, cpuDatabase);
 }
 
 /**
  * Attempts to look up a GPU in the database using a normalized, fuzzy match.
  */
 export function lookupGPU(modelName: string): HardwareEntry | null {
-  const key = modelName.toLowerCase().trim();
-
-  if (gpuDatabase[key]) return gpuDatabase[key];
-
-  for (const [dbKey, entry] of Object.entries(gpuDatabase)) {
-    if (key.includes(dbKey) || dbKey.includes(key)) return entry;
-  }
-
-  return null;
+  return lookupHardware(modelName, gpuDatabase);
 }
 
 /**
- * Returns a list of upgrade recommendations from the database that are
- * in a higher tier than the given entry.
+ * Returns a list of upgrade recommendations from the given database that are
+ * in a higher tier than the current entry.
+ *
+ * The `database` parameter should be the same type of database as the current
+ * entry (i.e. pass cpuDatabase for a CPU entry, gpuDatabase for a GPU entry).
  */
 export function getUpgrades(
   current: HardwareEntry,

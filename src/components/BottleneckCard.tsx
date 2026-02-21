@@ -44,6 +44,16 @@ function getSeverityConfig(severity: Severity) {
         label: "Good",
         icon: CheckCircle,
       };
+    default: {
+      const _exhaustive: never = severity;
+      return {
+        color: "var(--cyan)",
+        bg: "bg-cyan-dim",
+        border: "border-cyan/30",
+        label: String(_exhaustive),
+        icon: Info,
+      };
+    }
   }
 }
 
@@ -55,6 +65,8 @@ function getDifficultyColor(difficulty: "Easy" | "Medium" | "Hard"): string {
       return "text-amber bg-amber-dim border-amber/30";
     case "Hard":
       return "text-red bg-red-dim border-red/30";
+    default:
+      return "text-amber bg-amber-dim border-amber/30";
   }
 }
 

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { ScoreGauge } from "./ScoreGauge";
 import { HardwareCard } from "./HardwareCard";
+import { MAX_SCORES, getBreakdownColor } from "@/lib/score-utils";
 import type { SystemScan, PerformanceScore } from "@/lib/types";
 
 interface SystemOverviewProps {
@@ -216,16 +217,7 @@ export function SystemOverview({ scan, score }: SystemOverviewProps) {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {Object.entries(score.breakdown).map(([key, value]) => {
-            // Each sub-score has a different max, so compute percentage
-            const maxScores: Record<string, number> = {
-              cpu: 25,
-              gpu: 25,
-              ram: 20,
-              storage: 15,
-              settings: 15,
-            };
-            const max = maxScores[key] ?? 25;
-            const pct = Math.round((value / max) * 100);
+            const max = MAX_SCORES[key] ?? 25;
 
             return (
               <div key={key} className="text-center">
@@ -234,14 +226,7 @@ export function SystemOverview({ scan, score }: SystemOverviewProps) {
                 </div>
                 <div
                   className="text-lg font-bold font-mono"
-                  style={{
-                    color:
-                      pct >= 75
-                        ? "var(--green)"
-                        : pct >= 50
-                          ? "var(--amber)"
-                          : "var(--red)",
-                  }}
+                  style={{ color: getBreakdownColor(key, value) }}
                 >
                   {value}/{max}
                 </div>

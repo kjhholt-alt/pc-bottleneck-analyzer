@@ -162,6 +162,9 @@ export function RecommendationList({
       .sort((a, b) => a.priority - b.priority),
   }));
 
+  // Default-open the first tier that actually has items
+  const firstNonEmptyIndex = grouped.findIndex((g) => g.items.length > 0);
+
   return (
     <div className="space-y-4">
       {grouped.map((group, i) => (
@@ -169,7 +172,7 @@ export function RecommendationList({
           key={group.config.id}
           config={group.config}
           items={group.items}
-          defaultOpen={i === 0}
+          defaultOpen={i === firstNonEmptyIndex}
           tierIndex={i}
         />
       ))}
