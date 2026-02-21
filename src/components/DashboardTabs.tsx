@@ -9,12 +9,14 @@ import {
   Code,
   Activity,
   Sliders,
+  Sparkles,
 } from "lucide-react";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
+  { id: "ai", label: "AI Insights", icon: Sparkles },
   { id: "simulate", label: "Upgrade Sim", icon: Sliders },
   { id: "monitor", label: "Live Monitor", icon: Activity },
   { id: "raw", label: "Raw Data", icon: Code },

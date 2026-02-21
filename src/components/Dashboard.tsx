@@ -11,6 +11,7 @@ import { RawDataViewer } from "./RawDataViewer";
 import { MonitorView } from "./MonitorView";
 import { UpgradeSimulator } from "./UpgradeSimulator";
 import { UpgradeWalkthrough } from "./UpgradeWalkthrough";
+import { AIAnalysis } from "./AIAnalysis";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
@@ -135,6 +136,12 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
               </p>
             </div>
             <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
+          </motion.div>
+        )}
+
+        {activeTab === "ai" && (
+          <motion.div key="ai" role="tabpanel" id="tabpanel-ai" aria-labelledby="tab-ai" {...tabTransition}>
+            <AIAnalysis scan={scan} analysis={analysis} />
           </motion.div>
         )}
 

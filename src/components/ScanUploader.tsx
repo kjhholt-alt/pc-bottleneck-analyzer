@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, FileJson, Play, AlertCircle, List } from "lucide-react";
+import { Upload, FileJson, Play, AlertCircle, List, Download, Terminal, ArrowRight } from "lucide-react";
 import type { SystemScan } from "@/lib/types";
 import { sampleScan } from "@/data/sample-scan";
 import { PCPartPickerImporter } from "./PCPartPickerImporter";
@@ -106,6 +106,80 @@ export function ScanUploader({ onScanLoaded }: ScanUploaderProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
+      {/* Scanner download + how-it-works */}
+      <motion.div
+        className="w-full max-w-lg mb-8 rounded-2xl border border-border bg-surface p-5"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
+        <p className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-4">
+          How it works
+        </p>
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {[
+            {
+              n: "1",
+              active: true,
+              title: "Download scanner",
+              desc: "Windows · no install · runs locally",
+            },
+            {
+              n: "2",
+              active: false,
+              title: "Run as Admin",
+              desc: <>Outputs <code className="text-cyan font-mono">system_scan.json</code></>,
+            },
+            {
+              n: "3",
+              active: false,
+              title: "Upload below",
+              desc: "Get score + recommendations",
+            },
+          ].map((step) => (
+            <div key={step.n} className="flex flex-col gap-1.5">
+              <div
+                className={`w-7 h-7 rounded-full flex items-center justify-center border ${
+                  step.active
+                    ? "bg-cyan/10 border-cyan/30"
+                    : "bg-surface-raised border-border"
+                }`}
+              >
+                <span
+                  className={`text-xs font-bold ${step.active ? "text-cyan" : "text-text-secondary"}`}
+                >
+                  {step.n}
+                </span>
+              </div>
+              <p className="text-sm font-medium text-foreground leading-tight">
+                {step.title}
+              </p>
+              <p className="text-xs text-text-secondary leading-snug">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <a
+          href="https://github.com/kjhholt-alt/pc-bottleneck-analyzer/releases/latest/download/scanner.exe"
+          download
+          className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl
+                     bg-cyan/10 border border-cyan/30 text-cyan font-medium text-sm
+                     hover:bg-cyan/20 hover:border-cyan/50 transition-all duration-200"
+        >
+          <Download size={15} />
+          Download scanner.exe
+          <ArrowRight size={13} className="ml-auto opacity-60" />
+        </a>
+
+        <div className="flex items-center gap-1.5 mt-3">
+          <Terminal size={11} className="text-text-secondary shrink-0" />
+          <p className="text-[11px] text-text-secondary font-mono">
+            Right-click → Run as administrator → check desktop for{" "}
+            <span className="text-cyan">system_scan.json</span>
+          </p>
+        </div>
+      </motion.div>
+
       {/* Drop zone */}
       <motion.div
         onDragOver={(e) => {
