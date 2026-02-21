@@ -136,6 +136,7 @@ function detectCPUBottlenecks(
     scan.cpu.current_clock_ghz < scan.cpu.max_boost_clock_ghz * 0.85 &&
     avgCpuUsage > 50
   ) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     bottlenecks.push({
       id: "cpu-not-boosting",
       category: "cpu",
@@ -147,8 +148,8 @@ function detectCPUBottlenecks(
         `it from reaching full speed.`,
       impact: "You are leaving 5-15% performance on the table.",
       fix:
-        "Check your power plan (set to High Performance), ensure adequate cooling, " +
-        "and verify no power limits are set in BIOS.",
+        `Check your power plan (set to High Performance), ensure adequate cooling, ` +
+        `and verify power limits in BIOS: ${guide.powerLimits.menuPath}.`,
       difficulty: "Easy",
       estimated_cost: "$0",
     });
@@ -657,14 +658,16 @@ function buildRecommendations(
   // ── Free Fixes ───────────────────────────────────────────────────────────
 
   if (has("settings-xmp-off") || hasCritical("ram-slow-speed") || hasCritical("ram-slow-speed-ddr5")) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     recommendations.push({
       id: "rec-enable-xmp",
       tier: "free",
       title: "Enable XMP/DOCP in BIOS",
       description:
-        "This is the single biggest free performance boost available. Your RAM is running " +
-        "way below its rated speed. Enter BIOS at boot, enable XMP (Intel) or DOCP/EXPO " +
-        "(AMD), and enjoy 10-20% more FPS instantly.",
+        `This is the single biggest free performance boost available. Your RAM is running ` +
+        `way below its rated speed. Press ${guide.enterKey} at boot → ${guide.xmp.menuPath} → ` +
+        `Save & Exit (F10). Enjoy 10-20% more FPS instantly.` +
+        (guide.xmp.notes ? ` Note: ${guide.xmp.notes}` : ""),
       impact: "+10-20% FPS in games, faster app loading, snappier overall feel",
       estimated_cost: "$0",
       priority: priority++,
@@ -686,13 +689,14 @@ function buildRecommendations(
   }
 
   if (has("settings-rebar-off")) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     recommendations.push({
       id: "rec-enable-rebar",
       tier: "free",
       title: "Enable Resizable BAR in BIOS",
       description:
-        "Turn on Resizable BAR (or AMD SAM) in your BIOS. This lets the CPU access " +
-        "your full GPU VRAM at once. Free toggle, helps in many newer games.",
+        `Turn on Resizable BAR in your ${guide.biosName}: ${guide.resizableBar.menuPath}. ` +
+        `This lets the CPU access your full GPU VRAM at once. Free toggle, helps in many newer games.`,
       impact: "+0-10% FPS depending on the game",
       estimated_cost: "$0",
       priority: priority++,
@@ -714,14 +718,15 @@ function buildRecommendations(
   }
 
   if (has("cpu-not-boosting")) {
+    const guide = getBIOSGuide(scan.motherboard.model);
     recommendations.push({
       id: "rec-check-boost",
       tier: "free",
       title: "Investigate Why CPU Isn't Boosting",
       description:
-        "Your CPU isn't reaching its advertised boost clock. Check your power plan " +
-        "(High Performance), ensure the CPU cooler is properly seated, and verify no " +
-        "power limits are set in BIOS (like PBO or power limit throttling).",
+        `Your CPU isn't reaching its advertised boost clock. Check your power plan ` +
+        `(High Performance), ensure the CPU cooler is properly seated, and check power ` +
+        `limits in your ${guide.biosName}: ${guide.powerLimits.menuPath}.`,
       impact: "+5-15% in single-threaded workloads",
       estimated_cost: "$0",
       priority: priority++,
