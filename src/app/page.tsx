@@ -16,13 +16,12 @@ import {
   ChevronDown,
   ArrowRight,
   Check,
-  X,
   Shield,
   Wifi,
   HardDrive,
   Brain,
 } from "lucide-react";
-import { CHECKOUT_URL } from "@/lib/pro";
+// Pro gates disabled during beta — all features free
 
 // ── Fade-in animation wrapper ──
 function FadeIn({
@@ -390,105 +389,54 @@ export default function LandingPage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section className="border-t border-border">
+      <section id="pricing" className="border-t border-border">
         <div className="max-w-6xl mx-auto px-6 py-20">
           <FadeIn className="text-center mb-14">
             <p className="text-xs font-mono text-cyan uppercase tracking-widest mb-3">
-              Simple pricing
+              Pricing
             </p>
             <h2 className="text-3xl font-bold tracking-tight">
-              Free Scan, Pro Insights
+              100% Free During Beta
             </h2>
+            <p className="text-text-secondary mt-3 max-w-lg mx-auto">
+              Every feature is unlocked — no paywalls, no sign-up required. Just scan and go.
+            </p>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Free tier */}
+          <div className="max-w-md mx-auto">
             <FadeIn>
-              <div className="bg-surface border border-border rounded-2xl p-6 h-full flex flex-col">
-                <h3 className="text-lg font-semibold text-foreground mb-1">
-                  Free
-                </h3>
-                <p className="text-sm text-text-secondary mb-6">
-                  See what&apos;s going on under the hood
-                </p>
-                <div className="mb-6">
-                  <span className="text-3xl font-bold font-mono text-foreground">
-                    $0
-                  </span>
-                </div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {[
-                    "Performance score (0-100)",
-                    "Top bottleneck identified",
-                    "1 free recommendation",
-                    "Scan history & comparison",
-                    "Share results link",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2.5 text-sm text-text-secondary"
-                    >
-                      <Check
-                        size={14}
-                        className="text-green mt-0.5 shrink-0"
-                      />
-                      {item}
-                    </li>
-                  ))}
-                  {[
-                    "AI deep analysis",
-                    "All recommendations",
-                    "Follow-up chat",
-                    "BIOS optimization guide",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2.5 text-sm text-text-secondary/50"
-                    >
-                      <X size={14} className="text-text-secondary/30 mt-0.5 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/dashboard"
-                  className="block text-center py-3 border border-border rounded-xl text-sm font-medium
-                             text-foreground hover:border-cyan/40 transition-colors"
-                >
-                  Get Started Free
-                </Link>
-              </div>
-            </FadeIn>
-
-            {/* Pro tier */}
-            <FadeIn delay={0.1}>
-              <div className="bg-surface border-2 border-cyan/40 rounded-2xl p-6 h-full flex flex-col relative">
+              <div className="bg-surface border-2 border-cyan/40 rounded-2xl p-6 flex flex-col relative">
                 <div className="absolute -top-3 left-6 px-3 py-0.5 bg-cyan text-background text-xs font-semibold rounded-full">
-                  Best Value
+                  Beta
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-1">
-                  Pro
+                  All Features Included
                 </h3>
                 <p className="text-sm text-text-secondary mb-6">
                   The full picture + expert AI guidance
                 </p>
                 <div className="mb-6">
                   <span className="text-3xl font-bold font-mono text-cyan">
-                    $9.99
+                    $0
                   </span>
                   <span className="text-sm text-text-secondary ml-2">
-                    one-time
+                    free during beta
                   </span>
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">
                   {[
-                    "Everything in Free",
-                    "AI deep analysis (Claude-powered)",
+                    "Performance score (0-100)",
+                    "Bottleneck detection",
                     "All recommendations unlocked",
+                    "AI deep analysis (Claude-powered)",
                     "Follow-up chat with AI",
                     "Per-motherboard BIOS guide",
                     "Upgrade simulator",
-                    "Priority support",
+                    "Game FPS estimator",
+                    "Real-time monitor",
+                    "Goal upgrade planner",
+                    "PDF report export",
+                    "Scan history & comparison",
                   ].map((item) => (
                     <li
                       key={item}
@@ -502,13 +450,13 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={CHECKOUT_URL}
-                  className="lemonsqueezy-button block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
+                <Link
+                  href="/dashboard"
+                  className="block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
                              hover:bg-cyan/90 transition-colors"
                 >
-                  Upgrade to Pro &mdash; $9.99
-                </a>
+                  Get Started Free
+                </Link>
               </div>
             </FadeIn>
           </div>

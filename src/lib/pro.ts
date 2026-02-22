@@ -6,7 +6,7 @@ import { isStorageAvailable } from "./history";
  * Set to `true` when ready to monetize (after traffic justifies it).
  * While `false`, every feature is accessible — the gates are invisible.
  */
-export const GATES_ENABLED = true;
+export const GATES_ENABLED = false;
 
 const STORAGE_KEY = "pc-pro-status";
 
