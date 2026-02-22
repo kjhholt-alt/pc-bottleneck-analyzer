@@ -22,6 +22,7 @@ import {
   HardDrive,
   Brain,
 } from "lucide-react";
+import { CHECKOUT_URL } from "@/lib/pro";
 
 // ── Fade-in animation wrapper ──
 function FadeIn({
@@ -501,13 +502,13 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/dashboard"
-                  className="block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
+                <a
+                  href={CHECKOUT_URL}
+                  className="lemonsqueezy-button block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
                              hover:bg-cyan/90 transition-colors"
                 >
-                  Get Started Free
-                </Link>
+                  Upgrade to Pro &mdash; $4.99
+                </a>
               </div>
             </FadeIn>
           </div>

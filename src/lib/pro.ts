@@ -6,9 +6,17 @@ import { isStorageAvailable } from "./history";
  * Set to `true` when ready to monetize (after traffic justifies it).
  * While `false`, every feature is accessible — the gates are invisible.
  */
-export const GATES_ENABLED = false;
+export const GATES_ENABLED = true;
 
 const STORAGE_KEY = "pc-pro-status";
+
+/**
+ * Lemon Squeezy checkout URL for the Pro product.
+ * Set via NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL env var.
+ * Falls back to the pricing section if not configured.
+ */
+export const CHECKOUT_URL =
+  process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL || "/#pricing";
 
 /** Tab IDs that require Pro when gates are enabled. */
 const PRO_TABS = new Set(["ai", "fps", "simulate", "monitor", "planner"]);

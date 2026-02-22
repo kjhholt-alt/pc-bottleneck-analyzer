@@ -1,10 +1,9 @@
 "use client";
 
 import { type ReactNode } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Lock, Sparkles } from "lucide-react";
-import { isFeatureLocked } from "@/lib/pro";
+import { isFeatureLocked, CHECKOUT_URL } from "@/lib/pro";
 
 interface ProGateProps {
   feature: string;
@@ -50,13 +49,13 @@ export function ProGate({ feature, children }: ProGateProps) {
             Unlock this feature and get the full picture of your PC&apos;s performance with a one-time Pro upgrade.
           </p>
 
-          <Link
-            href="/#pricing"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-cyan text-background rounded-xl text-sm font-semibold hover:bg-cyan/90 transition-colors"
+          <a
+            href={CHECKOUT_URL}
+            className="lemonsqueezy-button inline-flex items-center gap-2 px-6 py-2.5 bg-cyan text-background rounded-xl text-sm font-semibold hover:bg-cyan/90 transition-colors"
           >
             <Sparkles size={14} />
             Upgrade to Pro &mdash; $4.99
-          </Link>
+          </a>
 
           <p className="text-xs text-text-secondary/60 mt-3">One-time payment &middot; Instant access</p>
         </div>
