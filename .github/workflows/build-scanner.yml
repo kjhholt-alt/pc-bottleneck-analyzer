@@ -69,6 +69,11 @@ jobs:
         run: git push origin :refs/tags/scanner-latest 2>$null; exit 0
         shell: pwsh
 
+      # Rename to scanner.exe so the download URL matches the website button
+      - name: Rename EXE for release
+        run: Copy-Item "scanner/dist/PC-Scanner.exe" "scanner/dist/scanner.exe"
+        shell: pwsh
+
       # Create fresh release with the new .exe
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -96,7 +101,9 @@ jobs:
 
             ---
             Built from commit `${{ github.sha }}` on `${{ github.run_id }}`
-          files: scanner/dist/PC-Scanner.exe
+          files: |
+            scanner/dist/scanner.exe
+            scanner/dist/PC-Scanner.exe
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           prerelease: false
