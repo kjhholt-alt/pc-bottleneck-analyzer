@@ -474,7 +474,7 @@ export default function LandingPage() {
                 </p>
                 <div className="mb-6">
                   <span className="text-3xl font-bold font-mono text-cyan">
-                    $4.99
+                    $9.99
                   </span>
                   <span className="text-sm text-text-secondary ml-2">
                     one-time
@@ -507,7 +507,7 @@ export default function LandingPage() {
                   className="lemonsqueezy-button block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
                              hover:bg-cyan/90 transition-colors"
                 >
-                  Upgrade to Pro &mdash; $4.99
+                  Upgrade to Pro &mdash; $9.99
                 </a>
               </div>
             </FadeIn>

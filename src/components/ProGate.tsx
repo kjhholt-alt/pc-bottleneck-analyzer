@@ -54,7 +54,7 @@ export function ProGate({ feature, children }: ProGateProps) {
             className="lemonsqueezy-button inline-flex items-center gap-2 px-6 py-2.5 bg-cyan text-background rounded-xl text-sm font-semibold hover:bg-cyan/90 transition-colors"
           >
             <Sparkles size={14} />
-            Upgrade to Pro &mdash; $4.99
+            Upgrade to Pro &mdash; $9.99
           </a>
 
           <p className="text-xs text-text-secondary/60 mt-3">One-time payment &middot; Instant access</p>
