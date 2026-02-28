@@ -47,28 +47,13 @@ function FadeIn({
 }
 
 // ── FAQ Accordion ──
-const faqs = [
-  {
-    q: "Is it safe to run?",
-    a: "Yes. The scanner is open-source, runs entirely on your machine, and only reads hardware info — it cannot modify, install, or delete anything. The JSON output contains no personal data, just component specs and temperatures.",
-    icon: Shield,
-  },
-  {
-    q: "Does it need internet?",
-    a: "The scanner itself works offline and saves results to your Desktop. You only need internet to upload the JSON file to our dashboard for analysis. The AI analysis requires an internet connection.",
-    icon: Wifi,
-  },
-  {
-    q: "What Windows versions are supported?",
-    a: "Windows 10 and Windows 11 (64-bit). The scanner uses WMI and standard Windows APIs. It must be run as Administrator to access detailed hardware info like temperatures and BIOS settings.",
-    icon: HardDrive,
-  },
-  {
-    q: "How accurate is the AI analysis?",
-    a: "The AI analysis is powered by Claude and references your exact hardware specs, current drivers, BIOS settings, and temperatures. It cross-references a database of 176+ CPUs and GPUs to give you specific, actionable recommendations — not generic advice.",
-    icon: Brain,
-  },
-];
+import { faqs as faqData } from "@/data/faq";
+
+const iconMap = { Shield, Wifi, HardDrive, Brain } as const;
+const faqs = faqData.map((faq) => ({
+  ...faq,
+  icon: iconMap[faq.iconName],
+}));
 
 function FAQItem({
   q,
@@ -129,13 +114,21 @@ export default function LandingPage() {
               PC Bottleneck Analyzer
             </span>
           </div>
-          <Link
-            href="/dashboard"
-            className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors flex items-center gap-1.5"
-          >
-            Open Dashboard
-            <ArrowRight size={12} />
-          </Link>
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/blog"
+              className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+            >
+              Blog
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors flex items-center gap-1.5"
+            >
+              Open Dashboard
+              <ArrowRight size={12} />
+            </Link>
+          </nav>
         </div>
       </header>
 
