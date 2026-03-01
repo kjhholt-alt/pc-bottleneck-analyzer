@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/data/blog-posts";
+import { getAllPosts } from "@/data/blog-posts";
 
 const BASE_URL = "https://pcbottleneck.buildkit.store";
 
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+  const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt ?? post.publishedAt),
     changeFrequency: "monthly" as const,

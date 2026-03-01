@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
-import { blogPosts } from "@/data/blog-posts";
+import { getAllPosts } from "@/data/blog-posts";
 import { NavHeader } from "@/components/NavHeader";
 import { EmailCapture } from "@/components/EmailCapture";
 
@@ -24,7 +24,7 @@ export default function BlogPage() {
         </p>
 
         <div className="space-y-6 mb-16">
-          {blogPosts.map((post) => (
+          {getAllPosts().map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`}>
               <article className="bg-surface border border-border rounded-2xl p-6 hover:border-cyan/30 transition-colors">
                 <div className="flex items-center gap-3 text-xs text-text-secondary mb-3">

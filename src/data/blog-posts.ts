@@ -1,3 +1,5 @@
+import { getMdxPosts } from "@/lib/mdx";
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -42,6 +44,13 @@ export const blogPosts: BlogPost[] = [
   },
 ];
 
+export function getAllPosts(): BlogPost[] {
+  return [...blogPosts, ...getMdxPosts()].sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+}
+
 export function getPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
+  return getAllPosts().find((p) => p.slug === slug);
 }

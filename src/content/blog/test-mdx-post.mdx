@@ -1,0 +1,29 @@
+---
+title: "Test MDX Post — Pipeline Verification"
+description: "This is a test post to verify the MDX auto-discovery pipeline works correctly."
+publishedAt: "2026-02-28"
+author: "PC Bottleneck Analyzer Team"
+tags: ["test"]
+readingTime: "2 min read"
+---
+
+## This Is a Test Post
+
+If you can see this on the blog, the **MDX auto-discovery pipeline** is working correctly.
+
+### Features Being Tested
+
+- Frontmatter parsing (title, description, date)
+- Markdown rendering (headings, bold, lists)
+- Affiliate link component: <AffiliateLink name="RTX 4070 Ti" />
+- Internal links: [Back to blog](/blog)
+- External links: [Learn more about bottlenecks](https://example.com)
+
+### How It Works
+
+1. Drop an `.mdx` file into `src/content/blog/`
+2. The blog automatically discovers it via `gray-matter` frontmatter parsing
+3. No manual imports or component registration needed
+4. Vercel auto-deploys on push
+
+> This post will be removed after verification.

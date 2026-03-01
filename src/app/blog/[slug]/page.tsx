@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import { blogPosts, getPostBySlug } from "@/data/blog-posts";
+import { getAllPosts, getPostBySlug } from "@/data/blog-posts";
 import { NavHeader } from "@/components/NavHeader";
 import { EmailCapture } from "@/components/EmailCapture";
 import { GpuBottleneckingCpu } from "./posts/gpu-bottlenecking-cpu";
@@ -16,7 +16,16 @@ const POST_COMPONENTS: Record<string, React.ComponentType> = {
 };
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
+
+async function getMdxContent(slug: string) {
+  try {
+    const mod = await import(`@/content/blog/${slug}.mdx`);
+    return mod.default;
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({
@@ -59,7 +68,7 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
-  const Content = POST_COMPONENTS[slug];
+  const Content = POST_COMPONENTS[slug] ?? (await getMdxContent(slug));
   if (!Content) notFound();
 
   const articleJsonLd = {
