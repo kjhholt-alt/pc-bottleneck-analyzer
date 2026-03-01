@@ -21,6 +21,7 @@ import {
   HardDrive,
   Brain,
 } from "lucide-react";
+import { EmailCapture } from "@/components/EmailCapture";
 // Pro gates disabled during beta — all features free
 
 // ── Fade-in animation wrapper ──
@@ -157,11 +158,12 @@ export default function LandingPage() {
               <ArrowRight size={16} />
             </Link>
             <a
-              href="#how-it-works"
+              href="https://github.com/kjhholt-alt/pc-bottleneck-analyzer/releases/download/scanner-latest/PC-Scanner.exe"
               className="flex items-center gap-2 px-6 py-3.5 border border-border text-text-secondary
                          rounded-xl hover:border-cyan/40 hover:text-foreground transition-colors text-sm"
             >
-              See How It Works
+              <Download size={16} />
+              Download Scanner (.exe)
             </a>
           </div>
         </FadeIn>
@@ -211,6 +213,7 @@ export default function LandingPage() {
                 icon: Download,
                 title: "Download the Scanner",
                 desc: "A lightweight .exe — no install needed. Right-click, Run as Administrator. Takes about 10 seconds.",
+                href: "https://github.com/kjhholt-alt/pc-bottleneck-analyzer/releases/download/scanner-latest/PC-Scanner.exe",
               },
               {
                 step: "2",
@@ -224,9 +227,9 @@ export default function LandingPage() {
                 title: "Get Your Analysis",
                 desc: "Instant performance score, bottleneck detection, and AI-powered recommendations specific to your hardware.",
               },
-            ].map((item, i) => (
-              <FadeIn key={item.step} delay={i * 0.1}>
-                <div className="bg-surface border border-border rounded-2xl p-6 h-full">
+            ].map((item, i) => {
+              const content = (
+                <div className="bg-surface border border-border rounded-2xl p-6 h-full hover:border-cyan/30 transition-colors">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-9 h-9 rounded-xl bg-cyan-dim border border-cyan/30 flex items-center justify-center">
                       <item.icon size={18} className="text-cyan" />
@@ -242,8 +245,17 @@ export default function LandingPage() {
                     {item.desc}
                   </p>
                 </div>
-              </FadeIn>
-            ))}
+              );
+              return (
+                <FadeIn key={item.step} delay={i * 0.1}>
+                  {"href" in item && item.href ? (
+                    <a href={item.href} className="block">{content}</a>
+                  ) : (
+                    content
+                  )}
+                </FadeIn>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -473,6 +485,15 @@ export default function LandingPage() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Email Capture ── */}
+      <section className="border-t border-border">
+        <div className="max-w-xl mx-auto px-6 py-16">
+          <FadeIn>
+            <EmailCapture source="landing-page" />
+          </FadeIn>
         </div>
       </section>
 

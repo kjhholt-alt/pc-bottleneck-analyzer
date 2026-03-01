@@ -30,6 +30,16 @@ export const blogPosts: BlogPost[] = [
     tags: ["upgrades", "buying guide", "2026", "hardware"],
     readingTime: "10 min read",
   },
+  {
+    slug: "i-built-a-free-pc-bottleneck-analyzer",
+    title: "I Built a Free PC Bottleneck Analyzer — Here's What I Learned",
+    description:
+      "How I built a tool that scans your PC hardware, scores your system out of 100, and tells you exactly what to upgrade — and the surprising patterns I found after analyzing hundreds of systems.",
+    publishedAt: "2026-02-28",
+    author: "Kruz Holt",
+    tags: ["maker", "behind the scenes", "bottleneck", "PC building"],
+    readingTime: "7 min read",
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

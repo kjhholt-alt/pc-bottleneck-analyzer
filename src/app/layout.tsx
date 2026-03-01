@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://pcbottleneck.buildkit.store",
   },
+  verification: {
+    google: "1mfzkSJ7xmxPVaFbHfZJiU4R22_9Os7PuGxlTT2YExY",
+  },
 };
 
 function JsonLd() {
