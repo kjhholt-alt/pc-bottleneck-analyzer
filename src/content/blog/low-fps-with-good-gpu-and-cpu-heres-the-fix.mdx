@@ -1,0 +1,253 @@
+---
+title: "Low FPS With Good GPU and CPU? Here's the Fix"
+description: "Getting low FPS despite a powerful GPU and CPU? We break down every real cause and fix — from bottlenecks to bad settings — so you can finally play smoothly."
+publishedAt: "2026-03-01"
+author: "PC Bottleneck Analyzer Team"
+tags: ["low fps fix", "PC bottleneck", "GPU performance", "gaming PC optimization", "fps troubleshooting", "PC hardware"]
+readingTime: "9 min read"
+---
+
+# Low FPS With Good GPU and CPU? Here's the Fix
+
+You just dropped serious money on a new GPU or CPU — maybe both — and your FPS is still embarrassingly low. The game stutters, your frames tank in crowded scenes, and Task Manager shows your hardware barely breaking a sweat. Sound familiar?
+
+You're not alone. This is one of the most common complaints on [r/buildapc](https://www.reddit.com/r/buildapc/) and [r/pcgaming](https://www.reddit.com/r/pcgaming/), and the good news is: **the fix for low fps with good gpu and cpu is almost always something you can solve yourself — for free.** Let's dig in.
+
+---
+
+## TL;DR — Quick Takeaways
+
+- Low FPS with strong hardware almost always has a non-obvious root cause
+- The most common culprits: RAM speed/configuration, driver issues, thermal throttling, wrong power plan, or a true bottleneck
+- You can diagnose most of these in under 10 minutes with free tools
+- If your GPU usage is below ~95% during gaming, something is holding it back
+- Use our [free PC bottleneck analyzer](/) to instantly score your system and find the weak link
+
+---
+
+## Why You're Getting Low FPS Despite Good Hardware
+
+Here's the core issue: modern GPUs and CPUs are incredibly powerful, but they depend on **every other part of your system** playing its role correctly. If even one component underperforms, the whole system suffers.
+
+Think of it like a highway with one narrow lane in the middle — no matter how fast the cars are, traffic jams up at the bottleneck. Your PC works the same way.
+
+Let's go through every realistic cause, from most to least common.
+
+---
+
+## Fix #1: Your RAM Is the Real Bottleneck
+
+This is the #1 underdiagnosed cause of low FPS on otherwise powerful systems. RAM affects performance in two critical ways:
+
+### Wrong Speed or XMP/EXPO Not Enabled
+
+DDR5 and DDR4 kits ship at a "safe" base speed — often 4800 MHz for DDR5 or 2133 MHz for DDR4 — until you manually enable **XMP (Intel) or EXPO (AMD)** in your BIOS. If you haven't done this, you're leaving a massive amount of performance on the table.
+
+A Ryzen system running DDR5-4800 instead of DDR5-6000 can lose **10–20% gaming performance** depending on the title. It's not a small margin.
+
+**Fix:** Reboot → Enter BIOS (usually Delete or F2) → Find XMP/EXPO → Enable it → Save and exit. That's it.
+
+### Single-Channel RAM = Half the Bandwidth
+
+If you have one RAM stick instead of two, you're running in single-channel mode, which cuts your memory bandwidth nearly in half. This absolutely destroys performance in CPU-sensitive titles like *Cyberpunk 2077*, *Microsoft Flight Simulator*, and *Star Citizen*.
+
+**Fix:** Add a matching RAM stick to enable dual-channel. A kit like <AffiliateLink name="Corsair Vengeance DDR5 32GB (2x16GB) 6000MHz" /> is the sweet spot for most builds in 2026.
+
+---
+
+## Fix #2: Your GPU Drivers Are Outdated or Corrupted
+
+Corrupted or outdated GPU drivers are another sneaky performance killer. You might not see any errors — the game runs, but FPS is inexplicably low or stuttery.
+
+### How to Do a Clean Driver Install
+
+Don't just click "Update" in Device Manager — that's not a clean install. Use **DDU (Display Driver Uninstaller)** in Safe Mode to fully strip old drivers, then install the latest from NVIDIA or AMD directly.
+
+- NVIDIA: Download from [nvidia.com/drivers](https://www.nvidia.com/drivers)
+- AMD: Download from [amd.com/support](https://www.amd.com/support)
+
+This alone has fixed severe FPS issues for thousands of users. It takes about 10 minutes and costs nothing.
+
+---
+
+## Fix #3: Thermal Throttling Is Killing Your Performance
+
+Your CPU or GPU might be hitting temperature limits and **automatically downclocking itself** to avoid damage. This is called thermal throttling, and it's silent — most people never realize it's happening.
+
+### How to Check for Thermal Throttling
+
+Download **HWiNFO64** (free) and monitor these values while gaming:
+
+- **CPU temp:** Should stay under ~85°C for most modern CPUs. AMD Ryzen 9000-series runs hotter by design, but watch for the "Thermal Throttling" flag in HWiNFO.
+- **GPU temp:** Should stay under ~83°C for most cards. GPU hotspot (junction) temp should stay under ~95°C.
+
+If either is hitting limits, that's your problem.
+
+### Fixes for Thermal Throttling
+
+- **Reapply thermal paste** — if your CPU cooler is more than 3 years old, the paste may have dried out
+- **Clean your PC** — dust-clogged heatsinks and fans are extremely common in machines 2+ years old
+- **Upgrade your CPU cooler** — stock coolers are rarely adequate for high-end CPUs. Something like the <AffiliateLink name="Noctua NH-D15 G2" /> or a 360mm AIO will keep even a Ryzen 9 9950X3D cool under load
+- **Improve case airflow** — add intake fans at the front and exhaust at the rear/top
+
+---
+
+## Fix #4: You're on the Wrong Windows Power Plan
+
+This one sounds too simple to be true, but it genuinely makes a measurable difference — especially on AMD Ryzen systems.
+
+Windows defaults to "Balanced" power mode, which throttles your CPU frequency to save power. For gaming, you want **High Performance** or, better yet, **AMD Ryzen Balanced** (on AMD systems, installed automatically with chipset drivers).
+
+**Fix:** Search "Power Plan" in Windows → Change plan settings → Select "High Performance." On AMD systems, check if "AMD Ryzen Balanced" is available — it's optimized for Ryzen's boost behavior and often outperforms generic High Performance mode.
+
+---
+
+## Fix #5: You Have a True CPU-GPU Bottleneck
+
+Sometimes low FPS with good hardware is actually a **legitimate bottleneck** — your CPU can't feed frames to your GPU fast enough, or vice versa. This is especially common in these mismatched pairings:
+
+- An older CPU (like an i5-8600K or Ryzen 5 2600) paired with a modern GPU like an <AffiliateLink name="NVIDIA RTX 5070" />
+- A high-end CPU paired with an older mid-range GPU that can't keep up at your target resolution
+
+### How to Diagnose a Bottleneck
+
+While gaming, monitor GPU usage with MSI Afterburner or HWiNFO64:
+
+- **GPU usage at 95–100%:** GPU is the bottleneck — this is actually *ideal* at 4K/1440p. Consider a GPU upgrade if FPS is too low.
+- **GPU usage below 80%:** Your CPU, RAM, or another factor is holding your GPU back.
+- **CPU usage near 100% on all cores:** True CPU bottleneck — time to upgrade or optimize CPU-side settings.
+
+We've written a deep-dive on this exact topic: check out [Is Your GPU Bottlenecking Your CPU?](/blog/gpu-bottlenecking-cpu) for a full breakdown.
+
+You can also run your exact specs through our **[free bottleneck analyzer](/)** — it'll score your system out of 100 and tell you precisely where the weak link is.
+
+---
+
+## Fix #6: In-Game Settings Are Misconfigured
+
+Sometimes the culprit isn't your hardware at all — it's your game settings working against you.
+
+### VRAM Overflow
+
+If your game's texture quality settings are pushing beyond your GPU's VRAM capacity, the game starts pulling textures from your much-slower system RAM. This causes **massive FPS drops and stuttering**, especially in open-world games.
+
+- RTX 4060 Ti (8GB VRAM): Keep textures at Medium-High in VRAM-hungry titles
+- <AffiliateLink name="NVIDIA RTX 5070" /> (12GB VRAM): Can handle High textures in most games
+- <AffiliateLink name="AMD RX 9070 XT" /> (16GB VRAM): Excellent headroom for 1440p ultra settings
+
+### Ray Tracing and Path Tracing
+
+If you've enabled ray tracing or path tracing without also enabling DLSS or FSR upscaling, you can easily cut your FPS by 40–60%. These features are GPU-intensive by design.
+
+**Fix:** Either turn ray tracing off, or pair it with DLSS 4 (NVIDIA) or FSR 4 (AMD) to recover performance.
+
+### Frame Generation
+
+Both NVIDIA (DLSS 4 Frame Generation / Multi Frame Generation) and AMD (FSR 4 Frame Generation) offer frame generation in 2026. If your GPU supports it and your base FPS is above 60, enabling frame generation can dramatically boost your perceived smoothness.
+
+---
+
+## Fix #7: Background Processes and Software Conflicts
+
+Your game shouldn't be fighting for CPU time with Discord, a browser, antivirus scans, and Windows Update running simultaneously.
+
+### Common Background Culprits
+
+- **Antivirus real-time scanning** — can cause stutters as it scans game files mid-session. Add your game folders to the exclusion list.
+- **Discord hardware acceleration** — disable it in Discord Settings → Advanced → Hardware Acceleration
+- **Windows Update** — schedule it for off-hours
+- **GeForce Experience / AMD Software overlay** — can cause FPS drops; try disabling in-game overlays
+
+**Fix:** Use Task Manager (Ctrl+Shift+Esc) to identify anything using significant CPU or disk resources while gaming. Close what you don't need.
+
+---
+
+## Fix #8: Your Storage Is Causing Stutter (Not FPS Drops)
+
+If your issue is specifically **stutter and hitching** rather than a flat low FPS number, your storage drive might be the culprit — especially if you're still gaming on a spinning HDD.
+
+Modern open-world games like *Hogwarts Legacy* or *Star Wars Outlaws* stream assets constantly. An HDD simply can't keep up, causing visible hitches every few seconds.
+
+**Fix:** Move your games to an SSD. A PCIe 4.0 NVMe SSD is the sweet spot in 2026 — something like the <AffiliateLink name="Samsung 990 Pro 2TB NVMe SSD" /> gives you top-tier sequential speeds without the PCIe 5.0 price premium. Check out [Best Upgrades for Common PC Bottlenecks in 2026](/blog/best-upgrades-pc-bottlenecks-2026) for our full storage recommendations.
+
+---
+
+## Fix #9: Your Monitor or Display Settings Are Wrong
+
+This one catches people off guard. If your monitor is set to 60Hz but your GPU is pushing 144 frames, you might be experiencing **screen tearing or sync issues** that *feel* like low FPS.
+
+### Enable Your Monitor's Full Refresh Rate
+
+Go to: Windows Settings → Display → Advanced Display → Choose refresh rate → Set to your monitor's maximum (144Hz, 165Hz, 240Hz, etc.)
+
+### Enable G-Sync or FreeSync
+
+If your monitor and GPU support it, enabling **G-Sync (NVIDIA)** or **FreeSync (AMD)** eliminates tearing and makes lower frame rates feel significantly smoother. This is especially helpful when your FPS fluctuates between 60–90.
+
+---
+
+## Step-by-Step Diagnostic Checklist
+
+Run through this list in order — most issues are caught in the first five steps:
+
+1. ✅ **Check GPU usage in-game** (MSI Afterburner) — is it below 90%?
+2. ✅ **Verify XMP/EXPO is enabled** in BIOS
+3. ✅ **Check RAM configuration** — two sticks, dual channel?
+4. ✅ **Monitor CPU and GPU temps** (HWiNFO64) — any throttling?
+5. ✅ **Set power plan to High Performance** or AMD Ryzen Balanced
+6. ✅ **Do a clean GPU driver reinstall** with DDU
+7. ✅ **Close background apps** before gaming
+8. ✅ **Check VRAM usage** — are textures overflowing?
+9. ✅ **Verify monitor refresh rate** is set correctly
+10. ✅ **Run our [free bottleneck analyzer](/)** for a complete system score
+
+---
+
+## What If None of These Fixes Work?
+
+If you've gone through this entire list and your FPS is still disappointingly low, it's time to think about a targeted hardware upgrade. The key word is *targeted* — upgrading the wrong component wastes money.
+
+Here's a quick guide based on your resolution:
+
+### At 1080p
+CPU bottlenecks are more common here. If your GPU usage is consistently below 80%, your CPU is the limiting factor. The <AffiliateLink name="AMD Ryzen 7 9800X3D" /> is the undisputed 1080p gaming king in 2026, with its massive 3D V-Cache delivering up to 20% more FPS in cache-sensitive titles over standard Ryzen.
+
+### At 1440p
+This is where GPU power matters most. If you're on anything below an RTX 4070-class card, a GPU upgrade to the <AffiliateLink name="NVIDIA RTX 5070 Ti" /> or <AffiliateLink name="AMD RX 9070 XT" /> will be immediately noticeable.
+
+### At 4K
+You need serious GPU horsepower. The <AffiliateLink name="NVIDIA RTX 5080" /> is the best value at 4K in 2026, delivering exceptional performance without the extreme price of the RTX 5090.
+
+For a complete upgrade guide based on your specific bottleneck, read [Best Upgrades for Common PC Bottlenecks in 2026](/blog/best-upgrades-pc-bottlenecks-2026).
+
+---
+
+## FAQ — People Also Ask
+
+### Why is my FPS so low when my GPU usage is also low?
+This is a CPU, RAM, or driver bottleneck. If your GPU isn't being fully utilized, something is preventing it from receiving enough work. Start with XMP/EXPO, check dual-channel RAM, and do a clean driver reinstall.
+
+### Does RAM speed actually affect FPS?
+Yes, significantly — especially on AMD Ryzen platforms. Running DDR5 at 6000 MHz vs. 4800 MHz can improve gaming FPS by 10–20% in CPU-limited scenarios. Always enable XMP/EXPO in your BIOS.
+
+### Can a bad PSU cause low FPS?
+Yes. An underpowered or failing PSU can cause your GPU to throttle under peak load because it can't draw enough power. If your FPS drops specifically during intense scenes, monitor your +12V rail with HWiNFO64. High-end GPUs like the RTX 5080 need at least an 850W 80+ Gold PSU.
+
+### Does reinstalling Windows fix FPS problems?
+Sometimes, yes — but it should be a last resort. Software-level corruption, bloatware, and misconfigured system settings can drag performance down. Before nuking Windows, try a clean driver install, checking startup programs, and running SFC /scannow in Command Prompt.
+
+### How do I know if I need a CPU or GPU upgrade?
+Monitor both during gaming. If GPU usage is near 100% and CPU usage is low, upgrade the GPU. If CPU usage is maxed and GPU is low, upgrade the CPU. Our [free bottleneck analyzer](/) automates this diagnosis and scores your system out of 100.
+
+---
+
+## Find Your Bottleneck in 60 Seconds
+
+We built [pcbottleneck.buildkit.store](/) specifically for situations like yours — where your hardware looks fine on paper but something is clearly wrong in practice.
+
+Our **free bottleneck analyzer** takes your CPU, GPU, RAM, and resolution, scores your system out of 100, and tells you exactly which component is holding you back and what to upgrade. No signup, no cost, no fluff.
+
+**[→ Run Your Free PC Bottleneck Analysis Now](/)**
+
+You've already spent the money on good hardware. Spend 60 seconds making sure it's actually performing the way it should. For more guides like this, browse our [full blog](/blog) — we cover everything from first-time builds to high-end gaming rigs.
+
