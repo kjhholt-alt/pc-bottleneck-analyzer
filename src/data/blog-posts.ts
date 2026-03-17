@@ -42,6 +42,16 @@ export const blogPosts: BlogPost[] = [
     tags: ["maker", "behind the scenes", "bottleneck", "PC building"],
     readingTime: "7 min read",
   },
+  {
+    slug: "cpu-vs-gpu-bottleneck",
+    title: "CPU vs GPU Bottleneck: How to Tell Which Is Limiting Your PC",
+    description:
+      "Complete guide to identifying CPU bottleneck vs GPU bottleneck with side-by-side comparison table, real-world gaming scenarios, and specific fix guides for each type.",
+    publishedAt: "2026-03-16",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["CPU bottleneck", "GPU bottleneck", "diagnosis", "gaming"],
+    readingTime: "12 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {

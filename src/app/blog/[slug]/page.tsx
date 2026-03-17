@@ -8,11 +8,13 @@ import { EmailCapture } from "@/components/EmailCapture";
 import { GpuBottleneckingCpu } from "./posts/gpu-bottlenecking-cpu";
 import { BestUpgrades2026 } from "./posts/best-upgrades-pc-bottlenecks-2026";
 import { IBuiltAFreeBottleneckAnalyzer } from "./posts/i-built-a-free-pc-bottleneck-analyzer";
+import { CpuVsGpuBottleneck } from "./posts/cpu-vs-gpu-bottleneck";
 
 const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "gpu-bottlenecking-cpu": GpuBottleneckingCpu,
   "best-upgrades-pc-bottlenecks-2026": BestUpgrades2026,
   "i-built-a-free-pc-bottleneck-analyzer": IBuiltAFreeBottleneckAnalyzer,
+  "cpu-vs-gpu-bottleneck": CpuVsGpuBottleneck,
 };
 
 export function generateStaticParams() {
