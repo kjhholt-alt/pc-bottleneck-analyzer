@@ -577,8 +577,8 @@ function detectSettingsBottlenecks(
       fix:
         `Restart → press ${guide.enterKey} to enter ${guide.biosName} → ` +
         `${guide.xmp.menuPath} → Save & Exit (F10). ` +
-        `Takes 30 seconds. You already paid for this speed.` +
-        (guide.xmp.notes ? ` Tip: ${guide.xmp.notes}` : ""),
+        `Takes 30 seconds. You already paid for this speed.${ 
+        guide.xmp.notes ? ` Tip: ${guide.xmp.notes}` : ""}`,
       difficulty: "Easy",
       estimated_cost: "$0",
     });
@@ -666,8 +666,8 @@ function buildRecommendations(
       description:
         `This is the single biggest free performance boost available. Your RAM is running ` +
         `way below its rated speed. Press ${guide.enterKey} at boot → ${guide.xmp.menuPath} → ` +
-        `Save & Exit (F10). Enjoy 10-20% more FPS instantly.` +
-        (guide.xmp.notes ? ` Note: ${guide.xmp.notes}` : ""),
+        `Save & Exit (F10). Enjoy 10-20% more FPS instantly.${ 
+        guide.xmp.notes ? ` Note: ${guide.xmp.notes}` : ""}`,
       impact: "+10-20% FPS in games, faster app loading, snappier overall feel",
       estimated_cost: "$0",
       priority: priority++,

@@ -17,9 +17,6 @@ import {
   comparisonCPUs,
   comparisonGPUs,
   ramSpeedData,
-  type ComparisonCPU,
-  type ComparisonGPU,
-  type RAMSpeed,
 } from "@/data/comparison-data";
 
 type ComparisonMode = "cpu" | "gpu" | "ram";

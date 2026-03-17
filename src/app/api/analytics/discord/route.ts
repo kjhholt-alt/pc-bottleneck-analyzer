@@ -27,8 +27,8 @@ export async function GET(req: NextRequest) {
   const now = new Date();
   const yesterday = new Date(now);
   yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-  const sinceDate = yesterday.toISOString().slice(0, 10) + "T00:00:00Z";
-  const untilDate = now.toISOString().slice(0, 10) + "T00:00:00Z";
+  const sinceDate = `${yesterday.toISOString().slice(0, 10)  }T00:00:00Z`;
+  const untilDate = `${now.toISOString().slice(0, 10)  }T00:00:00Z`;
 
   const events = await queryEvents(sinceDate, untilDate);
 

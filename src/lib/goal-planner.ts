@@ -398,7 +398,7 @@ function buildPath(args: PathBuildArgs): UpgradePath {
   }
 
   const meetsTarget = finalFps >= target.targetFps;
-  const withinBudget = target.maxBudget == null ? true : totalCost <= target.maxBudget;
+  const withinBudget = target.maxBudget === undefined || target.maxBudget === null ? true : totalCost <= target.maxBudget;
 
   const assessed = assessRiskAndConfidence({
     pathType: type,

@@ -226,7 +226,7 @@ export function GoalUpgradePlanner({ scan, analysis }: GoalUpgradePlannerProps) 
                     <ArrowRight size={10} className="text-cyan" />
                     <span>{step.title}</span>
                     <span className="font-mono">(${step.cost})</span>
-                    {step.afterFps != null ? <span className="font-mono text-cyan">{"->"}{step.afterFps} FPS</span> : null}
+                    {step.afterFps !== null ? <span className="font-mono text-cyan">{"->"}{step.afterFps} FPS</span> : null}
                   </div>
                 ))}
               </div>

@@ -1,6 +1,5 @@
 import type { SystemScan, AnalysisResult } from "@/lib/types";
-import type { GameBenchmark, Resolution, QualityPreset } from "@/data/game-benchmarks";
-import { RESOLUTION_MULTIPLIERS, QUALITY_MULTIPLIERS } from "@/data/game-benchmarks";
+import { RESOLUTION_MULTIPLIERS, QUALITY_MULTIPLIERS, type GameBenchmark, type Resolution, type QualityPreset } from "@/data/game-benchmarks";
 import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 
 // RTX 4070 = gaming_score 75 in our DB — the calibration reference card

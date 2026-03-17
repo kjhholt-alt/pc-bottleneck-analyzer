@@ -1,5 +1,4 @@
-import { cpuDatabase, gpuDatabase } from "@/data/hardware-db";
-import { lookupCPU, lookupGPU } from "@/data/hardware-db";
+import { cpuDatabase, gpuDatabase, lookupCPU, lookupGPU } from "@/data/hardware-db";
 import type { SystemScan, AnalysisResult } from "@/lib/types";
 
 export interface PercentileResult {

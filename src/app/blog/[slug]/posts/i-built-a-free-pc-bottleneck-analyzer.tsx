@@ -1,7 +1,7 @@
 import { getAmazonLink } from "@/lib/affiliate";
 import Link from "next/link";
 
-function A({ name }: { name: string }) {
+function _A({ name }: { name: string }) {
   return (
     <a
       href={getAmazonLink(name)}

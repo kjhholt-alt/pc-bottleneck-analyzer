@@ -100,7 +100,7 @@ function StatCard({
           {value}
         </span>
         <span className="text-sm text-text-secondary mb-0.5">{unit}</span>
-        {delta != null && delta !== 0 && (
+        {typeof delta === 'number' && delta !== 0 && (
           <span
             className={`text-xs font-mono mb-0.5 ml-auto ${
               delta > 0 ? "text-red" : "text-green"
@@ -111,7 +111,7 @@ function StatCard({
           </span>
         )}
       </div>
-      {progress != null && (
+      {typeof progress === 'number' && (
         <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
           <motion.div
             className="h-full rounded-full"
