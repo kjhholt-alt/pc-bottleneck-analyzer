@@ -15,6 +15,7 @@ import { AIAnalysis } from "./AIAnalysis";
 import { GameFPSEstimator } from "./GameFPSEstimator";
 import { GoalUpgradePlanner } from "./GoalUpgradePlanner";
 import { ProGate } from "./ProGate";
+import { ComparisonChart } from "./ComparisonChart";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
@@ -119,6 +120,16 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
               <p className="text-sm text-text-secondary mt-0.5">Prioritized actions to improve performance</p>
             </div>
             <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
+          </motion.div>
+        )}
+
+        {activeTab === "compare" && (
+          <motion.div key="compare" role="tabpanel" id="tabpanel-compare" aria-labelledby="tab-compare" {...tabTransition}>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-foreground">Hardware Comparison</h2>
+              <p className="text-sm text-text-secondary mt-0.5">Compare CPUs, GPUs, and RAM speeds side-by-side</p>
+            </div>
+            <ComparisonChart />
           </motion.div>
         )}
 

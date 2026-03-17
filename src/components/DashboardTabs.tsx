@@ -12,6 +12,7 @@ import {
   Gamepad2,
   Lock,
   Route,
+  BarChart3,
 } from "lucide-react";
 import { isFeatureLocked } from "@/lib/pro";
 
@@ -19,6 +20,7 @@ const tabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
+  { id: "compare", label: "Compare Hardware", icon: BarChart3 },
   { id: "planner", label: "Goal Planner", icon: Route },
   { id: "ai", label: "AI Insights", icon: Sparkles },
   { id: "fps", label: "Game FPS", icon: Gamepad2 },
