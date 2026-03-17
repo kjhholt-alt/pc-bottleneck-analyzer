@@ -16,6 +16,7 @@ import { GameFPSEstimator } from "./GameFPSEstimator";
 import { GoalUpgradePlanner } from "./GoalUpgradePlanner";
 import { ProGate } from "./ProGate";
 import { ComparisonChart } from "./ComparisonChart";
+import { ProductRecommendation } from "./ProductRecommendation";
 import type { SystemScan, AnalysisResult, UpgradeCategory } from "@/lib/types";
 
 interface DashboardProps {
@@ -115,11 +116,19 @@ export function Dashboard({ scan, analysis, isBuildPlan }: DashboardProps) {
 
         {activeTab === "recommendations" && (
           <motion.div key="recommendations" role="tabpanel" id="tabpanel-recommendations" aria-labelledby="tab-recommendations" {...tabTransition}>
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-foreground">Recommendations</h2>
-              <p className="text-sm text-text-secondary mt-0.5">Prioritized actions to improve performance</p>
+            <div className="space-y-8">
+              {/* Product recommendations based on bottlenecks */}
+              <ProductRecommendation bottlenecks={analysis.bottlenecks} />
+
+              {/* Action recommendations */}
+              <div>
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-foreground">Action Plan</h2>
+                  <p className="text-sm text-text-secondary mt-0.5">Prioritized actions to improve performance</p>
+                </div>
+                <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
+              </div>
             </div>
-            <RecommendationList recommendations={analysis.recommendations} onStartWalkthrough={handleStartWalkthrough} />
           </motion.div>
         )}
 
