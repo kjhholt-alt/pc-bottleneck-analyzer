@@ -1,0 +1,197 @@
+---
+title: "How to Tell If Your PC Is Thermal Throttling (and How to Fix It)"
+description: "Is thermal throttling killing your FPS? Learn how to detect CPU and GPU thermal throttling, what temperatures are too hot, and proven fixes to stop performance loss."
+publishedAt: "2026-03-26"
+author: "PC Bottleneck Analyzer Team"
+tags: ["thermal throttling", "CPU overheating", "GPU temperature", "PC performance", "cooling upgrade", "FPS drops"]
+readingTime: "10 min read"
+---
+
+
+# How to Tell If Your PC Is Thermal Throttling (and How to Fix It)
+
+You've got a solid CPU. A decent GPU. Enough RAM. But your FPS is inconsistent — smooth one minute, stuttering the next — and you can't figure out why. If your PC sounds like a jet engine during those drops, there's a very good chance **thermal throttling** is your invisible bottleneck.
+
+Thermal throttling is one of the most common — and most overlooked — causes of poor gaming and productivity performance. It doesn't show up in spec sheets. It doesn't trigger an error message. Your hardware just quietly slows itself down to avoid melting, and you're left wondering why your expensive components aren't delivering.
+
+> **TL;DR:** Thermal throttling happens when your CPU or GPU gets too hot and automatically reduces clock speeds to cool down. Signs include sudden FPS drops during long gaming sessions, clock speeds that dip below base frequency under load, and CPU temps above 95°C or GPU temps above 90°C. Fixes range from free (cleaning dust, improving airflow) to affordable (replacing thermal paste, adding fans) to serious upgrades (aftermarket coolers, better cases). Use our [free PC bottleneck analyzer](/) to check if your system is being held back.
+
+---
+
+## What Is Thermal Throttling, Exactly?
+
+Every processor — CPU and GPU — has a maximum safe operating temperature, known as **TjMax** (thermal junction maximum) for CPUs or the thermal limit for GPUs. When internal sensors detect temperatures approaching this limit, the chip reduces its clock speed and voltage to generate less heat. This is thermal throttling.
+
+It's a safety feature, not a defect. Without it, your CPU would literally cook itself. But the performance impact can be dramatic:
+
+- A <AffiliateLink name="Intel Core i7-14700K" /> normally boosts to 5.6 GHz under load. When thermal throttling kicks in, it can drop to 3.4 GHz or lower — a **40% clock speed reduction**
+- An <AffiliateLink name="NVIDIA RTX 4070 Ti Super" /> running at 90°C+ will quietly drop its boost clock by 200–400 MHz, costing you 10–15% of your framerate
+- Sustained throttling causes the kind of inconsistent performance that makes games feel *bad* even when your average FPS looks reasonable on paper
+
+The worst part? Thermal throttling often happens gradually. You might not notice it in a five-minute benchmark, but during a two-hour gaming session, temperatures creep up and performance slowly degrades.
+
+---
+
+## How to Tell If Your PC Is Thermal Throttling: 5 Warning Signs
+
+### 1. FPS Drops During Long Sessions
+
+This is the signature symptom. Your game runs great for the first 15–30 minutes, then frame rates start dropping. If restarting the game temporarily fixes performance, thermal throttling is the prime suspect. As your case heats up over time, cooling becomes less effective and throttling intensifies.
+
+### 2. Clock Speeds Drop Under Load
+
+The most definitive proof of throttling. Monitor your CPU and GPU clock speeds while gaming using a tool like HWiNFO64 or MSI Afterburner. If your CPU's clock speed drops below its rated boost frequency — or worse, below its base clock — during sustained load, you're throttling.
+
+For example, if your Ryzen 7 9800X3D is rated for 5.2 GHz boost but you're seeing 3.8 GHz during gaming, that's significant throttling.
+
+### 3. Temperatures Above Safe Limits
+
+Here are the temperature ranges you should know:
+
+| Component | Normal (Gaming) | Getting Warm | Throttling Risk | Danger Zone |
+|---|---|---|---|---|
+| CPU (Intel 12th–15th Gen) | 60–75°C | 75–85°C | 85–100°C | 100°C+ (TjMax) |
+| CPU (AMD Ryzen 7000/9000) | 55–75°C | 75–85°C | 85–95°C | 95°C (TjMax) |
+| GPU (NVIDIA RTX 40/50) | 60–75°C | 75–83°C | 83–90°C | 90°C+ |
+| GPU (AMD RX 7000/9000) | 60–80°C | 80–90°C | 90–100°C | 100°C+ (hotspot) |
+
+If you're consistently hitting the "Throttling Risk" column during gaming, your performance is being capped.
+
+### 4. Fans Spinning at Maximum Speed Constantly
+
+Your fans ramping to 100% is your PC screaming for help. If your system sounds like a leaf blower during normal gaming, it means the cooling solution is at capacity and likely still struggling to keep temps in check. This is a precursor to — or sign of active — throttling.
+
+### 5. System Instability or Shutdowns
+
+In extreme cases, if temperatures exceed safe limits even after throttling, your PC will shut down entirely to protect itself. If your PC randomly powers off during intense workloads, overheating is the most common cause by far. Check your Windows Event Viewer for "Kernel-Power" events correlated with these shutdowns.
+
+---
+
+## How to Monitor for Thermal Throttling
+
+You can't fix what you can't measure. Here are the tools to use:
+
+### HWiNFO64 (Free — The Gold Standard)
+
+[HWiNFO64](https://www.hwinfo.com/) gives you per-core CPU temperatures, GPU hotspot temps, clock speeds, power draw, and — critically — a "Thermal Throttling" flag that turns **Yes** when throttling is detected. Run it in sensors-only mode while gaming and check after your session.
+
+**What to look for:**
+- CPU Package temperature (maximum value during session)
+- GPU Temperature and GPU Hot Spot Temperature
+- CPU Clock speed (minimum value during session)
+- Any "Thermal Throttle" or "Power Limit Throttle" flags marked Yes
+
+### MSI Afterburner + RTVA (Free — In-Game Overlay)
+
+MSI Afterburner's on-screen display shows real-time temps and clocks while you game. Set it to show CPU temp, GPU temp, CPU clock, GPU clock, and FPS. If you see temps spike and clocks dip at the same time FPS drops, you've found your throttle.
+
+### Our PC Bottleneck Analyzer
+
+Our [free bottleneck analyzer](/) checks your system configuration and flags potential thermal bottleneck risks based on your hardware combination. It's a quick way to see if your cooling setup is matched to your components before you dive into detailed monitoring.
+
+---
+
+## What Causes Thermal Throttling?
+
+Understanding the cause helps you pick the right fix. Here are the most common culprits, ranked by frequency:
+
+### 1. Dust Buildup (Most Common)
+
+Dust acts as thermal insulation on heatsink fins, fan blades, and mesh filters. A PC that's been running for 6–12 months without cleaning can see temperatures rise 10–15°C simply from dust accumulation. This is the #1 cause of thermal throttling in systems that "used to run fine."
+
+### 2. Inadequate Cooler for the CPU
+
+Intel's 13th/14th/15th Gen and AMD's Ryzen 9000 series run hot. The stock coolers included with many mid-range chips are borderline adequate — and completely inadequate for boost clocks under sustained load. If you're running a stock cooler on a 125W+ TDP chip, throttling isn't a matter of *if* but *when*.
+
+### 3. Poor Case Airflow
+
+A beautiful tempered glass case with no mesh panels and minimal fan mounts is a thermal death trap. Hot air has nowhere to go, intake is restricted, and your components bake in recycled heat. This is especially common in compact ITX builds and cheap cases.
+
+### 4. Old or Poorly Applied Thermal Paste
+
+Thermal paste degrades over time. After 2–3 years, it can dry out, crack, and lose its thermal conductivity. A fresh application of quality thermal paste can drop temperatures by 5–10°C. Bad application (too much, too little, or air bubbles) on a new build causes the same problem from day one.
+
+### 5. High Ambient Room Temperature
+
+Your PC can only cool components down to near-ambient temperature. If your room is 30°C+ in summer, your GPU that ran at 72°C in winter might hit 85°C+ with no other changes. This seasonal performance drop is real and common.
+
+### 6. Overclocking Without Adequate Cooling
+
+Pushing clock speeds and voltages higher generates more heat — sometimes dramatically so. An aggressive CPU overclock can add 50–100W of heat output. If your cooling wasn't upgraded to match, throttling follows immediately.
+
+---
+
+## How to Fix Thermal Throttling: From Free to Full Upgrade
+
+### Tier 1: Free Fixes (Try These First)
+
+**Clean your PC.** Use compressed air to blow out dust from all heatsinks, fans, filters, and vents. Do this every 3–6 months. This alone fixes throttling in a surprising number of cases.
+
+**Improve cable management.** Tangled cables block airflow through the case. Route cables behind the motherboard tray and use zip ties to keep paths clear.
+
+**Optimize fan curves.** Use your motherboard BIOS or a tool like Fan Control to set more aggressive fan curves that ramp up cooling earlier, before throttling temperatures are reached.
+
+**Remove side panel (temporary test).** Take off your case side panel and game for 30 minutes. If temps drop significantly (10°C+), your case airflow is the problem — not the cooler itself.
+
+### Tier 2: Budget Fixes ($10–$50)
+
+**Replace thermal paste.** Pick up <AffiliateLink name="Noctua NT-H2 Thermal Paste" /> or Thermal Grizzly Kryonaut. Repasting a CPU takes 15 minutes and can drop temps 5–10°C on aged paste. Don't forget GPU thermal paste — it degrades too, and repasting a GPU can revive a throttling card.
+
+**Add case fans.** Most cases benefit from at least two intake fans and one exhaust. A pack of <AffiliateLink name="Arctic P12 PWM PST 5 Pack" /> fans for around $25 is one of the best value upgrades in all of PC building. Focus on front intake and rear/top exhaust.
+
+**Replace mesh filters or add magnetic dust filters.** If your case has solid panels with tiny vent holes, aftermarket magnetic mesh filters can improve intake while keeping dust manageable.
+
+### Tier 3: Meaningful Upgrades ($50–$150)
+
+**Upgrade your CPU cooler.** If you're on a stock or bundled cooler, a proper tower cooler or AIO makes an enormous difference:
+
+- **Best budget air cooler:** <AffiliateLink name="Thermalright Peerless Assassin 120 SE" /> (~$35) — trades blows with coolers twice its price
+- **Best mid-range tower:** <AffiliateLink name="Noctua NH-D15" /> (~$110) — the gold standard for air cooling, handles any consumer CPU
+- **Best value AIO:** <AffiliateLink name="Arctic Liquid Freezer III 280" /> (~$100) — 280mm AIO that keeps even overclocked chips cool and quiet
+
+**Upgrade GPU thermal pads.** Aftermarket thermal pads for GPU VRAM and VRM modules can drop hotspot temperatures significantly, especially on reference-design cards. This is an advanced fix but effective for GPUs throttling on hotspot temps despite reasonable core temps.
+
+### Tier 4: Case and Airflow Overhaul ($80–$200+)
+
+If your case is fundamentally airflow-limited, sometimes the most cost-effective fix is a new case entirely. Cases with mesh front panels and good fan support make a measurable difference:
+
+- **Best airflow case (mid-tower):** <AffiliateLink name="Fractal Design North" /> or <AffiliateLink name="Lian Li Lancool III" /> — both offer excellent airflow with clean aesthetics
+- **Best compact airflow:** <AffiliateLink name="Fractal Design Pop Mini Air" /> — mATX with full mesh front
+
+Pair a new case with a proper fan setup and cooler, and you can drop load temperatures by 15–25°C — enough to turn a throttling system into one that boosts to full speeds indefinitely.
+
+---
+
+## Thermal Throttling vs. Power Limit Throttling
+
+One important distinction: **not all throttling is thermal.** Modern CPUs and GPUs also throttle based on power limits. If your CPU hits its PL2 (power limit 2) time window or your GPU reaches its default power target, clock speeds will reduce even if temperatures are fine.
+
+**How to tell the difference:**
+- **Thermal throttling:** Temperatures at or near TjMax, clock speeds drop as temps rise
+- **Power limit throttling:** Temperatures well below max, but clock speeds still capped. HWiNFO will show "Power Limit Throttling: Yes" while "Thermal Throttle: No"
+
+Power limit throttling on GPUs can sometimes be addressed by increasing the power limit slider in MSI Afterburner (at the cost of more heat and power draw). For CPUs, removing power limits in BIOS is possible but risky — make sure your cooling can handle it first.
+
+> Want to know if your CPU and GPU are properly matched before investing in cooling upgrades? Run your specs through our [free bottleneck analyzer](/) — it checks for mismatches that might mean your money is better spent elsewhere.
+
+---
+
+## Prevention: Keeping Throttling Away Long-Term
+
+Once you've fixed your thermal issues, keep them fixed:
+
+1. **Clean your PC every 3–6 months** — set a calendar reminder
+2. **Monitor temps monthly** — a quick HWiNFO session during gaming tells you if anything is trending upward
+3. **Replace thermal paste every 2–3 years** as preventive maintenance
+4. **Keep your room ventilated** — even a desk fan near your PC helps in summer
+5. **Don't block intake/exhaust** — keep your PC off carpet and away from walls
+
+---
+
+## The Bottom Line
+
+Thermal throttling is the stealth killer of PC performance. It doesn't show up in your specs, it doesn't trigger a warning popup, and it gets worse gradually — making it easy to blame other things. But the fixes are often cheap or free: clean your dust, apply fresh thermal paste, add a couple of fans, and upgrade that stock cooler.
+
+If you're experiencing inconsistent FPS, performance that degrades over long sessions, or a system that sounds like it's struggling, check your temps first. The [PC Bottleneck Analyzer](/) can help you identify whether thermal issues, hardware mismatches, or something else entirely is holding your system back.
+
+**Stop leaving performance on the table. Your hardware is capable of more — it just needs to breathe.**
