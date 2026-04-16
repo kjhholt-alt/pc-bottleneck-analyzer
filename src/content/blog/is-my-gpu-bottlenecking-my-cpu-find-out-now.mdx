@@ -1,209 +1,206 @@
 ---
 title: "Is My GPU Bottlenecking My CPU? Find Out Now"
-description: "Wondering if your GPU is bottlenecking your CPU? Learn the signs, how to test it, and the best upgrades to fix it in 2026."
-publishedAt: "2026-04-14"
+description: "Is your GPU bottlenecking your CPU? Learn how to diagnose it, what the symptoms are, and exactly which upgrades will fix it in 2026."
+publishedAt: "2026-04-16"
 author: "PC Bottleneck Analyzer Team"
-tags: ["GPU bottleneck", "PC performance", "GPU vs CPU", "gaming PC", "PC upgrades 2026"]
+tags: ["gpu bottleneck", "cpu bottleneck", "pc performance", "pc building", "gpu upgrade 2026"]
 readingTime: "8 min read"
 ---
 
-# Is My GPU Bottlenecking My CPU? Here's How to Tell (And What to Do About It)
+# Is My GPU Bottlenecking My CPU? Here's How to Tell (and Fix It)
 
-You're mid-game, your frame rate is tanking, and you're convinced something is wrong. Maybe you just upgraded your CPU but your GPU is old, or maybe you're wondering why your shiny new graphics card isn't delivering the performance you expected. Either way, you're asking the right question: **is my GPU bottlenecking my CPU?**
+You're mid-game and something feels *off*. Framerates are inconsistent, your CPU usage is sitting at 30%, but your GPU is screaming at 99%. Or maybe it's the other way around — your GPU is barely breaking a sweat while your CPU melts. Either way, you've landed on the right page.
 
-Spoiler: it probably is — and that's not always a bad thing. Let's break down exactly what a GPU bottleneck is, how to diagnose it, and what you can actually do to fix it.
+**Is your GPU bottlenecking your CPU?** It's one of the most Googled questions in PC building, and the answer is almost never black-and-white. In this guide, we'll break down exactly what a GPU bottleneck is, how to diagnose it with real data, and what you should actually do about it.
 
 ---
 
-> **TL;DR**
-> - A GPU bottleneck means your GPU is the limiting factor in your system's performance — it can't keep up with what your CPU is feeding it.
-> - Signs: CPU usage is low while GPU usage is pegged at 100% during gaming.
-> - GPU bottlenecks are *normal* in gaming — you *want* your GPU working hard.
-> - A severe mismatch (e.g., RTX 5080 + Pentium Gold) can hurt performance significantly.
-> - Use our [free bottleneck analyzer](/) to get an instant score for your specific build.
+> **TL;DR / Key Takeaways**
+> - A GPU bottleneck means your GPU is the limiting factor — your CPU is waiting on it to finish rendering frames.
+> - 99% GPU usage isn't always bad; it often means your GPU is being used efficiently.
+> - CPU bottlenecks are more of a problem in CPU-heavy games (open world, strategy, simulation).
+> - The "right" bottleneck depends on your resolution and target framerate.
+> - Use our [free bottleneck analyzer](/) to get a score for your exact build in seconds.
 
 ---
 
 ## What Does "GPU Bottlenecking CPU" Actually Mean?
 
-Before we go further, let's get the terminology straight — because it gets misused constantly on r/buildapc.
+Let's get the terminology straight, because r/buildapc gets this wrong constantly.
 
-A **bottleneck** is simply the weakest link in your system's pipeline. When people say "my GPU is bottlenecking my CPU," they usually mean the GPU is *slower* than what the CPU can supply — so the CPU is sitting idle, waiting for the GPU to catch up.
+A **bottleneck** is simply whichever component is limiting your system's performance at any given moment. In a perfectly balanced system, both your CPU and GPU would hit their limits at roughly the same time. In reality, that almost never happens.
 
-In gaming, your CPU handles game logic, physics, AI, and draw calls. Your GPU takes that data and renders the actual frames. If your GPU can't render frames fast enough, it becomes the bottleneck — your CPU finishes its work, twiddles its thumbs, and waits.
+When your **GPU is the bottleneck**, it means the GPU can't push frames fast enough to keep up with what the CPU is feeding it. Your CPU is sitting there, ready to process more game logic and draw calls, but it's waiting on the GPU to finish rendering.
 
-**Here's the counterintuitive truth:** in most gaming scenarios, a GPU bottleneck is *exactly what you want.* It means your CPU is powerful enough that it's never the limiting factor. The GPU being maxed out means you're extracting maximum value from it.
+When your **CPU is the bottleneck**, the opposite happens — the GPU is idle or underutilized, waiting on the CPU to hand it more work to do.
 
-The *problem* is when there's a severe mismatch — like pairing a $700 GPU with a $50 CPU. Then you're leaving serious performance on the table.
+### Why 99% GPU Usage Is Usually Fine
 
----
+Here's a hot take that trips up a lot of builders: **GPU usage sitting at 99% is not a problem in most cases.** It means your GPU is being fully utilized, which is exactly what you want when gaming.
 
-## Signs Your GPU Is Bottlenecking Your CPU
-
-So how do you actually know if your GPU is the bottleneck? Here are the real-world signs to watch for.
-
-### 1. GPU Usage Is Pinned at 99–100%
-
-Open Task Manager, MSI Afterburner, or HWiNFO64 while gaming. If your GPU usage is consistently at 99–100% and your CPU usage is below 70%, congratulations — your GPU is the bottleneck. Again, this is *normal* and generally healthy.
-
-### 2. CPU Usage Is Consistently Low
-
-If your CPU sits at 30–50% utilization while your GPU is maxed, your CPU has headroom to spare. The GPU is doing all the heavy lifting. This is the classic GPU bottleneck profile.
-
-### 3. Frame Rate Scales With Graphics Settings
-
-Crank up your resolution or turn on ray tracing — if your FPS drops significantly, that's your GPU struggling. Conversely, if lowering your resolution barely changes your FPS, you may actually have a CPU bottleneck (we cover that in detail over at [Is Your GPU Bottlenecking Your CPU?](/blog/gpu-bottlenecking-cpu)).
-
-### 4. You Get High Frame Times Even With Decent Averages
-
-Frame time spikes — not just average FPS — are a sign of a strained GPU. Tools like FrameView or RTSS (RivaTuner Statistics Server) can show you 1% and 0.1% lows, which reveal inconsistency the averages hide.
+The issue arises when you're getting low or inconsistent framerates *alongside* 99% GPU usage. That's when you know the GPU genuinely can't keep up — and it's time to either upgrade or dial back your settings.
 
 ---
 
-## How to Test for a GPU Bottleneck: Step by Step
+## How to Tell If Your GPU Is Bottlenecking Your CPU
 
-You don't need to guess. Here's a repeatable process to confirm whether your GPU is bottlenecking your CPU.
+The only way to know for sure is to look at real usage data while gaming. Here's a quick process:
 
-### Step 1: Run a Monitoring Tool While Gaming
+### Step 1: Monitor Your GPU and CPU Usage Simultaneously
 
-Download **MSI Afterburner** (free) and enable the on-screen display. Set it to show:
-- GPU Usage (%)
-- CPU Usage (per-core and total)
-- GPU Temperature
-- Framerate
+Use a tool like **MSI Afterburner + RivaTuner** or the built-in **Xbox Game Bar (Win + G)** to overlay GPU and CPU usage percentages in real time while you play.
 
-Play your most demanding game for 10–15 minutes and note the averages.
+What you're looking for:
+- **GPU at 95–100%, CPU below 70%** → GPU bottleneck (expected at 1440p/4K)
+- **CPU at 95–100%, GPU below 80%** → CPU bottleneck (more problematic)
+- **Both below 80% with stuttering** → likely a RAM, storage, or driver issue
 
-### Step 2: Check the Ratio
+### Step 2: Check at Different Resolutions
 
-| CPU Usage | GPU Usage | Verdict |
-|-----------|-----------|---------|
-| < 70% | ~99–100% | Normal GPU bottleneck — GPU is the limiting factor |
-| ~90–100% | < 70% | CPU bottleneck — your CPU can't feed the GPU fast enough |
-| Both ~70–85% | Both ~70–85% | Well-balanced system |
-| Both < 50% | Both < 50% | Something else is wrong (RAM speed, driver issues, game optimization) |
+Here's a trick most guides skip: **run a benchmark at 1080p, then 4K, and compare your CPU usage**.
 
-### Step 3: Test at Different Resolutions
+At 4K, the GPU has far more pixels to render, so it naturally takes longer per frame — making a GPU bottleneck almost guaranteed, and that's *fine*. At 1080p with high framerates (144fps+), CPU bottlenecks become much more common because the GPU finishes frames so fast that the CPU struggles to keep up.
 
-Drop your resolution from 1440p to 1080p. If your FPS jumps significantly, that confirms a GPU bottleneck — lower resolution reduces GPU workload and frees it up. If FPS barely changes, your CPU is likely the culprit.
+### Step 3: Use a Bottleneck Calculator (Like Ours)
 
-### Step 4: Use Our Free Bottleneck Analyzer
+Manual monitoring is great, but it requires you to know what you're looking at. Our free tool at [pcbottleneck.buildkit.store](/) takes your exact CPU and GPU combo, scores your system out of 100, and tells you which component is your weakest link — no guesswork required.
 
-The fastest way? Just use our **[free PC bottleneck analyzer](/)** at pcbottleneck.buildkit.store. Enter your CPU and GPU, and we'll give you a bottleneck score out of 100 with specific upgrade recommendations. No downloads, no sign-up.
+We've also written about how we built it here: [I Built a Free PC Bottleneck Analyzer](/blog/i-built-a-free-pc-bottleneck-analyzer).
 
 ---
 
-## Is a GPU Bottleneck Actually Bad?
+## Is My GPU Bottlenecking My CPU? Common Scenarios
 
-This is the most misunderstood part of the whole conversation. Let's set the record straight.
+Let's walk through the most common real-world combos we see and what they actually mean.
 
-**A moderate GPU bottleneck (your GPU at 95–100%, CPU at 50–70%) is the ideal gaming configuration.** It means your GPU is fully utilized — you're getting every frame it can produce — and your CPU has headroom so it's never the thing holding you back.
+### Scenario 1: Older GPU, Modern CPU (e.g., RTX 3060 + Ryzen 7 9800X3D)
 
-Where it *becomes* a problem is at the extremes:
+This is the classic GPU bottleneck setup. You've upgraded your CPU — maybe you bought the <AffiliateLink name="AMD Ryzen 7 9800X3D" /> for its insane gaming performance — but you're still rocking a two-generation-old GPU.
 
-### Scenario 1: Severe GPU Bottleneck (Mismatched Build)
+At 1080p medium settings, you might see your GPU at 99% and your CPU barely above 40%. The <AffiliateLink name="AMD Ryzen 7 9800X3D" /> is chomping at the bit, but the GPU literally cannot serve up frames fast enough.
 
-Think something like a <AffiliateLink name="RTX 5080" /> paired with a budget dual-core CPU. The GPU is screaming to render frames but the CPU physically can't feed it geometry and draw calls fast enough. You'll see the GPU usage *drop* paradoxically, and frame times will be all over the place. This is a genuine problem.
+**Fix:** Upgrade the GPU. At 1440p, you want at least an <AffiliateLink name="RTX 4070 Ti Super" /> or the newer <AffiliateLink name="RTX 5070" /> to match that CPU tier properly.
 
-### Scenario 2: The "Wasted CPU" Situation
+### Scenario 2: High-End GPU, Budget CPU (e.g., RTX 5080 + i5-10400F)
 
-You just dropped $400 on a <AffiliateLink name="AMD Ryzen 9 9800X3D" /> but you're still running a GTX 1060. Your CPU is an absolute monster sitting at 15% utilization. You're not getting anywhere near the CPU's potential. Here, upgrading your GPU is the right call.
+This is the CPU bottleneck nightmare. You dropped big money on an <AffiliateLink name="RTX 5080" />, but your 2020-era six-core CPU is choking on the draw calls before they ever reach the GPU.
 
-### Scenario 3: Resolution-Dependent Bottleneck
+In CPU-intensive games like *Cyberpunk 2077* (crowds), *Microsoft Flight Simulator*, or any city-builder, you'll see low framerates with the GPU sitting at 50–60% usage. That's money left on the table.
 
-At 1080p, your GPU finishes frames so fast that your CPU *becomes* the bottleneck — even a moderately powerful CPU can struggle here. At 1440p or 4K, the GPU has more pixels to push, and GPU bottlenecks naturally re-emerge. This is why we generally recommend:
+**Fix:** Upgrade the CPU first. Look at the <AffiliateLink name="Intel Core i7-14700K" /> for a more budget-friendly platform, or go full send with the <AffiliateLink name="AMD Ryzen 9 9950X3D" /> if you want the best gaming CPU on the market right now.
 
-- **1080p gaming:** Focus on CPU performance; mid-range GPUs like the <AffiliateLink name="RTX 5060" /> or <AffiliateLink name="RX 9070" /> are plenty.
-- **1440p gaming:** Balance matters; the <AffiliateLink name="RTX 5070" /> or <AffiliateLink name="RX 9070 XT" /> are sweet spots.
-- **4K gaming:** GPU is almost always the bottleneck; go as big as your budget allows — <AffiliateLink name="RTX 5080" /> or <AffiliateLink name="RTX 5090" /> territory.
+### Scenario 3: Balanced Mid-Range Build (e.g., RTX 4060 Ti + Ryzen 5 9600X)
 
----
+This is actually a well-matched pair. The <AffiliateLink name="RTX 4060 Ti" /> and <AffiliateLink name="AMD Ryzen 5 9600X" /> trade blows depending on the game — neither is dramatically holding the other back at 1080p/1440p.
 
-## Common GPU + CPU Pairings and Their Bottleneck Scores
-
-Here are some real-world combos we've analyzed on our tool, with rough bottleneck assessments:
-
-### Great Pairings (Well-Balanced)
-- **<AffiliateLink name="Intel Core i7-14700K" /> + <AffiliateLink name="RTX 5070 Ti" />** — Excellent balance at 1440p. GPU leads slightly, as it should.
-- **<AffiliateLink name="AMD Ryzen 7 9800X3D" /> + <AffiliateLink name="RTX 5080" />** — One of the best 4K gaming combos in early 2026. Near-zero CPU bottleneck.
-- **<AffiliateLink name="Intel Core i5-14600K" /> + <AffiliateLink name="RX 9070 XT" />** — Outstanding 1440p value. Barely any bottleneck in either direction.
-
-### Problematic Pairings (Worth Upgrading)
-- **Ryzen 5 2600 + RTX 5070** — That CPU is a real anchor for a modern GPU. CPU bottleneck will be severe at 1080p.
-- **i9-13900K + GTX 1080 Ti** — Incredible CPU completely held back by an aging GPU. Upgrade the GPU immediately.
-- **i3-12100F + RTX 5090** — Please don't do this. The i3 will strangle that GPU into submission.
+You'll see the GPU hit 95%+ in GPU-heavy titles and the CPU take the hit in open-world games. This is healthy. Don't upgrade either unless you're targeting 4K or 240fps.
 
 ---
 
-## How to Fix a GPU Bottleneck
+## Does Resolution Change Whether Your GPU Is Bottlenecking Your CPU?
 
-If you've confirmed your GPU is the bottleneck and the pairing feels severely mismatched, here's your action plan.
+**Absolutely — and this is the most important variable most guides ignore.**
 
-### Option 1: Upgrade Your GPU
+Resolution is the single biggest lever that shifts the bottleneck from CPU to GPU and back again.
 
-The most direct fix. If you're running anything older than an RTX 3000 series or RX 6000 series, there are massive generational gains available in 2026.
+| Resolution | Typical Bottleneck | Why |
+|---|---|---|
+| 1080p @ 60fps | CPU | GPU finishes frames quickly; CPU must keep up |
+| 1080p @ 144fps+ | CPU (more severe) | Even faster frame delivery required from CPU |
+| 1440p @ 60–144fps | Balanced/GPU | GPU starts being pushed harder |
+| 4K @ 60fps | GPU | GPU is fully loaded rendering 8.3M pixels/frame |
+| 4K @ 120fps+ | GPU (severe) | Almost always GPU-limited regardless of CPU |
 
-- **Budget 1080p:** <AffiliateLink name="RTX 5060" /> (~$299) or <AffiliateLink name="RX 9070" /> (~$449)
-- **Mainstream 1440p:** <AffiliateLink name="RTX 5070" /> (~$549) or <AffiliateLink name="RX 9070 XT" /> (~$499)
-- **High-end 1440p / entry 4K:** <AffiliateLink name="RTX 5070 Ti" /> (~$749)
-- **4K max settings:** <AffiliateLink name="RTX 5080" /> (~$999) or <AffiliateLink name="RTX 5090" /> (~$1,999)
-
-Check out our dedicated guide on [Best Upgrades for Common PC Bottlenecks in 2026](/blog/best-upgrades-pc-bottlenecks-2026) for a deeper breakdown by budget.
-
-### Option 2: Lower Your In-Game Resolution or Settings
-
-Not the sexy answer, but effective and free. Dropping from 4K to 1440p can cut GPU workload dramatically. Alternatively, lowering shadow quality and draw distance tends to relieve GPU pressure more than other settings.
-
-### Option 3: Enable DLSS / FSR / XeSS
-
-If you're running an NVIDIA card, DLSS 4 (available on RTX 50 series) with Multi Frame Generation is a game-changer. Effectively multiplies your frame rate by rendering at a lower resolution and using AI to upscale. AMD's FSR 4 is also impressive on the <AffiliateLink name="RX 9070 XT" />. This can mask a GPU bottleneck without any hardware spend.
-
-### Option 4: Check Your Drivers and Background Processes
-
-Sometimes what looks like a bottleneck is actually a software issue. Old GPU drivers, background Chrome tabs eating RAM, or Windows Update running in the background can all tank your GPU utilization and frame rate. Always rule this out first — it's free.
+This is why **is my gpu bottlenecking my cpu** has no universal answer — it depends entirely on what resolution and framerate you're targeting.
 
 ---
 
-## What About RAM? Does It Affect GPU Bottlenecks?
+## How Much GPU Bottleneck Is Acceptable?
 
-Yes, surprisingly. Slow or single-channel RAM can create a CPU-side bottleneck that *looks* like a GPU issue because your frame rate suffers across the board.
+Here's the real-world answer from our testing and from the broader r/pcgaming community: **a 5–10% performance gap between your CPU and GPU is totally fine.** You don't need perfect balance.
 
-If you're on DDR4, make sure it's running at at least **3200MHz in dual channel**. DDR5 users should target **6000MHz CL30** — this is the sweet spot for AMD Ryzen 9000 series CPUs. Under-clocked RAM on an otherwise great CPU can cost you 10–20% performance in CPU-limited scenarios, which indirectly reduces how well your GPU can perform.
+What you want to avoid is a **20–30%+ mismatch**, where one component is so far behind that it's leaving serious FPS or frame time consistency on the table.
+
+Our bottleneck analyzer scores your build out of 100 and flags anything beyond that 10% threshold as worth addressing. Check your score for free at [pcbottleneck.buildkit.store](/).
+
+---
+
+## Best GPU Upgrades to Fix a CPU Bottleneck (2026 Picks)
+
+If your CPU is the issue, no GPU upgrade will fix it — but if you've diagnosed a **GPU bottleneck** and you're ready to upgrade, here's what we recommend by resolution target:
+
+### Best GPUs for 1080p Gaming
+- <AffiliateLink name="RTX 5060" /> — The new budget king for 1080p in 2026. Handles 144fps+ in most titles.
+- <AffiliateLink name="RX 7800 XT" /> — Excellent value if you find it on sale; strong rasterization performance.
+
+### Best GPUs for 1440p Gaming
+- <AffiliateLink name="RTX 5070" /> — Our top pick for 1440p in 2026. Excellent ray tracing, great DLSS 4 support.
+- <AffiliateLink name="RX 9070 XT" /> — AMD's answer for 1440p. Competitive rasterization, strong FSR 4 support.
+- <AffiliateLink name="RTX 4070 Ti Super" /> — Previous gen but still a powerhouse, and prices have dropped significantly.
+
+### Best GPUs for 4K Gaming
+- <AffiliateLink name="RTX 5080" /> — The sweet spot for 4K. Massive performance jump over last gen.
+- <AffiliateLink name="RTX 5090" /> — Absolute top of the stack. If you have a 4K 144Hz display and budget isn't a concern, nothing touches it.
+
+---
+
+## Best CPU Upgrades to Fix a GPU Bottleneck (2026 Picks)
+
+If your **CPU is bottlenecking your GPU**, these are the chips worth considering:
+
+### Best Gaming CPUs Right Now
+- <AffiliateLink name="AMD Ryzen 7 9800X3D" /> — The best gaming CPU you can buy in early 2026. Period. The 3D V-Cache makes it untouchable in CPU-limited scenarios.
+- <AffiliateLink name="Intel Core i7-14700K" /> — Great all-rounder with strong multi-threaded performance and a mature platform.
+- <AffiliateLink name="AMD Ryzen 5 9600X" /> — Budget-friendly 6-core that punches well above its weight for 1080p gaming.
+- <AffiliateLink name="AMD Ryzen 9 9950X3D" /> — For creators and power users who also game. Massive core count + X3D cache.
+
+---
+
+## Don't Forget: RAM and Storage Can Fake a Bottleneck
+
+Before you drop money on a new GPU or CPU, rule out these two culprits:
+
+**RAM speed and capacity** — Running DDR4 at 2666MHz when your platform supports 3600MHz? You could be leaving 10–15% CPU performance on the floor, which shows up as a fake CPU bottleneck. For DDR5 systems, 6000MHz CL30 is the current sweet spot.
+
+**Storage** — An HDD or slow SATA SSD can cause stutters that look like a CPU or GPU bottleneck but are actually just asset streaming issues. A good PCIe 4.0 NVMe is the minimum for modern gaming in 2026.
+
+For a deeper dive into the most impactful upgrades, check out our post on [Best Upgrades for Common PC Bottlenecks in 2026](/blog/best-upgrades-pc-bottlenecks-2026).
 
 ---
 
 ## FAQ: Is My GPU Bottlenecking My CPU?
 
-### How do I know if my GPU or CPU is the bottleneck?
-Monitor both during gaming using MSI Afterburner or HWiNFO64. If your GPU is at 99–100% and your CPU is below 70%, the GPU is the bottleneck. If the reverse is true, your CPU is the limiting factor. Use our [free bottleneck analyzer](/) for a definitive score.
+### Is 99% GPU usage bad?
+No — 99% GPU usage means your GPU is fully utilized, which is ideal. The concern is only when you're getting low or stuttering framerates *at the same time*. A GPU running at 99% while you're hitting your target framerate is a well-optimized system.
 
-### Is a GPU bottleneck bad for gaming?
-Not necessarily. A GPU bottleneck simply means your GPU is fully utilized — which is the ideal state for gaming. The issue arises when the gap between GPU and CPU capability is extreme, leading to CPU stalls or wasted GPU potential.
+### What percentage of GPU usage indicates a bottleneck?
+If your GPU is consistently at 95–100% and your CPU is below 60–70%, you have a GPU bottleneck. This is expected at 1440p and 4K. It only becomes a problem if your framerates are lower than expected for your hardware tier.
 
-### What percentage GPU usage is considered a bottleneck?
-95–100% GPU usage during gaming is healthy and expected. It means your GPU is working at full capacity. Only worry if your CPU is also spiking near 100% simultaneously, which causes frame time stutters.
+### Can a GPU bottleneck cause stuttering?
+Yes. If the GPU can't deliver frames fast enough, you'll experience frame time inconsistencies that show up as micro-stutters, even if your average FPS looks acceptable. This is worse than low average FPS in terms of perceived smoothness.
 
-### Can upgrading my CPU fix a GPU bottleneck?
-Rarely. If your GPU is the bottleneck, upgrading your CPU won't help much — your GPU will still max out. The exception is at 1080p, where a faster CPU can push more frames per second, potentially "revealing" a GPU bottleneck more clearly.
+### Is it better to have a CPU bottleneck or a GPU bottleneck?
+A **GPU bottleneck is generally preferable** for gamers. It means you can often fix performance by lowering resolution or graphical settings. A CPU bottleneck is harder to work around — lowering graphical settings won't help because the GPU isn't the problem.
 
-### Does resolution affect GPU bottlenecks?
-Absolutely. Higher resolutions (1440p, 4K) put more load on the GPU, making GPU bottlenecks more common and more severe. Lower resolutions (1080p) reduce GPU load, shifting the bottleneck toward the CPU. This is why 1080p competitive gaming demands a strong CPU more than a top-tier GPU.
+### How do I check if my GPU is bottlenecking my CPU for free?
+Use our free tool at [pcbottleneck.buildkit.store](/). Enter your CPU and GPU, and we'll give your system a score out of 100 with a clear breakdown of which component is holding you back. No sign-up needed.
 
 ---
 
-## Run Our Free Bottleneck Analyzer Right Now
+## Wrapping Up: Stop Guessing, Start Measuring
 
-You've read the theory — now let's get specific to *your* build.
+The question "is my gpu bottlenecking my cpu" doesn't have one answer — it has *your* answer, based on your specific components, resolution, and the games you play.
 
-Our **[free PC bottleneck analyzer](/)** at pcbottleneck.buildkit.store takes your exact CPU and GPU combo, scores your system out of 100, and tells you:
+Here's the quick recap:
+1. Monitor GPU and CPU usage with MSI Afterburner while gaming.
+2. If GPU is at 99% and CPU is low — expected, especially at 1440p/4K.
+3. If CPU is at 99% and GPU is low — CPU bottleneck, time to upgrade the processor.
+4. Factor in your target resolution and framerate before spending anything.
+5. Rule out RAM and storage issues before assuming it's CPU or GPU.
 
-- Which component is your bottleneck
-- How severe the mismatch is
-- The exact upgrades that will give you the best performance-per-dollar improvement
+And if you want a definitive answer in under 30 seconds? **Run your build through our free bottleneck analyzer at [pcbottleneck.buildkit.store](/)**. We'll score your system, identify the weak link, and recommend exactly what to upgrade — so you're never guessing again.
 
-It takes 30 seconds and it's completely free. No email required, no software to download. Thousands of builds from r/buildapc and r/pcgaming have been scored — yours should be next.
+For more on this topic, check out our related post: [Is Your GPU Bottlenecking Your CPU?](/blog/gpu-bottlenecking-cpu) — it goes even deeper on the GPU-side diagnosis.
 
-**[→ Check your bottleneck score now](/)**
-
-And if you want to go deeper, read about [how we built the tool](/blog/i-built-a-free-pc-bottleneck-analyzer) or browse more guides on the [pcbottleneck blog](/blog).
+Happy gaming. 🎮
 
