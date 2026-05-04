@@ -1,7 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse, type NextRequest } from "next/server";
-
-const anthropic = new Anthropic();
+import { ask } from "@/lib/claudex.js";
 
 const SYSTEM_PROMPT = `You are an expert PC hardware analyst and gaming performance specialist. You receive raw system scan data and a rule-based analysis, then provide a personalized deep analysis.
 
@@ -35,15 +33,14 @@ Flag any potential issues: PSU wattage, physical clearance, slot availability, B
 
 Keep the tone direct and helpful. No filler. Every sentence should be useful.`;
 
+/**
+ * Migrated from streaming Anthropic SDK to claudex (Max-sub `claude -p`).
+ * The CLI does not support token streaming, so this returns the full
+ * response once Claude finishes. The frontend already handles a fully-
+ * delivered string — no UI changes required, just slightly less
+ * "typewriter" feel.
+ */
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "ANTHROPIC_API_KEY not configured" },
-      { status: 500 },
-    );
-  }
-
   let body: { scan: unknown; analysis: unknown; messages?: { role: string; content: string }[] };
   try {
     body = await req.json();
@@ -59,63 +56,27 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Build the conversation messages
   const scanContext = `Here is the system scan data and rule-based analysis:\n\n**Scan Data:**\n${JSON.stringify(scan, null, 2)}\n\n**Rule-Based Analysis:**\n${JSON.stringify(analysis, null, 2)}`;
 
-  const conversationMessages: { role: "user" | "assistant"; content: string }[] = [
-    { role: "user", content: scanContext },
-  ];
-
-  // Append follow-up messages if this is a chat continuation
+  const turns: string[] = [`<user>\n${scanContext}\n</user>`];
   if (messages && Array.isArray(messages)) {
     for (const msg of messages) {
       if (msg.role === "assistant" || msg.role === "user") {
-        conversationMessages.push({
-          role: msg.role,
-          content: msg.content,
-        });
+        turns.push(`<${msg.role}>\n${msg.content}\n</${msg.role}>`);
       }
     }
   }
+  turns.push("<assistant>");
+
+  const prompt = `<system>\n${SYSTEM_PROMPT}\n</system>\n\n${turns.join("\n\n")}`;
 
   try {
-    const stream = anthropic.messages.stream({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 2048,
-      system: SYSTEM_PROMPT,
-      messages: conversationMessages,
-    });
-
-    // Convert the Anthropic stream to a ReadableStream for the browser
-    const readableStream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const event of stream) {
-            if (
-              event.type === "content_block_delta" &&
-              event.delta.type === "text_delta"
-            ) {
-              controller.enqueue(
-                new TextEncoder().encode(event.delta.text),
-              );
-            }
-          }
-          controller.close();
-        } catch (err) {
-          controller.error(err);
-        }
-      },
-    });
-
-    return new Response(readableStream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Transfer-Encoding": "chunked",
-        "Cache-Control": "no-cache",
-      },
+    const r = await ask(prompt, { useCache: true, timeoutMs: 90_000 });
+    return new Response(r.text, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   } catch (err) {
-    console.error("Anthropic API error:", err);
+    console.error("claudex error:", err);
     return NextResponse.json(
       { error: "AI analysis failed. Please try again." },
       { status: 500 },
