@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "type-check": "tsc --noEmit",
+    "type-check:status": "node scripts/run-type-check.mjs",
+    "build:status": "node scripts/run-build.mjs",
+    "emit-status": "node scripts/emit-status.mjs",
     "start": "next start",
     "lint": "eslint",
     "build:scanner": "cd scanner && build.bat",
