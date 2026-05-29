@@ -1514,6 +1514,13 @@ function normalizeModelName(name: string): string {
     .replace(/\d+nd gen\s*/gi, "")
     .replace(/\d+rd gen\s*/gi, "")
     .replace(/@\s*[\d.]+\s*ghz/gi, "")
+    // Strip the marketing/OS suffixes WMI and py-cpuinfo append to the raw
+    // brand string, e.g. "AMD Ryzen 7 5800X 8-Core Processor" or
+    // "AMD Ryzen 5 5600G with Radeon Graphics". Without this the fuzzy
+    // matcher's 60%-overlap guard rejects every real AMD CPU name.
+    .replace(/\d+-?\s*core\s*processor/gi, "")
+    .replace(/with radeon graphics/gi, "")
+    .replace(/\bprocessor\b/gi, "")
     .replace(/\s+/g, " ")
     .trim();
 }

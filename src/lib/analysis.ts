@@ -865,8 +865,10 @@ function calculateScore(
   cpuEntry: ReturnType<typeof lookupCPU>,
   gpuEntry: ReturnType<typeof lookupGPU>,
 ): PerformanceScore {
-  let cpuScore = 25;
-  let gpuScore = 25;
+  // Unknown CPU/GPU default to a neutral mid score, NOT full marks — an
+  // unrecognized part shouldn't earn a perfect sub-score and inflate the total.
+  let cpuScore = 14;
+  let gpuScore = 14;
   let ramScore = 20;
   let storageScore = 15;
   let settingsScore = 15;
