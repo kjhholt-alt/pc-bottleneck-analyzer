@@ -52,6 +52,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["CPU bottleneck", "GPU bottleneck", "diagnosis", "gaming"],
     readingTime: "12 min read",
   },
+  {
+    slug: "ram-bottleneck-signs-fixes",
+    title:
+      "RAM Bottleneck: 7 Signs Your Memory Is Slowing Down Your PC (and How to Fix It)",
+    description:
+      "How to tell if your RAM is bottlenecking your PC — capacity, speed, and single-channel issues explained, plus the best DDR4 and DDR5 upgrades for every budget in 2026.",
+    publishedAt: "2026-06-15",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["RAM", "bottleneck", "DDR5", "memory upgrade", "gaming"],
+    readingTime: "11 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {
