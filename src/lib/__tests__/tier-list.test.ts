@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   letterTier,
+  relativeTiers,
   valueScore,
   selectParts,
   rankParts,
@@ -31,6 +32,35 @@ describe("letterTier", () => {
     expect(letterTier(73)).toBe("C");
     expect(letterTier(62)).toBe("C");
     expect(letterTier(61)).toBe("D");
+  });
+});
+
+describe("relativeTiers", () => {
+  const RANK: Record<string, number> = { S: 5, A: 4, B: 3, C: 2, D: 1 };
+
+  it("tiers by score WITHIN the list — top is best, bottom is D (not globally all-D)", () => {
+    const tiers = relativeTiers(FIXTURE);
+    expect(tiers.get("Old Timer")).toBe("D"); // lowest score in the set
+    expect(["S", "A"]).toContain(tiers.get("Flagship X")); // highest score → top bucket
+    // Tier never increases as score decreases.
+    expect(RANK[tiers.get("Flagship X")!]).toBeGreaterThan(RANK[tiers.get("Old Timer")!]);
+  });
+
+  it("gives a real S→D spread on a 14-card list (top card = S)", () => {
+    const { ranked } = buildTierList(
+      { slug: "x", title: "X", description: "x", component: "gpu", rankBy: "score", topN: 14, intro: "x", tags: [], minYear: 2021 },
+      { dateISO: "2026-06-28" }
+    );
+    expect(ranked[0].letter).toBe("S");
+    expect(ranked.some((p) => p.letter === "D")).toBe(true);
+  });
+
+  it("is independent of price/value — a cheap low-score part still tiers low", () => {
+    const ranked = rankParts(FIXTURE, "value", 5); // value-ranked order
+    const byName = Object.fromEntries(ranked.map((p) => [p.name, p.letter]));
+    // Old Timer is #1 by value but lowest score → must NOT out-tier the flagship.
+    expect(byName["Old Timer"]).toBe("D");
+    expect(RANK[byName["Flagship X"]]).toBeGreaterThan(RANK[byName["Old Timer"]]);
   });
 });
 
