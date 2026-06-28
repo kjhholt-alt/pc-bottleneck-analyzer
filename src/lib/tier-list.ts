@@ -416,6 +416,8 @@ export interface TierListFeedItem {
 export interface TierListFeedEntry {
   slug: string;
   title: string;
+  description: string;
+  count: number;
   url: string;
   component: Component;
   rankBy: RankBy;
@@ -445,6 +447,8 @@ export function buildFeedEntry(
   return {
     slug: recipe.slug,
     title: recipe.title,
+    description: recipe.description,
+    count: ranked.length,
     url: `${SITE_BASE}/blog/${recipe.slug}`,
     component: recipe.component,
     rankBy: recipe.rankBy,

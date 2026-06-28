@@ -4,6 +4,8 @@
     {
       "slug": "best-graphics-cards-2026-ranked",
       "title": "Best Graphics Cards for Gaming in 2026, Ranked",
+      "description": "Every graphics card worth buying in 2026, ranked by benchmark performance with a price-to-performance value score for each. Find the right GPU for your budget.",
+      "count": 14,
       "url": "https://pcbottleneck.buildkit.store/blog/best-graphics-cards-2026-ranked",
       "component": "gpu",
       "rankBy": "score",
@@ -131,6 +133,8 @@
     {
       "slug": "best-gaming-cpus-2026-ranked",
       "title": "Best Gaming CPUs in 2026, Ranked",
+      "description": "Every current gaming CPU ranked by performance and value from our benchmark database. Find the best processor for your gaming build in 2026.",
+      "count": 14,
       "url": "https://pcbottleneck.buildkit.store/blog/best-gaming-cpus-2026-ranked",
       "component": "cpu",
       "rankBy": "score",
@@ -258,6 +262,8 @@
     {
       "slug": "best-budget-graphics-cards-2026-under-350",
       "title": "Best Budget Graphics Cards in 2026 (Under $350)",
+      "description": "The best cheap graphics cards in 2026, ranked by value from our benchmark database. Great 1080p and entry 1440p gaming without overspending.",
+      "count": 9,
       "url": "https://pcbottleneck.buildkit.store/blog/best-budget-graphics-cards-2026-under-350",
       "component": "gpu",
       "rankBy": "value",
@@ -340,6 +346,216 @@
         "bestOverall": "NVIDIA GeForce RTX 5060",
         "bestValue": "AMD Radeon RX 6650 XT",
         "bestBudget": "AMD Radeon RX 6700 XT"
+      }
+    },
+    {
+      "slug": "best-value-graphics-cards-2026",
+      "title": "Best Value Graphics Cards in 2026 (Price-to-Performance)",
+      "description": "Every graphics card ranked by pure price-to-performance from our benchmark database. The best bang-for-your-buck GPUs at every price in 2026.",
+      "count": 12,
+      "url": "https://pcbottleneck.buildkit.store/blog/best-value-graphics-cards-2026",
+      "component": "gpu",
+      "rankBy": "value",
+      "updatedAt": "2026-06-28",
+      "items": [
+        {
+          "rank": 1,
+          "name": "NVIDIA GeForce RTX 3070 Ti",
+          "tier": "D",
+          "gaming_score": 62,
+          "price": 369,
+          "value": 16.8
+        },
+        {
+          "rank": 2,
+          "name": "NVIDIA GeForce RTX 5060 Ti",
+          "tier": "A",
+          "gaming_score": 70,
+          "price": 429,
+          "value": 16.3
+        },
+        {
+          "rank": 3,
+          "name": "AMD Radeon RX 7900 GRE",
+          "tier": "A",
+          "gaming_score": 72,
+          "price": 449,
+          "value": 16
+        },
+        {
+          "rank": 4,
+          "name": "AMD Radeon RX 7800 XT",
+          "tier": "C",
+          "gaming_score": 65,
+          "price": 429,
+          "value": 15.2
+        },
+        {
+          "rank": 5,
+          "name": "NVIDIA GeForce RTX 4060 Ti 16GB",
+          "tier": "D",
+          "gaming_score": 60,
+          "price": 419,
+          "value": 14.3
+        },
+        {
+          "rank": 6,
+          "name": "AMD Radeon RX 9070",
+          "tier": "C",
+          "gaming_score": 68,
+          "price": 479,
+          "value": 14.2
+        },
+        {
+          "rank": 7,
+          "name": "AMD Radeon RX 6950 XT",
+          "tier": "B",
+          "gaming_score": 70,
+          "price": 499,
+          "value": 14
+        },
+        {
+          "rank": 8,
+          "name": "NVIDIA GeForce RTX 4070",
+          "tier": "C",
+          "gaming_score": 68,
+          "price": 499,
+          "value": 13.6
+        },
+        {
+          "rank": 9,
+          "name": "NVIDIA GeForce RTX 3080 12GB",
+          "tier": "B",
+          "gaming_score": 69,
+          "price": 519,
+          "value": 13.3
+        },
+        {
+          "rank": 10,
+          "name": "AMD Radeon RX 9070 XT",
+          "tier": "S",
+          "gaming_score": 76,
+          "price": 579,
+          "value": 13.1
+        },
+        {
+          "rank": 11,
+          "name": "NVIDIA GeForce RTX 4070 SUPER",
+          "tier": "A",
+          "gaming_score": 73,
+          "price": 569,
+          "value": 12.8
+        },
+        {
+          "rank": 12,
+          "name": "NVIDIA GeForce RTX 3080 Ti",
+          "tier": "B",
+          "gaming_score": 70,
+          "price": 549,
+          "value": 12.8
+        }
+      ],
+      "picks": {
+        "bestOverall": "AMD Radeon RX 9070 XT",
+        "bestValue": "NVIDIA GeForce RTX 3070 Ti",
+        "bestBudget": "NVIDIA GeForce RTX 3070 Ti"
+      }
+    },
+    {
+      "slug": "best-budget-cpus-2026-under-200",
+      "title": "Best Budget Gaming CPUs in 2026 (Under $200)",
+      "description": "The best cheap gaming processors in 2026, ranked by value from our benchmark database. Great frame rates without overspending on your CPU.",
+      "count": 10,
+      "url": "https://pcbottleneck.buildkit.store/blog/best-budget-cpus-2026-under-200",
+      "component": "cpu",
+      "rankBy": "value",
+      "updatedAt": "2026-06-28",
+      "items": [
+        {
+          "rank": 1,
+          "name": "AMD Ryzen 5 5600",
+          "tier": "B",
+          "gaming_score": 70,
+          "price": 99,
+          "value": 70.7
+        },
+        {
+          "rank": 2,
+          "name": "Intel Core i3-14100F",
+          "tier": "D",
+          "gaming_score": 60,
+          "price": 89,
+          "value": 67.4
+        },
+        {
+          "rank": 3,
+          "name": "Intel Core i5-12400F",
+          "tier": "C",
+          "gaming_score": 68,
+          "price": 109,
+          "value": 62.4
+        },
+        {
+          "rank": 4,
+          "name": "Intel Core i3-14100",
+          "tier": "D",
+          "gaming_score": 60,
+          "price": 99,
+          "value": 60.6
+        },
+        {
+          "rank": 5,
+          "name": "Intel Core i5-12400",
+          "tier": "C",
+          "gaming_score": 68,
+          "price": 119,
+          "value": 57.1
+        },
+        {
+          "rank": 6,
+          "name": "AMD Ryzen 5 7500F",
+          "tier": "S",
+          "gaming_score": 80,
+          "price": 159,
+          "value": 50.3
+        },
+        {
+          "rank": 7,
+          "name": "AMD Ryzen 7 5700X",
+          "tier": "A",
+          "gaming_score": 75,
+          "price": 149,
+          "value": 50.3
+        },
+        {
+          "rank": 8,
+          "name": "Intel Core Ultra 5 225F",
+          "tier": "B",
+          "gaming_score": 72,
+          "price": 149,
+          "value": 48.3
+        },
+        {
+          "rank": 9,
+          "name": "Intel Core i5-13400F",
+          "tier": "B",
+          "gaming_score": 72,
+          "price": 149,
+          "value": 48.3
+        },
+        {
+          "rank": 10,
+          "name": "Intel Core i5-14400F",
+          "tier": "A",
+          "gaming_score": 75,
+          "price": 159,
+          "value": 47.2
+        }
+      ],
+      "picks": {
+        "bestOverall": "AMD Ryzen 5 7500F",
+        "bestValue": "AMD Ryzen 5 5600",
+        "bestBudget": "AMD Ryzen 7 5700X"
       }
     }
   ]
