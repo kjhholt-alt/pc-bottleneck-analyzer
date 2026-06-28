@@ -1,5 +1,29 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-06-28: content engine — data-backed tier-list generator (Phase 1, LIVE)
+Started turning the site from an abandoned freemium tool into an **AI PC-parts /
+gaming content + affiliate engine** (the "niche content + affiliate" lane). Tier
+lists/buying guides are now **generated from the hardware DB** instead of
+hand-written, so specs/prices can't drift and lists are regenerable.
+- **`src/lib/tier-list.ts`** — pure, tested ranking + MDX-render engine. Ranks
+  gpu/cpu by `score` or `value` (perf-per-$100), S–D tiers, performance floor,
+  best overall/value/budget picks. Output is YAML-safe + free of raw `<digit` so it
+  can't break the prod MDX build.
+- **`scripts/generate-tier-list.ts`** (`npm run gen:tierlist`, via tsx) — recipe
+  driven; preserves `publishedAt` across regens + stamps `updatedAt`. CPU + budget-GPU
+  recipes are defined and one flag from active.
+- **`<AffiliateDisclosure />`** MDX component (FTC compliance).
+- **First live post**: `/blog/best-graphics-cards-2026-ranked` — 14 GPUs, tier table
+  + ranking with a value column + picks + tool CTA. Verified live on prod.
+- **Brought vitest to main** (was stranded on `qa/core-logic-tests-and-fixes`): 12
+  unit tests + scoped `vitest.config.ts`.
+- Verify: `tsc` clean · `vitest` 12/12 · `lint-blog-content.py` 59 files clean ·
+  `next build` OK (post statically generated) · live HTML renders disclosure +
+  affiliate links + value column. Shipped via PR #3, merged to main, deploy READY.
+- **Next**: swap the placeholder Amazon tag (`bottleneck20-20`) for a real Associates
+  tag; per-row affiliate links in the ranking table; flip CPU + budget-GPU recipes
+  active; wire the clipforge cross-post (tier list → GambaTime Short).
+
 ## Quick Status
 - **Project:** PC Bottleneck Analyzer
 - **Last updated:** 2026-02-21
