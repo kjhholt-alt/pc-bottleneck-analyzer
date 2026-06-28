@@ -19,6 +19,12 @@ export function NavHeader() {
             Tier Lists
           </Link>
           <Link
+            href="/compare"
+            className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+          >
+            Compare
+          </Link>
+          <Link
             href="/blog"
             className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
           >
