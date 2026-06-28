@@ -7,6 +7,7 @@ import type { Recommendation, UpgradeCategory } from "@/lib/types";
 import { getAffiliateLinks } from "@/lib/affiliate";
 import { trackAffiliateClick } from "@/lib/track";
 import { lookupCPU, lookupGPU } from "@/data/hardware-db";
+import { RelatedGuides } from "@/components/RelatedGuides";
 
 interface RecommendationListProps {
   recommendations: Recommendation[];
@@ -239,6 +240,10 @@ export function RecommendationList({
           onStartWalkthrough={onStartWalkthrough}
         />
       ))}
+
+      {recommendations.length > 0 && (
+        <RelatedGuides recommendations={recommendations} />
+      )}
 
       {recommendations.length === 0 && (
         <motion.div
