@@ -60,7 +60,7 @@ const RECIPES: Recipe[] = [
   },
   // ── Defined and ready, not yet active (flip `active: true` to scale) ──
   {
-    active: false,
+    active: true,
     slug: "best-gaming-cpus-2026-ranked",
     title: "Best Gaming CPUs in 2026, Ranked",
     description:
@@ -84,7 +84,7 @@ const RECIPES: Recipe[] = [
       "from our benchmark database, with the best value and budget picks called out.",
   },
   {
-    active: false,
+    active: true,
     slug: "best-budget-graphics-cards-2026-under-350",
     title: "Best Budget Graphics Cards in 2026 (Under $350)",
     description:

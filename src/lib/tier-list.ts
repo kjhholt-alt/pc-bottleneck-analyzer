@@ -98,7 +98,7 @@ export function rankParts(
   const scored = entries.map((e) => ({
     ...e,
     value: valueScore(e),
-    letter: letterTier(e.gaming_score),
+    letter: "C" as TierLetter, // set by relative tiering after the slice
     rank: 0,
   }));
 
@@ -112,7 +112,33 @@ export function rankParts(
       : b.value - a.value;
   });
 
-  return scored.slice(0, topN).map((e, i) => ({ ...e, rank: i + 1 }));
+  const top = scored.slice(0, topN);
+  const tiers = relativeTiers(top);
+  return top.map((e, i) => ({
+    ...e,
+    letter: tiers.get(e.name) ?? letterTier(e.gaming_score),
+    rank: i + 1,
+  }));
+}
+
+/**
+ * Assign S–D tiers by each part's gaming-score standing WITHIN the given list,
+ * so a budget roundup gets a real S→D spread instead of being globally labelled
+ * "all D". Tier always reflects performance, even when the list is value-ranked.
+ */
+export function relativeTiers(
+  parts: { name: string; gaming_score: number }[]
+): Map<string, TierLetter> {
+  const sorted = [...parts].sort((a, b) => b.gaming_score - a.gaming_score);
+  const n = sorted.length || 1;
+  const map = new Map<string, TierLetter>();
+  sorted.forEach((p, i) => {
+    const q = (i + 1) / n;
+    const letter: TierLetter =
+      q <= 0.15 ? "S" : q <= 0.35 ? "A" : q <= 0.65 ? "B" : q <= 0.85 ? "C" : "D";
+    map.set(p.name, letter);
+  });
+  return map;
 }
 
 export interface TierListPicks {
@@ -164,11 +190,11 @@ function estimateReadingTime(markdown: string): string {
 
 const TIER_ORDER: TierLetter[] = ["S", "A", "B", "C", "D"];
 const TIER_BLURB: Record<TierLetter, string> = {
-  S: "Flagship — maximum performance, premium price",
-  A: "Enthusiast — high-refresh / high-detail without the flagship tax",
-  B: "Sweet spot — where most gamers should shop",
-  C: "Budget — solid 1080p and entry 1440p performance",
-  D: "Entry — older or low-end, buy only on a deep discount",
+  S: "Top of this guide — the strongest performers here",
+  A: "Excellent — right behind the leaders",
+  B: "Sweet spot — strong value most buyers should shop",
+  C: "Solid — capable picks for the price",
+  D: "Entry — cheapest here, lowest performance",
 };
 
 export interface RenderOptions {
@@ -236,9 +262,9 @@ export function renderTierListMdx(
   );
   for (const p of ranked) {
     lines.push(
-      `| ${p.rank} | ${p.name} | ${p.letter} | ${p.gaming_score} | ${priceStr(
-        p
-      )} | ${p.value.toFixed(1)} |`
+      `| ${p.rank} | <AffiliateLink name="${p.name}" /> | ${p.letter} | ${
+        p.gaming_score
+      } | ${priceStr(p)} | ${p.value.toFixed(1)} |`
     );
   }
   lines.push("");
@@ -276,8 +302,8 @@ export function renderTierListMdx(
     "🥇",
     "Best overall",
     picks.bestOverall,
-    `The highest-performing ${componentWord} on this list. If you want the most ` +
-      `frames and have the budget, this is the no-compromise choice.`
+    `The top-performing ${componentWord} in this guide. If raw performance is ` +
+      `what you are after, start here.`
   );
 
   if (picks.bestValue.name !== picks.bestOverall.name) {
@@ -285,9 +311,9 @@ export function renderTierListMdx(
       "💰",
       "Best value",
       picks.bestValue,
-      `The best performance-per-dollar pick on the board. It is the smart-money ` +
-        `buy for most builders — you give up some peak performance versus the ` +
-        `flagship but keep far more cash in your pocket.`
+      `The best performance-per-dollar pick here. It is the smart-money buy for ` +
+        `most builders — you give up some peak performance but keep far more ` +
+        `cash in your pocket.`
     );
   }
 
