@@ -399,3 +399,68 @@ export function buildTierList(
   const mdx = renderTierListMdx(recipe, ranked, opts);
   return { mdx, ranked };
 }
+
+// ─── Machine-readable feed (the clipforge flywheel bridge) ───────────────────
+
+export const SITE_BASE = "https://pcbottleneck.buildkit.store";
+
+export interface TierListFeedItem {
+  rank: number;
+  name: string;
+  tier: TierLetter;
+  gaming_score: number;
+  price: number;
+  value: number;
+}
+
+export interface TierListFeedEntry {
+  slug: string;
+  title: string;
+  url: string;
+  component: Component;
+  rankBy: RankBy;
+  updatedAt: string;
+  items: TierListFeedItem[];
+  picks: {
+    bestOverall: string;
+    bestValue: string;
+    bestBudget: string | null;
+  };
+}
+
+/**
+ * Build the structured feed entry for a tier list. Published to
+ * public/tier-lists.json and consumed by clipforge to auto-generate a
+ * "full list on the site" YouTube Short.
+ */
+export function buildFeedEntry(
+  recipe: TierListRecipe,
+  ranked: RankedPart[],
+  opts: RenderOptions
+): TierListFeedEntry {
+  const picks = choosePicks(
+    ranked,
+    recipe.budgetCap ?? DEFAULT_BUDGET_CAP[recipe.component]
+  );
+  return {
+    slug: recipe.slug,
+    title: recipe.title,
+    url: `${SITE_BASE}/blog/${recipe.slug}`,
+    component: recipe.component,
+    rankBy: recipe.rankBy,
+    updatedAt: opts.dateISO,
+    items: ranked.map((p) => ({
+      rank: p.rank,
+      name: p.name,
+      tier: p.letter,
+      gaming_score: p.gaming_score,
+      price: p.current_price_approx || p.msrp,
+      value: p.value,
+    })),
+    picks: {
+      bestOverall: picks.bestOverall.name,
+      bestValue: picks.bestValue.name,
+      bestBudget: picks.bestBudget?.name ?? null,
+    },
+  };
+}
