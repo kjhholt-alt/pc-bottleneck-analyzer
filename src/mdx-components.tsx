@@ -15,10 +15,29 @@ function AffiliateLink({ name }: { name: string }) {
   );
 }
 
+/**
+ * FTC-required affiliate disclosure. Rendered near the top of any post that
+ * carries affiliate links (e.g. the generated tier lists).
+ */
+function AffiliateDisclosure() {
+  return (
+    <aside
+      role="note"
+      className="not-prose my-6 rounded-xl border border-border bg-surface/60 px-4 py-3 text-xs text-text-secondary"
+    >
+      <strong className="text-text-primary">Disclosure:</strong> some links on
+      this page are affiliate links. If you buy through them we may earn a small
+      commission at no extra cost to you. Our rankings are generated from
+      hardware-benchmark data — commissions never affect placement.
+    </aside>
+  );
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
     AffiliateLink,
+    AffiliateDisclosure,
     a: ({
       href,
       children,
