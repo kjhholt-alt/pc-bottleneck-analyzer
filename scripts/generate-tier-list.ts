@@ -114,6 +114,58 @@ const RECIPES: Recipe[] = [
       "1440p — gaming. These are the best graphics cards under $350 in 2026, " +
       "ranked by value straight from our benchmark database.",
   },
+  {
+    active: true,
+    slug: "best-value-graphics-cards-2026",
+    title: "Best Value Graphics Cards in 2026 (Price-to-Performance)",
+    description:
+      "Every graphics card ranked by pure price-to-performance from our benchmark database. The best bang-for-your-buck GPUs at every price in 2026.",
+    component: "gpu",
+    rankBy: "value",
+    topN: 12,
+    minYear: 2021,
+    minScore: 60,
+    budgetCap: 400,
+    tags: [
+      "best value gpu",
+      "price to performance gpu",
+      "best bang for buck gpu",
+      "gpu value 2026",
+      "graphics card",
+      "PC hardware",
+    ],
+    intro:
+      "The most expensive card is almost never the smartest buy. This list " +
+      "ranks every graphics card worth owning by pure price-to-performance — " +
+      "how much gaming muscle you actually get per dollar — so you can find " +
+      "the real value champion for your budget.",
+  },
+  {
+    active: true,
+    slug: "best-budget-cpus-2026-under-200",
+    title: "Best Budget Gaming CPUs in 2026 (Under $200)",
+    description:
+      "The best cheap gaming processors in 2026, ranked by value from our benchmark database. Great frame rates without overspending on your CPU.",
+    component: "cpu",
+    rankBy: "value",
+    topN: 10,
+    minYear: 2022,
+    minScore: 60,
+    maxPrice: 200,
+    budgetCap: 150,
+    tags: [
+      "best budget cpu",
+      "cheap gaming cpu",
+      "cpu under 200",
+      "best value cpu",
+      "budget gaming pc",
+      "PC hardware",
+    ],
+    intro:
+      "Your CPU sets the frame-rate ceiling, but you do not need to spend big " +
+      "to hit high refresh rates. These are the best gaming processors under " +
+      "$200 in 2026, ranked by value straight from our benchmark database.",
+  },
 ];
 
 function todayISO(): string {

@@ -13,6 +13,12 @@ export function NavHeader() {
         </Link>
         <nav className="flex items-center gap-6">
           <Link
+            href="/tier-lists"
+            className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
+          >
+            Tier Lists
+          </Link>
+          <Link
             href="/blog"
             className="text-xs font-mono text-text-secondary hover:text-cyan transition-colors"
           >
