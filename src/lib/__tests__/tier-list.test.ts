@@ -8,6 +8,7 @@ import {
   choosePicks,
   yamlString,
   buildTierList,
+  buildFeedEntry,
   type TierListRecipe,
   type HardwareEntry,
 } from "../tier-list";
@@ -155,5 +156,16 @@ describe("buildTierList (end to end)", () => {
     const { mdx } = buildTierList(recipe, { dateISO: "2026-06-28", publishedAt: "2026-03-01" });
     expect(mdx).toContain('publishedAt: "2026-03-01"');
     expect(mdx).toContain('updatedAt: "2026-06-28"');
+  });
+
+  it("buildFeedEntry produces the clipforge bridge shape", () => {
+    const { ranked } = buildTierList(recipe, { dateISO: "2026-06-28" });
+    const entry = buildFeedEntry(recipe, ranked, { dateISO: "2026-06-28" });
+    expect(entry.slug).toBe("best-value-gpus-test");
+    expect(entry.url).toBe("https://pcbottleneck.buildkit.store/blog/best-value-gpus-test");
+    expect(entry.items).toHaveLength(ranked.length);
+    expect(entry.items[0]).toMatchObject({ rank: 1, name: expect.any(String), tier: expect.any(String) });
+    expect(entry.picks.bestOverall).toBeTruthy();
+    expect(entry.picks.bestValue).toBeTruthy();
   });
 });

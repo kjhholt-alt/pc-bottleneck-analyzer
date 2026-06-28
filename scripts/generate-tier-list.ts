@@ -17,10 +17,16 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import matter from "gray-matter";
-import { buildTierList, type TierListRecipe } from "../src/lib/tier-list";
+import {
+  buildTierList,
+  buildFeedEntry,
+  type TierListRecipe,
+  type TierListFeedEntry,
+} from "../src/lib/tier-list";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR = path.resolve(HERE, "..", "src", "content", "blog");
+const FEED_FILE = path.resolve(HERE, "..", "public", "tier-lists.json");
 
 // ── Recipes ──────────────────────────────────────────────────────────────────
 // `active` recipes regenerate on a bare `npm run gen:tierlist`. Flip a recipe to
@@ -148,6 +154,28 @@ function generate(recipe: Recipe): void {
   );
 }
 
+/**
+ * Rebuild public/tier-lists.json from EVERY active recipe (independent of which
+ * slugs were regenerated this run) so the feed clipforge consumes is always the
+ * complete live set. Served at <SITE_BASE>/tier-lists.json.
+ */
+function writeFeed(): void {
+  const dateISO = todayISO();
+  const entries: TierListFeedEntry[] = RECIPES.filter((r) => r.active).map(
+    (r) => {
+      const { ranked } = buildTierList(r, { dateISO });
+      return buildFeedEntry(r, ranked, { dateISO });
+    }
+  );
+  fs.mkdirSync(path.dirname(FEED_FILE), { recursive: true });
+  fs.writeFileSync(
+    FEED_FILE,
+    JSON.stringify({ updatedAt: dateISO, lists: entries }, null, 2),
+    "utf-8"
+  );
+  console.log(`[feed] tier-lists.json — ${entries.length} active list(s)`);
+}
+
 function main(): void {
   const args = process.argv.slice(2);
 
@@ -176,6 +204,7 @@ function main(): void {
 
   console.log(`Generating ${toGen.length} tier list(s) into ${BLOG_DIR}\n`);
   for (const r of toGen) generate(r);
+  writeFeed();
   console.log(`\nDone. Run the blog linter + build to verify.`);
 }
 
