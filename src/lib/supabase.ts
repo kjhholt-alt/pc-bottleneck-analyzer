@@ -15,7 +15,11 @@ interface AnalyticsEvent {
   vendor?: string;
   hardware?: string;
   ip_hash?: string;
+  /** Set by Postgres on insert; present on reads (used by the /stats dashboard). */
+  created_at?: string;
 }
+
+export type { AnalyticsEvent };
 
 /** Insert a tracking event into the analytics_events table. */
 export async function insertEvent(event: AnalyticsEvent): Promise<boolean> {
