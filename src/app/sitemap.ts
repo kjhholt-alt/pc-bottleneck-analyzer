@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/data/blog-posts";
 import { resolvedMatchups } from "@/lib/compare";
+import { allGames, gameSlug } from "@/lib/gpu-for-game";
 
 const BASE_URL = "https://pcbottleneck.buildkit.store";
 
@@ -25,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/best-gpu-for`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -39,6 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const gameRoutes: MetadataRoute.Sitemap = allGames().map((g) => ({
+    url: `${BASE_URL}/best-gpu-for/${gameSlug(g)}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
   const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt ?? post.publishedAt),
@@ -46,5 +60,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...compareRoutes, ...blogRoutes];
+  return [...staticRoutes, ...compareRoutes, ...gameRoutes, ...blogRoutes];
 }
