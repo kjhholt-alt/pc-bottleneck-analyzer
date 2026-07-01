@@ -1,5 +1,52 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-01: Pro purchase lane ARMED (dormant) — one flip from first revenue
+
+The complete self-serve $9.99 Pro funnel is built, verified end-to-end in
+Lemon Squeezy TEST MODE, and shipped **disarmed** (prod unchanged until the
+flip). Store "PCopti" + product "PCopti Tool" ($9.99 one-time) already existed
+on Lemon Squeezy in test mode — this work connected the last mile.
+
+**What shipped** (branch `revenue/arm-pro-lane`):
+- `NEXT_PUBLIC_GATES_ENABLED=true` (build-time) arms the paywall: free tabs
+  (Overview/Bottlenecks/Recommendations/Compare/Raw) stay free; Pro tabs
+  (Goal Planner, Game FPS, Upgrade Sim, Live Monitor) + PDF export gate at
+  $9.99 one-time via the Lemon Squeezy overlay.
+- **Fixed a blocking bug**: lemon.js was never initialized
+  (`createLemonSqueezy()` was never called) → overlay could not open and the
+  Checkout.Success instant-unlock event could never fire.
+- Durable entitlement: `/api/license/activate` validates license keys against
+  the LS public license API (store 298278 / product 845012 checked,
+  activation-limit fallback) + "Restore your purchase" UI in every gate and
+  the pricing card.
+- Webhook hardened: rejects unsigned/unverified payloads outright; verified
+  `order_created` events become `purchase` / `purchase_test` analytics rows
+  (no PII) → visible in /stats + daily Discord digest.
+- Honest storefront: gates-aware pricing section (Free vs Pro), AI tab hidden
+  on Vercel (claudex can't run there — never sell what can't fulfill), all
+  "AI-powered" landing/SEO copy made engine-truthful.
+- Tests: vitest 27/27 (license logic + webhook signature/PII), Playwright
+  repaired (was stale/failing on main) + `pro-gate.spec.ts` covering both
+  modes — gates-off 25/25, gates-on 3/3. `tsc` clean, build 124 pages.
+
+**THE FLIP (Kruz, ~10 min, in order):**
+1. *(rehearsal, recommended)* Vercel → pc-bottleneck-analyzer → Env Vars →
+   add `NEXT_PUBLIC_GATES_ENABLED=true` (Production) → Redeploy. Store is
+   still in test mode: buy Pro once on the live site with test card
+   `4242 4242 4242 4242` (any future expiry/CVC) — the full loop fires for $0.
+2. app.lemonsqueezy.com → PCopti Tool product → **enable "Generate license
+   keys"** (makes Restore-purchase work; keys arrive in receipt emails).
+3. app.lemonsqueezy.com → Settings → Webhooks → add
+   `https://pcbottleneck.buildkit.store/api/webhook/lemonsqueezy` for
+   `order_created`; put the signing secret in Vercel as
+   `LEMONSQUEEZY_WEBHOOK_SECRET` (sales then appear in /stats + Discord).
+4. app.lemonsqueezy.com → **leave Test Mode** (complete store activation /
+   payout details if prompted). From that moment the site sells for real.
+
+**Known gaps (acceptable v1):** entitlement is client-side (localStorage +
+license key) — a technical user could self-unlock via console; acceptable at
+$9.99. AI Insights tab is local-dev only until it gets a real backend.
+
 ## 2026-06-28: content engine — data-backed tier-list generator (Phase 1, LIVE)
 Started turning the site from an abandoned freemium tool into an **AI PC-parts /
 gaming content + affiliate engine** (the "niche content + affiliate" lane). Tier

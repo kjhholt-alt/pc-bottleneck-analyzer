@@ -12,7 +12,7 @@ export const faqs: FAQ[] = [
   },
   {
     q: "Does it need internet?",
-    a: "The scanner itself works offline and saves results to your Desktop. You only need internet to upload the JSON file to our dashboard for analysis. The AI analysis requires an internet connection.",
+    a: "The scanner itself works offline and saves results to your Desktop. You only need internet to upload the JSON file to our dashboard for analysis.",
     iconName: "Wifi",
   },
   {
@@ -21,8 +21,8 @@ export const faqs: FAQ[] = [
     iconName: "HardDrive",
   },
   {
-    q: "How accurate is the AI analysis?",
-    a: "The AI analysis is powered by Claude and references your exact hardware specs, current drivers, BIOS settings, and temperatures. It cross-references a database of 176+ CPUs and GPUs to give you specific, actionable recommendations \u2014 not generic advice.",
+    q: "How accurate is the analysis?",
+    a: "The analysis engine references your exact hardware specs, current drivers, BIOS settings, and temperatures against a database of 176+ CPUs and GPUs with 15+ detection rules. You get specific, actionable recommendations for your exact build \u2014 not generic advice.",
     iconName: "Brain",
   },
 ];

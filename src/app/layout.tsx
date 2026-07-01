@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TrackingProvider } from "@/components/TrackingProvider";
 import { LemonSqueezyProvider } from "@/components/LemonSqueezyProvider";
+import { ProUnlockedToast } from "@/components/ProUnlockedToast";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { faqs } from "@/data/faq";
 import "./globals.css";
@@ -20,26 +21,26 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PC Bottleneck Analyzer - Free AI-Powered Hardware Analysis",
+    default: "PC Bottleneck Analyzer - Free Instant Hardware Analysis",
     template: "%s | PC Bottleneck Analyzer",
   },
   description:
-    "Scan your PC hardware, detect bottlenecks, and get AI-powered recommendations to maximize performance. Free during beta.",
+    "Scan your PC hardware, detect bottlenecks, and get recommendations tailored to your exact build. Free bottleneck analysis, no sign-up.",
   metadataBase: new URL("https://pcbottleneck.buildkit.store"),
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://pcbottleneck.buildkit.store",
     siteName: "PC Bottleneck Analyzer",
-    title: "PC Bottleneck Analyzer - Free AI-Powered Hardware Analysis",
+    title: "PC Bottleneck Analyzer - Free Instant Hardware Analysis",
     description:
-      "Scan your PC, detect bottlenecks, and get AI recommendations specific to your hardware. Free during beta.",
+      "Scan your PC, detect bottlenecks, and get recommendations specific to your hardware. Free analysis, no sign-up.",
   },
   twitter: {
     card: "summary_large_image",
     title: "PC Bottleneck Analyzer",
     description:
-      "Free AI-powered PC hardware analysis. Detect bottlenecks, get upgrade recommendations.",
+      "Free PC hardware analysis. Detect bottlenecks, get upgrade recommendations.",
   },
   alternates: {
     canonical: "https://pcbottleneck.buildkit.store",
@@ -58,7 +59,7 @@ function JsonLd() {
     operatingSystem: "Windows 10, Windows 11",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     description:
-      "Scan your PC hardware, detect bottlenecks, and get AI-powered recommendations to maximize performance.",
+      "Scan your PC hardware, detect bottlenecks, and get recommendations to maximize performance.",
     url: "https://pcbottleneck.buildkit.store",
   };
 
@@ -103,6 +104,7 @@ export default function RootLayout({
           <ThemeProvider>{children}</ThemeProvider>
           <TrackingProvider />
           <LemonSqueezyProvider />
+          <ProUnlockedToast />
           <Analytics />
           <JsonLd />
         </ErrorBoundary>

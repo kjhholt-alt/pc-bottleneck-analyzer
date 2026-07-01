@@ -22,7 +22,8 @@ import {
   Brain,
 } from "lucide-react";
 import { EmailCapture } from "@/components/EmailCapture";
-// Pro gates disabled during beta — all features free
+import { RestorePurchase } from "@/components/RestorePurchase";
+import { GATES_ENABLED, CHECKOUT_URL, PRO_PRICE } from "@/lib/pro";
 
 // ── Fade-in animation wrapper ──
 function FadeIn({
@@ -137,7 +138,7 @@ export default function LandingPage() {
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-24">
         <FadeIn className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-mono text-cyan uppercase tracking-widest mb-4">
-            Free scan &middot; AI-powered analysis
+            Free scan &middot; Instant analysis
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
             Find Out Exactly What&apos;s{" "}
@@ -145,8 +146,7 @@ export default function LandingPage() {
           </h1>
           <p className="text-lg text-text-secondary max-w-xl mx-auto mb-10">
             Run a 60-second scan, upload the results, and get a performance
-            score with AI-powered recommendations tailored to your exact
-            hardware.
+            score with recommendations tailored to your exact hardware.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -225,7 +225,7 @@ export default function LandingPage() {
                 step: "3",
                 icon: Sparkles,
                 title: "Get Your Analysis",
-                desc: "Instant performance score, bottleneck detection, and AI-powered recommendations specific to your hardware.",
+                desc: "Instant performance score, bottleneck detection, and recommendations specific to your hardware.",
               },
             ].map((item, i) => {
               const content = (
@@ -286,8 +286,8 @@ export default function LandingPage() {
               },
               {
                 icon: Sparkles,
-                title: "AI Deep Analysis",
-                desc: "Claude AI explains your bottlenecks in plain English, estimates real FPS impact, and suggests specific fixes.",
+                title: "Deep Analysis",
+                desc: "Explains your bottlenecks in plain English, estimates real FPS impact, and suggests specific fixes for your exact build.",
               },
               {
                 icon: Sliders,
@@ -323,15 +323,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── AI Preview ── */}
+      {/* ── Analysis Preview ── */}
       <section className="border-t border-border bg-surface/50">
         <div className="max-w-6xl mx-auto px-6 py-20">
           <FadeIn className="text-center mb-12">
             <p className="text-xs font-mono text-cyan uppercase tracking-widest mb-3">
-              AI-powered insights
+              Hardware-specific insights
             </p>
             <h2 className="text-3xl font-bold tracking-tight">
-              See What the AI Finds
+              See What the Analysis Finds
             </h2>
           </FadeIn>
 
@@ -340,7 +340,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles size={16} className="text-cyan" />
                 <span className="text-sm font-semibold text-foreground">
-                  AI Deep Analysis
+                  Deep Analysis
                 </span>
                 <span className="ml-auto text-[10px] font-mono text-text-secondary bg-surface-raised px-2 py-0.5 rounded-full border border-border">
                   Sample output
@@ -401,70 +401,171 @@ export default function LandingPage() {
               Pricing
             </p>
             <h2 className="text-3xl font-bold tracking-tight">
-              100% Free During Beta
+              {GATES_ENABLED
+                ? "Free Analysis. Pro Toolkit."
+                : "100% Free During Beta"}
             </h2>
             <p className="text-text-secondary mt-3 max-w-lg mx-auto">
-              Every feature is unlocked — no paywalls, no sign-up required. Just scan and go.
+              {GATES_ENABLED
+                ? "The full bottleneck analysis is free forever — no sign-up. Pro unlocks the upgrade-planning toolkit with a one-time purchase."
+                : "Every feature is unlocked — no paywalls, no sign-up required. Just scan and go."}
             </p>
           </FadeIn>
 
-          <div className="max-w-md mx-auto">
-            <FadeIn>
-              <div className="bg-surface border-2 border-cyan/40 rounded-2xl p-6 flex flex-col relative">
-                <div className="absolute -top-3 left-6 px-3 py-0.5 bg-cyan text-background text-xs font-semibold rounded-full">
-                  Beta
+          {GATES_ENABLED ? (
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <FadeIn>
+                <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col h-full">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                    Free
+                  </h3>
+                  <p className="text-sm text-text-secondary mb-6">
+                    The full diagnosis, no strings
+                  </p>
+                  <div className="mb-6">
+                    <span className="text-3xl font-bold font-mono text-foreground">
+                      $0
+                    </span>
+                    <span className="text-sm text-text-secondary ml-2">
+                      forever
+                    </span>
+                  </div>
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {[
+                      "Performance score (0-100)",
+                      "Bottleneck detection (15+ rules)",
+                      "Free, cheap & upgrade recommendations",
+                      "Hardware comparison",
+                      "Scan history & comparison",
+                      "Share results via URL",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2.5 text-sm text-text-secondary"
+                      >
+                        <Check size={14} className="text-cyan mt-0.5 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/dashboard"
+                    className="block text-center py-3 bg-surface-raised border border-border text-foreground rounded-xl text-sm font-semibold
+                               hover:border-cyan/40 transition-colors"
+                  >
+                    Analyze My PC Free
+                  </Link>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-1">
-                  All Features Included
-                </h3>
-                <p className="text-sm text-text-secondary mb-6">
-                  The full picture + expert AI guidance
-                </p>
-                <div className="mb-6">
-                  <span className="text-3xl font-bold font-mono text-cyan">
-                    $0
-                  </span>
-                  <span className="text-sm text-text-secondary ml-2">
-                    free during beta
-                  </span>
+              </FadeIn>
+
+              <FadeIn delay={0.08}>
+                <div className="bg-surface border-2 border-cyan/40 rounded-2xl p-6 flex flex-col h-full relative">
+                  <div className="absolute -top-3 left-6 px-3 py-0.5 bg-cyan text-background text-xs font-semibold rounded-full">
+                    Pro
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                    Pro — One-Time
+                  </h3>
+                  <p className="text-sm text-text-secondary mb-6">
+                    The upgrade-planning toolkit
+                  </p>
+                  <div className="mb-6">
+                    <span className="text-3xl font-bold font-mono text-cyan">
+                      {PRO_PRICE}
+                    </span>
+                    <span className="text-sm text-text-secondary ml-2">
+                      once — not a subscription
+                    </span>
+                  </div>
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {[
+                      "Everything in Free",
+                      "Game FPS estimator (20 games)",
+                      "Upgrade simulator (what-if swaps)",
+                      "Goal upgrade planner",
+                      "Real-time monitor",
+                      "PDF report export",
+                      "All future Pro features",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2.5 text-sm text-text-secondary"
+                      >
+                        <Check size={14} className="text-cyan mt-0.5 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={CHECKOUT_URL}
+                    className="lemonsqueezy-button block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
+                               hover:bg-cyan/90 transition-colors"
+                  >
+                    Get Pro — {PRO_PRICE}
+                  </a>
+                  <div className="text-center mt-4">
+                    <RestorePurchase />
+                  </div>
                 </div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {[
-                    "Performance score (0-100)",
-                    "Bottleneck detection",
-                    "All recommendations unlocked",
-                    "AI deep analysis (Claude-powered)",
-                    "Follow-up chat with AI",
-                    "Per-motherboard BIOS guide",
-                    "Upgrade simulator",
-                    "Game FPS estimator",
-                    "Real-time monitor",
-                    "Goal upgrade planner",
-                    "PDF report export",
-                    "Scan history & comparison",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2.5 text-sm text-text-secondary"
-                    >
-                      <Check
-                        size={14}
-                        className="text-cyan mt-0.5 shrink-0"
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/dashboard"
-                  className="block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
-                             hover:bg-cyan/90 transition-colors"
-                >
-                  Get Started Free
-                </Link>
-              </div>
-            </FadeIn>
-          </div>
+              </FadeIn>
+            </div>
+          ) : (
+            <div className="max-w-md mx-auto">
+              <FadeIn>
+                <div className="bg-surface border-2 border-cyan/40 rounded-2xl p-6 flex flex-col relative">
+                  <div className="absolute -top-3 left-6 px-3 py-0.5 bg-cyan text-background text-xs font-semibold rounded-full">
+                    Beta
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                    All Features Included
+                  </h3>
+                  <p className="text-sm text-text-secondary mb-6">
+                    The full picture, free while in beta
+                  </p>
+                  <div className="mb-6">
+                    <span className="text-3xl font-bold font-mono text-cyan">
+                      $0
+                    </span>
+                    <span className="text-sm text-text-secondary ml-2">
+                      free during beta
+                    </span>
+                  </div>
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {[
+                      "Performance score (0-100)",
+                      "Bottleneck detection",
+                      "All recommendations unlocked",
+                      "Per-motherboard BIOS guide",
+                      "Upgrade simulator",
+                      "Game FPS estimator",
+                      "Real-time monitor",
+                      "Goal upgrade planner",
+                      "PDF report export",
+                      "Scan history & comparison",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2.5 text-sm text-text-secondary"
+                      >
+                        <Check
+                          size={14}
+                          className="text-cyan mt-0.5 shrink-0"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/dashboard"
+                    className="block text-center py-3 bg-cyan text-background rounded-xl text-sm font-semibold
+                               hover:bg-cyan/90 transition-colors"
+                  >
+                    Get Started Free
+                  </Link>
+                </div>
+              </FadeIn>
+            </div>
+          )}
         </div>
       </section>
 
@@ -528,7 +629,7 @@ export default function LandingPage() {
             <span>PC Bottleneck Analyzer</span>
           </div>
           <p className="text-xs text-text-secondary">
-            Built with Next.js &middot; AI by Claude &middot; Open source
+            Built with Next.js &middot; Open source
             scanner
           </p>
         </div>

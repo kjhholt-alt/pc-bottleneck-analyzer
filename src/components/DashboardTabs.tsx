@@ -14,9 +14,9 @@ import {
   Route,
   BarChart3,
 } from "lucide-react";
-import { isFeatureLocked } from "@/lib/pro";
+import { isFeatureLocked, AI_ENABLED } from "@/lib/pro";
 
-const tabs = [
+const allTabs = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "bottlenecks", label: "Bottleneck Analysis", icon: AlertTriangle },
   { id: "recommendations", label: "Recommendations", icon: Lightbulb },
@@ -28,6 +28,11 @@ const tabs = [
   { id: "monitor", label: "Live Monitor", icon: Activity },
   { id: "raw", label: "Raw Data", icon: Code },
 ] as const;
+
+// The AI backend (local claude subprocess) doesn't exist on Vercel, so the
+// tab only shows where NEXT_PUBLIC_AI_ENABLED is set — never offer what
+// can't fulfill.
+const tabs = AI_ENABLED ? allTabs : allTabs.filter((t) => t.id !== "ai");
 
 interface DashboardTabsProps {
   activeTab: string;

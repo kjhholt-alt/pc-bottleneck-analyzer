@@ -3,7 +3,8 @@
 import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Lock, Sparkles } from "lucide-react";
-import { isFeatureLocked, CHECKOUT_URL } from "@/lib/pro";
+import { isFeatureLocked, CHECKOUT_URL, PRO_PRICE } from "@/lib/pro";
+import { RestorePurchase } from "./RestorePurchase";
 
 interface ProGateProps {
   feature: string;
@@ -54,10 +55,14 @@ export function ProGate({ feature, children }: ProGateProps) {
             className="lemonsqueezy-button inline-flex items-center gap-2 px-6 py-2.5 bg-cyan text-background rounded-xl text-sm font-semibold hover:bg-cyan/90 transition-colors"
           >
             <Sparkles size={14} />
-            Upgrade to Pro &mdash; $9.99
+            Upgrade to Pro &mdash; {PRO_PRICE}
           </a>
 
           <p className="text-xs text-text-secondary/60 mt-3">One-time payment &middot; Instant access</p>
+
+          <div className="mt-4">
+            <RestorePurchase />
+          </div>
         </div>
       </motion.div>
     </div>

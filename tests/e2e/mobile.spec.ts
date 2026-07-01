@@ -7,30 +7,34 @@ test.describe('Mobile Responsive Design', () => {
   test('should load homepage on mobile', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: /PC Bottleneck Analyzer/i })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /Bottlenecking.*Your PC/i }),
+    ).toBeVisible();
   });
 
   test('should have responsive navigation on mobile', async ({ page }) => {
     await page.goto('/');
 
-    // Check for navigation
-    const nav = page.locator('nav');
+    const nav = page.locator('nav').first();
     await expect(nav).toBeVisible();
   });
 
   test('should display dashboard on mobile', async ({ page }) => {
     await page.goto('/dashboard');
 
-    await expect(page.getByRole('heading', { name: /Dashboard/i })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /Running at.*Full Speed/i }),
+    ).toBeVisible();
 
     // Load demo data
-    const demoButton = page.getByRole('button', { name: /demo|sample|example/i });
+    const demoButton = page.getByRole('button', { name: /Try Demo/i });
     if (await demoButton.isVisible()) {
       await demoButton.click();
-      await page.waitForTimeout(2000);
 
-      // Results should be visible
-      await expect(page.getByText(/Performance Score/i)).toBeVisible();
+      // The tabbed dashboard appears once the scan loads
+      await expect(page.getByRole('tab', { name: /Overview/i })).toBeVisible({
+        timeout: 10000,
+      });
     }
   });
 
@@ -51,7 +55,7 @@ test.describe('Mobile Responsive Design', () => {
     await page.goto('/');
 
     // Check that main heading has reasonable font size
-    const heading = page.getByRole('heading', { name: /PC Bottleneck Analyzer/i });
+    const heading = page.getByRole('heading', { name: /Bottlenecking.*Your PC/i });
     const fontSize = await heading.evaluate((el) => {
       return window.getComputedStyle(el).fontSize;
     });
@@ -70,7 +74,7 @@ test.describe('Mobile Responsive Design', () => {
     await page.goto('/');
 
     // Check CTA button size
-    const ctaButton = page.getByRole('link', { name: /Analyze Now/i }).first();
+    const ctaButton = page.getByRole('link', { name: /Analyze My PC/i }).first();
     const box = await ctaButton.boundingBox();
 
     // Button should be at least 44x44 (iOS touch target minimum)
