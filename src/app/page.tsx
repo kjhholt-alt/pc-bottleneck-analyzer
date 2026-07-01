@@ -138,7 +138,7 @@ export default function LandingPage() {
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-24">
         <FadeIn className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-mono text-cyan uppercase tracking-widest mb-4">
-            Free scan &middot; AI-powered analysis
+            Free scan &middot; Instant analysis
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
             Find Out Exactly What&apos;s{" "}
@@ -146,8 +146,7 @@ export default function LandingPage() {
           </h1>
           <p className="text-lg text-text-secondary max-w-xl mx-auto mb-10">
             Run a 60-second scan, upload the results, and get a performance
-            score with AI-powered recommendations tailored to your exact
-            hardware.
+            score with recommendations tailored to your exact hardware.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -226,7 +225,7 @@ export default function LandingPage() {
                 step: "3",
                 icon: Sparkles,
                 title: "Get Your Analysis",
-                desc: "Instant performance score, bottleneck detection, and AI-powered recommendations specific to your hardware.",
+                desc: "Instant performance score, bottleneck detection, and recommendations specific to your hardware.",
               },
             ].map((item, i) => {
               const content = (
@@ -287,8 +286,8 @@ export default function LandingPage() {
               },
               {
                 icon: Sparkles,
-                title: "AI Deep Analysis",
-                desc: "Claude AI explains your bottlenecks in plain English, estimates real FPS impact, and suggests specific fixes.",
+                title: "Deep Analysis",
+                desc: "Explains your bottlenecks in plain English, estimates real FPS impact, and suggests specific fixes for your exact build.",
               },
               {
                 icon: Sliders,
@@ -324,15 +323,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── AI Preview ── */}
+      {/* ── Analysis Preview ── */}
       <section className="border-t border-border bg-surface/50">
         <div className="max-w-6xl mx-auto px-6 py-20">
           <FadeIn className="text-center mb-12">
             <p className="text-xs font-mono text-cyan uppercase tracking-widest mb-3">
-              AI-powered insights
+              Hardware-specific insights
             </p>
             <h2 className="text-3xl font-bold tracking-tight">
-              See What the AI Finds
+              See What the Analysis Finds
             </h2>
           </FadeIn>
 
@@ -341,7 +340,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles size={16} className="text-cyan" />
                 <span className="text-sm font-semibold text-foreground">
-                  AI Deep Analysis
+                  Deep Analysis
                 </span>
                 <span className="ml-auto text-[10px] font-mono text-text-secondary bg-surface-raised px-2 py-0.5 rounded-full border border-border">
                   Sample output
@@ -630,7 +629,7 @@ export default function LandingPage() {
             <span>PC Bottleneck Analyzer</span>
           </div>
           <p className="text-xs text-text-secondary">
-            Built with Next.js &middot; AI by Claude &middot; Open source
+            Built with Next.js &middot; Open source
             scanner
           </p>
         </div>
