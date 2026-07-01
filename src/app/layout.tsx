@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TrackingProvider } from "@/components/TrackingProvider";
 import { LemonSqueezyProvider } from "@/components/LemonSqueezyProvider";
+import { ProUnlockedToast } from "@/components/ProUnlockedToast";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { faqs } from "@/data/faq";
 import "./globals.css";
@@ -103,6 +104,7 @@ export default function RootLayout({
           <ThemeProvider>{children}</ThemeProvider>
           <TrackingProvider />
           <LemonSqueezyProvider />
+          <ProUnlockedToast />
           <Analytics />
           <JsonLd />
         </ErrorBoundary>

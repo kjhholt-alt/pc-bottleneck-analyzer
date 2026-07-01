@@ -27,6 +27,26 @@ export function trackPageView(page: string): void {
   }
 }
 
+/**
+ * Track a completed Pro purchase observed client-side (checkout overlay
+ * success). The Lemon Squeezy webhook is the authoritative record — this
+ * is the funnel-visibility signal.
+ */
+export function trackPurchase(source: string): void {
+  const payload = JSON.stringify({
+    page: window.location.pathname,
+    type: "purchase_client",
+    vendor: "lemonsqueezy",
+    hardware: source,
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/t", new Blob([payload], { type: "application/json" }));
+  } else {
+    fetch("/api/t", { method: "POST", body: payload, keepalive: true }).catch(() => {});
+  }
+}
+
 /** Track an affiliate link click. */
 export function trackAffiliateClick(vendor: "amazon" | "newegg", hardware: string): void {
   const payload = JSON.stringify({

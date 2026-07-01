@@ -3,6 +3,9 @@
 import { useEffect } from "react";
 import Script from "next/script";
 import { setProUser } from "@/lib/pro";
+import { trackPurchase } from "@/lib/track";
+
+const JUST_UNLOCKED_KEY = "pc-pro-just-unlocked";
 
 /**
  * Loads the Lemon Squeezy checkout overlay script and listens for
@@ -19,6 +22,12 @@ export function LemonSqueezyProvider() {
         event.data?.event === "Checkout.Success"
       ) {
         setProUser(true);
+        trackPurchase("overlay");
+        try {
+          sessionStorage.setItem(JUST_UNLOCKED_KEY, "1");
+        } catch {
+          // Non-fatal — the unlock itself already persisted
+        }
         // Small delay so the overlay close animation finishes
         setTimeout(() => window.location.reload(), 1500);
       }
@@ -34,4 +43,17 @@ export function LemonSqueezyProvider() {
       strategy="lazyOnload"
     />
   );
+}
+
+/** Read-and-clear the "just unlocked" flag set right before the post-purchase reload. */
+export function consumeJustUnlocked(): boolean {
+  try {
+    if (sessionStorage.getItem(JUST_UNLOCKED_KEY) === "1") {
+      sessionStorage.removeItem(JUST_UNLOCKED_KEY);
+      return true;
+    }
+  } catch {
+    // storage unavailable
+  }
+  return false;
 }

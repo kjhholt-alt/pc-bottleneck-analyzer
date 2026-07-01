@@ -1,23 +1,25 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createHmac } from "crypto";
+import { insertEvent } from "@/lib/supabase";
 
 // ─── Lemon Squeezy Webhook Handler ──────────────────────────────────────────
 // Receives events from Lemon Squeezy (order_created, etc.).
-// Verifies the webhook signature, then logs the event.
+// Verifies the webhook signature, logs the event, and records purchases
+// as analytics events so they show up in /stats and the daily Discord
+// digest (server-side sales record — no PII stored).
 //
-// Since Pro status is localStorage-based (no user accounts), the webhook
-// is primarily for analytics/auditing — the actual Pro unlock happens
-// client-side via the checkout overlay's success event.
-
-const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET ?? "";
+// Since Pro status is localStorage-based (no user accounts), the actual
+// Pro unlock happens client-side via the checkout overlay's success
+// event; buyers restore access with their license key.
 
 function verifySignature(
   rawBody: string,
   signature: string | null,
+  secret: string,
 ): boolean {
-  if (!WEBHOOK_SECRET || !signature) return false;
+  if (!secret || !signature) return false;
 
-  const hmac = createHmac("sha256", WEBHOOK_SECRET);
+  const hmac = createHmac("sha256", secret);
   hmac.update(rawBody);
   const digest = hmac.digest("hex");
 
@@ -31,11 +33,19 @@ function verifySignature(
 }
 
 export async function POST(req: NextRequest) {
+  const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET ?? "";
+
+  // Without a secret we can't verify anything — and unverified payloads
+  // must never become purchase records. Configure the secret first.
+  if (!secret) {
+    console.error("[LS Webhook] LEMONSQUEEZY_WEBHOOK_SECRET not set — rejecting");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  }
+
   const rawBody = await req.text();
   const signature = req.headers.get("x-signature");
 
-  // Skip verification if no secret is configured (dev mode)
-  if (WEBHOOK_SECRET && !verifySignature(rawBody, signature)) {
+  if (!verifySignature(rawBody, signature, secret)) {
     console.error("[LS Webhook] Invalid signature — rejecting");
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
@@ -55,6 +65,25 @@ export async function POST(req: NextRequest) {
         timestamp: new Date().toISOString(),
       }),
     );
+
+    if (eventName === "order_created") {
+      const attrs = payload?.data?.attributes ?? {};
+      const orderNumber = attrs.order_number ?? payload?.data?.id ?? "?";
+      const total = attrs.total_formatted ?? "?";
+      const testMode = attrs.test_mode === true;
+
+      // Recorded in the existing analytics_events table (same class of
+      // write the site already does for pageviews) — no email/PII stored.
+      await insertEvent({
+        page: "/api/webhook/lemonsqueezy",
+        event_type: testMode ? "purchase_test" : "purchase",
+        vendor: "lemonsqueezy",
+        hardware: String(
+          attrs.first_order_item?.product_name ?? "PCopti Tool",
+        ).slice(0, 100),
+        referrer: `order:${orderNumber} total:${total}`,
+      });
+    }
 
     return NextResponse.json({ ok: true, event: eventName });
   } catch {
