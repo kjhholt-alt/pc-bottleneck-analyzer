@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Gauge } from "lucide-react";
 import { NavHeader } from "@/components/NavHeader";
 import { EmailCapture } from "@/components/EmailCapture";
+import { BlueprintCTA } from "@/components/BlueprintCTA";
 import { getAmazonLink } from "@/lib/affiliate";
 import {
   allGames,
@@ -194,6 +195,8 @@ export default async function BestGpuForGame({
             Analyze My PC <ArrowRight size={14} />
           </Link>
         </div>
+
+        <BlueprintCTA className="mb-8" />
 
         <p className="text-sm text-text-secondary mb-8">
           More buying help:{" "}

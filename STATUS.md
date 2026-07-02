@@ -1,5 +1,84 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-01: PC Upgrade Blueprint ($19) built — one flip from second revenue lane
+
+Second paid artifact on the PCopti lane, per `specs/SPEC_UPGRADE_BLUEPRINT.md`
+(Fable-designed, Sonnet-executed). Personalized upgrade plan: pick your
+CPU/GPU/RAM/resolution/3 games (no scanner install required), get a
+permanent, printable report — verdict, 3-budget GPU upgrade ladder with
+per-game FPS uplift, resale-adjusted net cost, order of operations, free
+wins, compatibility notes. Deterministic, no LLM, zero per-unit cost.
+Shipped **dormant** behind `NEXT_PUBLIC_BLUEPRINT_ENABLED` (branch
+`feat/upgrade-blueprint`).
+
+**What shipped:**
+- `src/lib/blueprint.ts` — pure generator. Synthesizes a "settings-optimal"
+  `SystemScan` from the picker input so `analyzeScan`/`checkCompatibility`
+  (the existing engine) produce a verdict driven purely by CPU/GPU tier, not
+  invented bad luck. Upgrade ladder always targets the **GPU** (reuses
+  `estFps`/`rankGpus` from the best-gpu-for pipeline exactly) even when the
+  CPU is the detected bottleneck — the verdict and order-of-operations text
+  say so explicitly in that case. `src/lib/resale.ts` — flat age/tier
+  depreciation table for the old-part resale estimate.
+- `src/lib/license.ts` generalized: `activateOrValidateLicense(key, productId)`
+  now takes a product ID (defaults to Pro's `LS_PRODUCT_ID`); added
+  `LS_BLUEPRINT_PRODUCT_ID` (env-driven, `0` until Kruz creates the LS
+  product, so validation fails closed by default). `/api/license/activate`
+  accepts `{ product: "pro" | "blueprint" }`.
+- `/blueprint` route: picker → paywall (verdict shown free, ladder blurred)
+  → license-key unlock → full report. **Deliberately does not reuse the
+  Lemon Squeezy checkout overlay** — the sitewide `Checkout.Success` handler
+  in `LemonSqueezyProvider` is hardcoded to grant *Pro*, so routing a
+  Blueprint purchase through it would incorrectly unlock Pro for free.
+  Blueprint's buy button is a plain link to the LS hosted checkout page;
+  unlock is always via pasting the license key from the receipt email
+  (`BlueprintLicenseEntry`, validated against `product: "blueprint"`).
+- CTAs (dormant-aware, render nothing when the flag is off): analyzer
+  Recommendations tab, `/best-gpu-for/[game]` pages, `/tier-lists` hub.
+  Analytics: `blueprint_view` (report shown, preview or unlocked) and
+  `blueprint_purchase_click` via the existing `/api/t`.
+- Tests: vitest 42/42 (blueprint ladder respects budgets, never recommends
+  a same-or-lower-tier part, FPS uplift monotonic per rung, resale never
+  exceeds price, deterministic output, best-in-class-hardware edge case;
+  resale depreciation; license generalization incl. cross-product rejection).
+  `tsc` clean. `next build` green (128 pages incl. `/blueprint`). Playwright
+  `tests/e2e/blueprint.spec.ts` covers both modes (dormant 4/4, armed 5/5);
+  existing `pro-gate.spec.ts` re-verified green (no regression).
+- Manual pass (preview tools) on 2 contrasting rigs — ladder is sensible:
+  - **Low-end** (Ryzen 5 3600 + GTX 1660, 16GB, 1080p): Grade C, 69/100.
+    "Your GPU (NVIDIA GeForce GTX 1660) is the bigger limiter right now."
+    $150 → no upgrade fits; $300 → RTX 5060 ($299, net ~$283, Cyberpunk
+    28→66 / Valorant 100→232 / CS2 83→193 fps); $600 → RX 9070 XT ($579,
+    net ~$563, Cyberpunk 28→86 / Valorant 100→304 / CS2 83→253 fps).
+    FPS uplift strictly increases rung-over-rung as expected.
+  - **High-end** (Ryzen 9 9950X3D + RTX 5090, 32GB, 4K): Grade A, 94/100.
+    "Your system is optimized. Nice work." All 3 ladder rungs correctly
+    report no upgrade available (RTX 5090 is top-of-DB) — an honest
+    "you're already at the top" result rather than a manufactured upsell.
+
+**Known gaps / future polish (flagged, not blocking):**
+- CPU-bottleneck cases still get a GPU-only ladder (see design note above)
+  — a real CPU-upgrade ladder with its own FPS model would be a good v2.
+- Report print styling uses `window.print()` + scoped `@media print` CSS,
+  not the imperative jsPDF approach in `src/lib/pdf-report.ts` (that lib
+  draws a fixed-layout Pro report; duplicating it for Blueprint's richer,
+  variable-length artifact wasn't worth it for v1 — print-to-PDF via the
+  browser is standard for hosted report pages).
+- CTA added to the `/tier-lists` hub only, not to individual generated
+  tier-list posts under `/blog/[slug]` (they share the generic blog
+  template) — low effort follow-up if Kruz wants it.
+- Entitlement is client-side (localStorage + license key), same acceptable
+  tradeoff as the Pro lane at this price point.
+
+**THE FLIP (Kruz):**
+1. Create "PC Upgrade Blueprint — $19" in the PCopti Lemon Squeezy store
+   (license keys ON, same store 298278). Set `LS_BLUEPRINT_PRODUCT_ID` and
+   `NEXT_PUBLIC_LS_BLUEPRINT_CHECKOUT_URL` in Vercel.
+2. Set `NEXT_PUBLIC_BLUEPRINT_ENABLED=true` → redeploy. Rehearse with a
+   test-mode purchase before leaving test mode.
+3. Store leaves test mode together with the Pro lane (one toggle, both
+   products go live).
+
 ## 2026-07-01: Pro purchase lane ARMED (dormant) — one flip from first revenue
 
 The complete self-serve $9.99 Pro funnel is built, verified end-to-end in

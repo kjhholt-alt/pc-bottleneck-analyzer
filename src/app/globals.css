@@ -154,3 +154,26 @@ body {
 .prose-custom td {
   color: var(--text-secondary);
 }
+
+/* ── Blueprint report print styling ──────────────────────────────────────
+   Report pages stay dark on-screen but flip to a plain light print so
+   "Print / Save as PDF" produces something readable and ink-friendly. */
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+  .blueprint-report {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .blueprint-report * {
+    background: #fff !important;
+    color: #111 !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+  .blueprint-report a {
+    color: #111 !important;
+    text-decoration: underline;
+  }
+}

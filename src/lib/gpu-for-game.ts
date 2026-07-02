@@ -14,7 +14,11 @@ import { slugifyPart } from "@/lib/compare";
 // baseFps in the DB is calibrated to the RTX 4070 (gaming_score 75) at 1080p Ultra.
 const REF_SCORE = 75;
 
-export type Res = "1080p" | "1440p";
+// "4K" is included because RESOLUTION_MULTIPLIERS defines it — used by
+// src/lib/blueprint.ts, which lets buyers pick 4K as their target resolution.
+// rankGpus()/pickGpus() below always pass "1080p"/"1440p" literals explicitly,
+// so this widening doesn't change their behavior.
+export type Res = "1080p" | "1440p" | "4K";
 
 export function gameSlug(g: GameBenchmark): string {
   return g.title

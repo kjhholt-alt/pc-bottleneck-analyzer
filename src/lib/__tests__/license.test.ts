@@ -115,4 +115,35 @@ describe("activateOrValidateLicense", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.status).toBe(502);
   });
+
+  it("validates against a different product ID when one is passed (Blueprint vs Pro)", async () => {
+    const BLUEPRINT_PRODUCT_ID = 999888;
+    vi.stubGlobal(
+      "fetch",
+      mockFetchOnce({
+        activated: true,
+        instance: { id: "inst-bp" },
+        meta: { store_id: LS_STORE_ID, product_id: BLUEPRINT_PRODUCT_ID },
+      }),
+    );
+
+    const result = await activateOrValidateLicense("BP-KEY", BLUEPRINT_PRODUCT_ID);
+    expect(result).toEqual({ ok: true, instanceId: "inst-bp" });
+  });
+
+  it("rejects a Pro key when validating against the Blueprint product ID", async () => {
+    const BLUEPRINT_PRODUCT_ID = 999888;
+    vi.stubGlobal(
+      "fetch",
+      mockFetchOnce({
+        activated: true,
+        instance: { id: "inst-pro" },
+        meta: OUR_META, // this key belongs to Pro (LS_PRODUCT_ID), not Blueprint
+      }),
+    );
+
+    const result = await activateOrValidateLicense("PRO-KEY", BLUEPRINT_PRODUCT_ID);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.status).toBe(400);
+  });
 });
