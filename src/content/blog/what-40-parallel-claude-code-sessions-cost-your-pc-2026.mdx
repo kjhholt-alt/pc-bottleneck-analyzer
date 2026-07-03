@@ -1,0 +1,137 @@
+---
+title: "What 40 Parallel Claude Code Sessions Actually Cost Your PC (Measured)"
+description: "We ran 39 Claude Code sessions plus 8 agent workers on one desktop and measured every byte. The result surprises most people: an AI agent fleet is bound by RAM and CPU, not the GPU. Here is the real telemetry."
+publishedAt: "2026-07-02"
+author: "PC Bottleneck Analyzer Team"
+tags: ["ai agent workstation", "claude code system requirements", "how much ram for ai agents", "agent fleet pc build", "llm workstation bottleneck", "claude code ram usage", "pc performance 2026"]
+readingTime: "10 min read"
+---
+
+# What 40 Parallel Claude Code Sessions Actually Cost Your PC (Measured)
+
+There is a lot of blog advice about the "AI workstation." Almost all of it assumes you are running the model locally, so almost all of it tells you to buy the biggest GPU you can afford. That advice is wrong for the workload a growing number of people actually run: a fleet of **API-driven coding agents** like Claude Code, where the model runs in a datacenter and your PC is doing the orchestration.
+
+We wanted real numbers, not vibes. So we built a small telemetry tool that samples the machine every few seconds — CPU, RAM, GPU, VRAM, and a per-process census — and we pointed it at a workstation running dozens of Claude Code sessions in parallel. This article is the raw reading and what it means for how you should spec a machine for agent work.
+
+Nobody publishes measured numbers on this. Here they are.
+
+---
+
+> **TL;DR**
+> - Peak load measured: **39 Claude Code sessions + 8 agent workers + 1 build**, all at once, on a single desktop.
+> - Total resident memory of that fleet: **about 5.5 GB** — roughly **145 MB per session**.
+> - System RAM sat at **72% of 32 GB**. That was the binding constraint.
+> - CPU ran a **43% median** (54% peak). Comfortable.
+> - The RTX 3090 was almost entirely idle for the agent work — **VRAM never exceeded 6.6 GB of 24 GB**, and the fleet itself uses effectively no GPU because inference happens in the cloud.
+> - Verdict: an API-agent workstation is **RAM-bound first, core-bound second**. The GPU is a spectator.
+
+---
+
+## The test rig
+
+Nothing exotic. A mid-range AM4 desktop that a lot of people already own:
+
+| Component | Spec |
+|---|---|
+| CPU | AMD Ryzen 7 5700X3D — 8 cores / 16 threads, 96 MB L3 (3D V-Cache), 105W ([TechPowerUp](https://www.techpowerup.com/cpu-specs/ryzen-7-5700x3d.c3437)) |
+| GPU | NVIDIA RTX 3090 — 24 GB GDDR6X, 350W |
+| RAM | 32 GB DDR4, dual-channel |
+| OS | Windows 11 |
+
+The point of using an ordinary rig is that the conclusion transfers. If you are wondering whether *your* machine can run an agent fleet, this is roughly the class of hardware we are talking about — not a $10,000 threadripper build.
+
+## How we measured
+
+We ran a Python sampler (built on `psutil` and `nvidia-smi`) that takes a snapshot of the whole machine on an interval and writes one JSON row per sample. Each snapshot records:
+
+- CPU utilization (%)
+- RAM used / total (bytes)
+- GPU utilization and VRAM used (bytes)
+- A process census that classifies each process as a game, a protected app, a build, an agent **session**, an agent **worker**, or "other"
+- The aggregate resident set size (RSS) of everything classified as agent work
+
+RSS is the honest memory number to track — it is the physical RAM a process actually occupies right now, not the inflated "virtual" figure Task Manager sometimes shows. Every memory figure in this article is measured RSS or the OS-reported "in use" total.
+
+## The numbers
+
+Here is the binding-constraint report from the peak window:
+
+| Metric | Measured |
+|---|---|
+| Peak fleet | 39 sessions + 8 workers + 1 build |
+| Aggregate agent RSS | ~5.5 GB |
+| Observed cost per session | **~145 MB** |
+| RAM (median / peak) | **72% / 72%** of 32 GB |
+| CPU (median / peak) | 43% / 54% |
+| GPU utilization (median) | low — roughly idle to 36% depending on desktop activity |
+| VRAM used | **6.6 GB of 24 GB** |
+| Binding constraint | **RAM** |
+| Estimated headroom | ~23 more sessions before the RAM stutter line |
+
+Read that per-session line again: **about 145 MB of resident memory for each additional Claude Code session.** A single browser tab on a heavy site can cost more. A coding agent — the thing people assume is enormously resource-hungry — is, on your side of the wire, a lightweight terminal process that spends most of its life waiting on a network response.
+
+That is the whole trick. When you use Claude Code, the actual language-model inference — the expensive matrix math — runs on Anthropic's hardware. Your machine sends a request, waits, and receives tokens back. Locally you are paying for: the process itself, its Node/CLI runtime, the working copy of your repo it holds in memory, any MCP tool servers it spawns, and the I/O to read and write files. None of that touches the GPU.
+
+## Why RAM is the ceiling, not the GPU
+
+Look at where the pressure actually landed. At 39 sessions the machine was at **72% RAM** and **43% CPU**. Neither is redlined, but RAM is closer to its wall, and RAM has a much nastier failure mode.
+
+When you run out of CPU, everything just gets *slower* — tasks queue and finish late. Annoying, recoverable. When you run out of RAM, Windows starts paging memory to disk. On agent work that means sessions stall mid-response, tool calls time out, and the whole fleet hitches in lockstep. The failure is a cliff, not a slope. That is why our tool flags RAM as the "binding constraint" and estimates headroom in *sessions before the stutter line* — roughly **23 more** on this 32 GB box at the observed per-session cost.
+
+Meanwhile the RTX 3090 — a card that cost more than the rest of the build combined — sat with **17+ GB of its 24 GB VRAM unused** and its compute mostly idle. It was not helping the agent fleet at all, because there was nothing for it to compute. The model wasn't local.
+
+This is the single most expensive mistake in agent-workstation builds: **spending your budget on the GPU.** For API-driven agents, that money would have done far more as RAM and cores.
+
+## What this means for your build
+
+If you are speccing or upgrading a machine primarily to run coding agents, browser-automation agents, or any fleet of API-backed assistants, here is the honest priority order (we go deep on this in [the agent-workstation bottleneck hierarchy](/blog/agent-workstation-bottleneck-hierarchy-ram-cores-disk-gpu-2026)):
+
+1. **RAM first.** At ~145 MB per session plus your OS, browser, editor, and any local databases, capacity is what caps your parallelism. 32 GB is a comfortable start; 64 GB if you want to run 100+ sessions or keep heavy apps open alongside. Make sure it is **dual-channel** — a single stick cripples bandwidth (see our [RAM bottleneck guide](/blog/ram-bottleneck-signs-diagnosis-and-fixes-for-2026)).
+2. **Cores second.** Agents themselves are light, but they *trigger* real local work — builds, tests, type-checks, git operations. Those are what actually load your CPU. More cores means more of that runs in parallel without queueing. See [how many cores you actually need](/blog/how-many-cpu-cores-for-gaming-2026).
+3. **Fast NVMe third.** Agents read and write files constantly. A quick SSD keeps tool calls snappy.
+4. **GPU last** — for this workload. A modest card is fine. Your money is better spent on the three items above unless you also plan to run models *locally* (a different story we cover in [the DGX Spark honest take](/blog/dgx-spark-honest-take-local-inference-vs-api-agent-fleets-2026)).
+
+## A caveat on "40 sessions"
+
+To be clear about what we did and did not measure: this was a real working fleet on a real machine, sampled live — not a synthetic benchmark designed to stress one component. Load varies with what the agents are doing. A fleet that is mostly waiting on the API is lighter than one that just kicked off 40 simultaneous `cargo build` jobs, which would spike CPU and disk hard. The RAM figure is the most stable and the most limiting, which is exactly why it is the number to build around.
+
+Your per-session cost will also drift with the tools you attach. Sessions that spawn several MCP servers, or hold a very large repo in memory, land higher than 145 MB. Treat that number as a floor for a lean session, not a hard ceiling.
+
+---
+
+## FAQ
+
+### How much RAM do I need to run Claude Code?
+For a handful of sessions, 16 GB is workable. For serious parallel agent work — dozens of sessions plus your normal apps — 32 GB is the practical floor and 64 GB is the comfortable target. At roughly 145 MB per session measured, RAM capacity is what caps how many agents you can run at once.
+
+### Does Claude Code use my GPU?
+No. Claude Code sends requests to Anthropic's API, where the model runs. On our test rig the GPU stayed near-idle and VRAM never exceeded 6.6 GB of 24 GB during heavy agent use. A big GPU does nothing for API-driven agents.
+
+### What actually slows down when I run too many agents?
+RAM fills first. Once the system starts paging memory to disk, sessions stall and tool calls time out together. CPU pressure shows up second, as builds and tests queue behind each other. The GPU is almost never the limit for API agents.
+
+### Is a coding agent really only ~145 MB?
+That was the observed marginal cost per session on our rig — the aggregate resident memory of the fleet divided across the sessions. Sessions with many MCP tool servers or huge repos in memory cost more. It is a floor for a lean session, not a universal constant.
+
+### Should I buy a bigger GPU for AI development?
+Only if you plan to run models *locally* (local inference, fine-tuning, image generation). For orchestrating cloud API agents, put the money into RAM and cores instead — that is where the measured bottleneck is.
+
+---
+
+## Find your own bottleneck
+
+Curious where *your* machine would hit the wall running an agent fleet — or any workload? Our [free bottleneck analyzer](/) scores your system out of 100, identifies which component is holding you back, and recommends the most cost-effective upgrade. Enter your CPU, GPU, and RAM, and we will tell you whether you are RAM-bound, core-bound, or GPU-bound in about 30 seconds.
+
+For more hardware deep-dives, browse the [PC hardware blog](/blog).
+
+---
+
+## Sources and further reading
+
+- AMD Ryzen 7 5700X3D specifications — [TechPowerUp CPU Database](https://www.techpowerup.com/cpu-specs/ryzen-7-5700x3d.c3437)
+- AMD Ryzen 7 5700X3D review and specs — [Tom's Hardware](https://www.tomshardware.com/pc-components/cpus/amd-ryzen-7-5700x3d-cpu-review)
+- Local LLM VRAM footprints (why the GPU sits idle for API agents) — [LocalLLM.in llama.cpp VRAM guide](https://localllm.in/blog/llamacpp-vram-requirements-for-local-llms)
+
+---
+
+*All telemetry in this article was captured on our own workstation with a purpose-built sampling tool in July 2026. Numbers reflect one real fleet under real load; your results will vary with your hardware, tools, and what your agents are doing. Hardware specs and prices change frequently — verify current details before purchasing.*
