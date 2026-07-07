@@ -1,5 +1,49 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-06: PC Deep-Dive Report ($29) built — third paid artifact, server-generated, staged to test mode (gl-0199)
+
+The site's first product with **server-side, post-purchase fulfillment**: buyer
+pays → the Lemon Squeezy webhook generates the report → buyer collects it at a
+private, unguessable link. Distinct from Blueprint (which is instant/client-side).
+Ships **DORMANT** behind two OFF-by-default switches. Full test-mode E2E is green.
+Spec: `specs/SPEC_DEEPDIVE_REPORT.md`. Go-live (Kruz-gated): `specs/DEEPDIVE_GOLIVE.md`.
+Price memo: `specs/DEEPDIVE_PRICE_MEMO.md` (recommends $29).
+
+**What shipped** (branch `feat/upgrade-blueprint`, built on top of the Blueprint work):
+- `src/lib/deepdive/` — `report.ts` (deterministic generator, reuses
+  analyzeScan + generateBlueprint + estFps + percentile), `render.ts`
+  (self-contained dark-theme HTML artifact with print CSS, escapes buyer notes),
+  `store.ts` (ReportStore: Supabase `report_orders.data` jsonb backend for prod,
+  file backend for dev/test), `fulfillment.ts` (token gen, checkout-URL builder,
+  idempotent `fulfillReportOrder`), `validate.ts`, `access.ts`, `types.ts`.
+- Routes: `POST /api/report/checkout` (stages a pending order, returns tokenized
+  LS checkout URL — never generates), `GET /api/report/status` (delivery poll),
+  webhook extension (fulfills on `order_created` when `report_token` custom data
+  present + fulfillment enabled — wrapped so it can never non-200 the webhook),
+  `GET /report/r/[token]/download` (raw artifact).
+- Pages: `/report` (dormant-aware landing + intake form), `/report/sample`
+  (**canned** demo — fixed input, no live generation, satisfies the
+  no-live-model-API-on-public-demos rail by construction), `/report/r/[token]`
+  (private delivery, polls until ready, iframe-isolated render + Print/Download).
+- Analytics: `report_view` + `report_purchase_click` via `/api/t`; sales land as
+  `purchase_test`/`purchase` in `/stats` (existing webhook path, no PII).
+- Tests: **vitest 87/87** (28 new: generator determinism + XSS escaping, file
+  store lifecycle, input validation, and the full E2E — checkout → signed webhook
+  → generate → deliver → receipt, plus forged-signature reject / fulfillment-off
+  / dormant-404 / bad-input). `tsc` clean. `next build` green.
+
+**THE FLIP (Kruz — see `specs/DEEPDIVE_GOLIVE.md`):** provision the Supabase
+`report_orders` table (SQL in that doc), create the "$29 Deep-Dive" LS product,
+set `NEXT_PUBLIC_DEEPDIVE_ENABLED` + `NEXT_PUBLIC_LS_DEEPDIVE_CHECKOUT_URL` +
+`DEEPDIVE_FULFILLMENT_ENABLED` in Vercel, rehearse with the test card, then leave
+LS test mode. Two OFF-by-default switches; nothing sells or generates until then.
+
+**Known gaps (acceptable v1):** file store is dev/test only (prod needs the
+Supabase table — documented); no automated email of the private link yet (buyer
+keeps it in localStorage as `pc-deepdive-receipt` and via the post-checkout link
+— an LS email template is a go-live nicety); entitlement is the unguessable token
+(same pragmatic tradeoff as the other lanes).
+
 ## 2026-07-01: PC Upgrade Blueprint ($19) built — one flip from second revenue lane
 
 Second paid artifact on the PCopti lane, per `specs/SPEC_UPGRADE_BLUEPRINT.md`

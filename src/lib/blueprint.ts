@@ -111,8 +111,12 @@ function guessChipset(cpu: HardwareEntry): string {
  * Build a SystemScan that assumes every setting/telemetry field we didn't
  * collect is "optimal" so the resulting score reflects the picked CPU/GPU
  * tiers, not made-up bad luck.
+ *
+ * Exported so the Deep-Dive Report generator (src/lib/deepdive/report.ts) can
+ * rebuild the exact same scan the upgrade ladder is derived from, keeping its
+ * bottleneck list / percentile / verdict internally consistent with the ladder.
  */
-function buildSyntheticScan(
+export function buildSyntheticScan(
   input: BlueprintPickerInput,
   cpuEntry: HardwareEntry,
   gpuEntry: HardwareEntry,
@@ -264,8 +268,12 @@ export function generateBlueprint(
     const fpsUplift: FpsUplift[] = games.map((game) => ({
       gameId: game.id,
       gameTitle: game.title,
-      beforeFps: estFps(gpuEntry, game, input.resolution),
-      afterFps: estFps(part ?? gpuEntry, game, input.resolution),
+      // cpuEntry applies the shared CPU-ceiling model (fps-estimator.ts) so
+      // a CPU-bottlenecked buyer's uplift table visibly flattens once the
+      // GPU stops being the limiter, instead of climbing forever with every
+      // bigger card — consistent with the CPU-is-the-limiter prose below.
+      beforeFps: estFps(gpuEntry, game, input.resolution, cpuEntry),
+      afterFps: estFps(part ?? gpuEntry, game, input.resolution, cpuEntry),
     }));
 
     return {

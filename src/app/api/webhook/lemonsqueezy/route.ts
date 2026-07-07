@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createHmac } from "crypto";
 import { insertEvent } from "@/lib/supabase";
+import { isFulfillmentEnabled, fulfillReportOrder } from "@/lib/deepdive/fulfillment";
 
 // ─── Lemon Squeezy Webhook Handler ──────────────────────────────────────────
 // Receives events from Lemon Squeezy (order_created, etc.).
@@ -83,6 +84,27 @@ export async function POST(req: NextRequest) {
         ).slice(0, 100),
         referrer: `order:${orderNumber} total:${total}`,
       });
+
+      // Deep-Dive Report fulfillment: if this order carries a report_token in
+      // its checkout custom data and server-side fulfillment is enabled, run the
+      // (deterministic) generator and store the rendered artifact against the
+      // token so the buyer's private link goes live. Wrapped so a fulfillment
+      // hiccup can never turn the webhook into a non-200 (which would make Lemon
+      // Squeezy retry-storm) — the buyer's poll and a manual re-fire recover it.
+      const reportToken = payload?.meta?.custom_data?.report_token;
+      if (typeof reportToken === "string" && reportToken && isFulfillmentEnabled()) {
+        try {
+          const result = await fulfillReportOrder(reportToken, {
+            orderRef: String(orderNumber),
+            testMode,
+          });
+          if (!result.ok) {
+            console.error(`[LS Webhook] report fulfillment failed: ${result.reason}`);
+          }
+        } catch (err) {
+          console.error("[LS Webhook] report fulfillment threw", err);
+        }
+      }
     }
 
     return NextResponse.json({ ok: true, event: eventName });

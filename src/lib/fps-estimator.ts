@@ -4,8 +4,18 @@ import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 
 // RTX 4070 = gaming_score 75 in our DB — the calibration reference card
 const GPU_REFERENCE_SCORE = 75;
-// Ryzen 7 5800X / i7-13700K class = ~80 in our DB
-const CPU_REFERENCE_SCORE = 70;
+// Ryzen 7 5800X (78) / i7-13700K (89) class = ~80 in our DB (hardware-db.ts)
+const CPU_REFERENCE_SCORE = 80;
+
+// A reference-class CPU's headroom over baseFps in a GPU-bound title vs a
+// CPU-bound one. baseFps is calibrated GPU-bound: RTX 4070 @ 1080p Ultra, fed
+// by a CPU fast enough to not be the bottleneck at that calibration point. In
+// GPU-heavy titles a reference CPU can feed frames well above baseFps (the
+// GPU is what's holding things back), so headroom is generous. In cpuHeavy
+// titles (esports/sim titles that lean on single-thread/engine throughput)
+// the reference CPU is much closer to its own ceiling, so headroom is tight.
+const CPU_HEADROOM_CPU_HEAVY = 1.2;
+const CPU_HEADROOM_GPU_HEAVY = 1.8;
 
 export interface FPSResult {
   low: number;
@@ -14,6 +24,43 @@ export interface FPSResult {
   verdict: "smooth" | "playable" | "struggling";
   verdictLabel: string;
   color: string;
+}
+
+/**
+ * Pure FPS core model: min(cpuLimitedFps, gpuLimitedFps).
+ *
+ * gpuLimitedFps scales with GPU score, resolution, and quality — this is the
+ * ceiling the GPU can push frames to.
+ *
+ * cpuLimitedFps scales with CPU score only (resolution/quality-independent,
+ * since the CPU does the same simulation/draw-call work regardless of pixel
+ * count) — this is the ceiling the CPU can feed frames at.
+ *
+ * The engine is bottlenecked by whichever is lower, matching how real
+ * CPU/GPU-bound rendering behaves (unlike a multiplicative model, where a
+ * weak CPU could still throttle FPS down even in a heavily GPU-bound,
+ * high-resolution scenario where the CPU was never actually the constraint).
+ *
+ * `cpuScore = null` means no CPU cap (unknown/omitted CPU) — GPU-limited only.
+ */
+export function fpsCore(
+  cpuScore: number | null,
+  gpuScore: number,
+  game: GameBenchmark,
+  resolution: Resolution,
+  quality: QualityPreset,
+): number {
+  const resMult = RESOLUTION_MULTIPLIERS[resolution];
+  const qualMult = QUALITY_MULTIPLIERS[quality];
+
+  const gpuLimitedFps = game.baseFps * (gpuScore / GPU_REFERENCE_SCORE) * resMult * qualMult;
+
+  if (cpuScore === null) return gpuLimitedFps;
+
+  const cpuHeadroom = game.cpuHeavy ? CPU_HEADROOM_CPU_HEAVY : CPU_HEADROOM_GPU_HEAVY;
+  const cpuLimitedFps = game.baseFps * cpuHeadroom * (cpuScore / CPU_REFERENCE_SCORE);
+
+  return Math.min(cpuLimitedFps, gpuLimitedFps);
 }
 
 export function estimateFPS(
@@ -29,17 +76,7 @@ export function estimateFPS(
   const cpuScore = cpuEntry?.gaming_score ?? 50;
   const gpuScore = gpuEntry?.gaming_score ?? 50;
 
-  // GPU is the primary driver of FPS
-  const gpuFactor = gpuScore / GPU_REFERENCE_SCORE;
-
-  // CPU caps FPS but doesn't inflate it beyond 1.0 (except for esports titles)
-  const cpuCap = game.cpuHeavy ? 1.15 : 1.0;
-  const cpuFactor = Math.min(cpuCap, cpuScore / CPU_REFERENCE_SCORE);
-
-  const resMult = RESOLUTION_MULTIPLIERS[resolution];
-  const qualMult = QUALITY_MULTIPLIERS[quality];
-
-  let fps = game.baseFps * gpuFactor * cpuFactor * resMult * qualMult;
+  let fps = fpsCore(cpuScore, gpuScore, game, resolution, quality);
 
   // RAM penalties
   if (analysis.score.breakdown.ram < 12) {

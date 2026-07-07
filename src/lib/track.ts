@@ -93,3 +93,34 @@ export function trackBlueprintPurchaseClick(source: string): void {
     fetch("/api/t", { method: "POST", body: payload, keepalive: true }).catch(() => {});
   }
 }
+
+/** Track a view of the Deep-Dive Report landing/sample, by funnel entry source. */
+export function trackReportView(source: string): void {
+  const payload = JSON.stringify({
+    page: window.location.pathname,
+    type: "report_view",
+    hardware: source,
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/t", new Blob([payload], { type: "application/json" }));
+  } else {
+    fetch("/api/t", { method: "POST", body: payload, keepalive: true }).catch(() => {});
+  }
+}
+
+/** Track a click on the Deep-Dive Report checkout button. */
+export function trackReportPurchaseClick(source: string): void {
+  const payload = JSON.stringify({
+    page: window.location.pathname,
+    type: "report_purchase_click",
+    vendor: "lemonsqueezy",
+    hardware: source,
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/t", new Blob([payload], { type: "application/json" }));
+  } else {
+    fetch("/api/t", { method: "POST", body: payload, keepalive: true }).catch(() => {});
+  }
+}
