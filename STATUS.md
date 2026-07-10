@@ -1,5 +1,37 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-10: Audit — verified recent work is landing, not churning (gl-0452)
+
+Greenlight flagged 44 commits/30d with zero matched Claude Code sessions as a
+shipping-without-review-signal risk. Spot-checked instead of piling on more:
+
+- **Commit mix** (57 commits across all branches, last 30d): 39 `autopilot`
+  (automated SEO blog posts — low-risk content gen, not hand-reviewed by
+  design), 10 `feat`, 3 `fix`, rest docs/chore. The volume is mostly the
+  autopilot content lane, not untested feature churn.
+- **`feat/upgrade-blueprint` branch** (Blueprint $19 + Deep-Dive Report $29,
+  12 commits ahead of `main`, still unmerged): `vitest` 87/87 green, `tsc
+  --noEmit` clean, `next build` succeeds (132 pages), `playwright test` 10/10
+  green. Spot-read `src/lib/deepdive/report.ts` and the blueprint/report test
+  suite — real invariant tests (determinism, monotonic FPS uplift, resale
+  never exceeds price, forged-webhook-signature rejection, XSS escaping),
+  not filler. This code works; it just hasn't been merged yet because go-live
+  is gated on Kruz creating the Lemon Squeezy products (see "THE FLIP"
+  entries below) — an intentional dormant-behind-flag state, not stalled work.
+- **Live prod** (`pcbottleneck.buildkit.store`, deployed from `main`): loads
+  clean, matches expected free-beta state (no paywall live yet, as intended).
+  Sampled blog post (`is-my-gpu-bottlenecking-my-cpu-find-out-now`) has real,
+  substantive content — not placeholder/spam.
+- **Minor cruft noted, not touched**: 4 stray unmerged branches
+  (`feat/portfolio-health-emitter`, `gl-0019-agent-workstation-content`,
+  `qa/core-logic-tests-and-fixes`, `local-pre-pull-20260504`) dating back to
+  April–July, 1-2 commits each, none in this audit's scope to clean up.
+
+**Verdict: landing, not churning.** Tests are real and pass, builds are
+green, prod is healthy. The unmerged feature branches are deliberately
+parked behind revenue flags awaiting a business decision (Kruz), not
+abandoned or broken work.
+
 ## 2026-07-01: Pro purchase lane ARMED (dormant) — one flip from first revenue
 
 The complete self-serve $9.99 Pro funnel is built, verified end-to-end in
