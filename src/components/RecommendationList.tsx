@@ -8,6 +8,7 @@ import { getAffiliateLinks } from "@/lib/affiliate";
 import { trackAffiliateClick } from "@/lib/track";
 import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 import { RelatedGuides } from "@/components/RelatedGuides";
+import { BlueprintCTA } from "@/components/BlueprintCTA";
 
 interface RecommendationListProps {
   recommendations: Recommendation[];
@@ -244,6 +245,8 @@ export function RecommendationList({
       {recommendations.length > 0 && (
         <RelatedGuides recommendations={recommendations} />
       )}
+
+      <BlueprintCTA />
 
       {recommendations.length === 0 && (
         <motion.div

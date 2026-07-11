@@ -9,9 +9,18 @@
 
 const LS_API = "https://api.lemonsqueezy.com/v1/licenses";
 
-/** PCopti store + product on Lemon Squeezy. */
+/** PCopti store on Lemon Squeezy — shared by every product sold there. */
 export const LS_STORE_ID = 298278;
+
+/** The $9.99 "PCopti Tool" (Pro) product — the default when no product is passed. */
 export const LS_PRODUCT_ID = 845012;
+
+/**
+ * The $19 "PC Upgrade Blueprint" product. Set once Kruz creates it in the
+ * Lemon Squeezy store; until then this is 0, which can never match a real
+ * product_id, so Blueprint license validation fails closed by default.
+ */
+export const LS_BLUEPRINT_PRODUCT_ID = Number(process.env.LS_BLUEPRINT_PRODUCT_ID) || 0;
 
 /** Name recorded against the activation instance in Lemon Squeezy. */
 const INSTANCE_NAME = "pcopti-web";
@@ -34,8 +43,8 @@ interface LsActivateResponse {
   meta?: LsLicenseMeta;
 }
 
-function belongsToUs(meta: LsLicenseMeta | undefined): boolean {
-  return meta?.store_id === LS_STORE_ID && meta?.product_id === LS_PRODUCT_ID;
+function belongsToUs(meta: LsLicenseMeta | undefined, productId: number): boolean {
+  return meta?.store_id === LS_STORE_ID && meta?.product_id === productId;
 }
 
 async function callLicenseApi(
@@ -61,9 +70,14 @@ async function callLicenseApi(
  * Activate a license key, falling back to plain validation when the key
  * is already activated up to its limit (so buyers can restore Pro on a
  * second device without burning an activation).
+ *
+ * `productId` distinguishes which of our Lemon Squeezy products the key must
+ * belong to (defaults to Pro) — Pro and Blueprint are separate products, so
+ * a key from one never unlocks the other.
  */
 export async function activateOrValidateLicense(
   key: string,
+  productId: number = LS_PRODUCT_ID,
 ): Promise<LicenseResult> {
   const activation = await callLicenseApi("activate", {
     license_key: key,
@@ -79,7 +93,7 @@ export async function activateOrValidateLicense(
   }
 
   if (activation.activated === true) {
-    if (!belongsToUs(activation.meta)) {
+    if (!belongsToUs(activation.meta, productId)) {
       return {
         ok: false,
         error: "That license key is for a different product.",
@@ -97,7 +111,7 @@ export async function activateOrValidateLicense(
     if (
       validation?.valid === true &&
       validation.license_key?.status === "active" &&
-      belongsToUs(validation.meta)
+      belongsToUs(validation.meta, productId)
     ) {
       return { ok: true, instanceId: null };
     }

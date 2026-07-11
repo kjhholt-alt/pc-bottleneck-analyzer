@@ -1,16 +1,21 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { activateOrValidateLicense } from "@/lib/license";
+import {
+  activateOrValidateLicense,
+  LS_PRODUCT_ID,
+  LS_BLUEPRINT_PRODUCT_ID,
+} from "@/lib/license";
 
 /**
  * POST /api/license/activate
- * Body: { licenseKey: string }
+ * Body: { licenseKey: string, product?: "pro" | "blueprint" }
  *
  * Validates a Lemon Squeezy license key server-side (store + product
- * checked) so a buyer can restore Pro on any device from the key in
- * their receipt email.
+ * checked) so a buyer can restore access on any device from the key in
+ * their receipt email. `product` defaults to "pro" for backward
+ * compatibility with the existing Pro restore flow.
  */
 export async function POST(req: NextRequest) {
-  let body: { licenseKey?: unknown };
+  let body: { licenseKey?: unknown; product?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -27,7 +32,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const result = await activateOrValidateLicense(key);
+  const productId =
+    body.product === "blueprint" ? LS_BLUEPRINT_PRODUCT_ID : LS_PRODUCT_ID;
+
+  const result = await activateOrValidateLicense(key, productId);
 
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: result.status });

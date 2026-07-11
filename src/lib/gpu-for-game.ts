@@ -4,17 +4,15 @@
 // from the game-benchmark + GPU databases. Estimates, clearly labelled.
 
 import { gpuDatabase, type HardwareEntry } from "@/data/hardware-db";
-import {
-  gameBenchmarks,
-  RESOLUTION_MULTIPLIERS,
-  type GameBenchmark,
-} from "@/data/game-benchmarks";
+import { gameBenchmarks, type GameBenchmark } from "@/data/game-benchmarks";
 import { slugifyPart } from "@/lib/compare";
+import { fpsCore } from "@/lib/fps-estimator";
 
-// baseFps in the DB is calibrated to the RTX 4070 (gaming_score 75) at 1080p Ultra.
-const REF_SCORE = 75;
-
-export type Res = "1080p" | "1440p";
+// "4K" is included because RESOLUTION_MULTIPLIERS defines it — used by
+// src/lib/blueprint.ts, which lets buyers pick 4K as their target resolution.
+// rankGpus()/pickGpus() below always pass "1080p"/"1440p" literals explicitly,
+// so this widening doesn't change their behavior.
+export type Res = "1080p" | "1440p" | "4K";
 
 export function gameSlug(g: GameBenchmark): string {
   return g.title
@@ -31,10 +29,30 @@ export function allGames(): GameBenchmark[] {
   return [...gameBenchmarks].sort((a, b) => b.year - a.year);
 }
 
-/** Estimated average FPS for a GPU in a game at Ultra settings + resolution. */
-export function estFps(gpu: HardwareEntry, game: GameBenchmark, res: Res): number {
+/**
+ * Estimated average FPS for a GPU in a game at Ultra settings + resolution.
+ *
+ * `cpu` is optional. Omitted (the default): GPU-limited only, matching the
+ * historical behavior of this function byte-for-byte — every existing
+ * best-gpu-for/compare/tier-list SEO page and rankGpus()/pickGpus() call
+ * this way, and their output must not change.
+ *
+ * Passed: applies the CPU ceiling from the shared fpsCore() model, so a
+ * CPU-bottlenecked buyer sees FPS estimates that flatten out once the GPU
+ * stops being the limiter — used by blueprint.ts's upgrade ladder.
+ *
+ * Quality is fixed at "High" (fpsCore's neutral 1.0x multiplier), not
+ * "Ultra" (0.85x) — game.baseFps in the DB is already Ultra-calibrated, so
+ * "High" avoids double-applying an Ultra discount on top of that baseline.
+ */
+export function estFps(
+  gpu: HardwareEntry,
+  game: GameBenchmark,
+  res: Res,
+  cpu?: HardwareEntry,
+): number {
   return Math.round(
-    game.baseFps * (gpu.gaming_score / REF_SCORE) * RESOLUTION_MULTIPLIERS[res]
+    fpsCore(cpu ? cpu.gaming_score : null, gpu.gaming_score, game, res, "High"),
   );
 }
 

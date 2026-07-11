@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Cpu, MonitorCog, Trophy } from "lucide-react";
 import { NavHeader } from "@/components/NavHeader";
 import { EmailCapture } from "@/components/EmailCapture";
+import { BlueprintCTA } from "@/components/BlueprintCTA";
 import type { TierListFeedEntry } from "@/lib/tier-list";
 
 export const metadata: Metadata = {
@@ -110,6 +111,8 @@ export default function TierListsPage() {
             Analyze My PC <ArrowRight size={14} />
           </Link>
         </div>
+
+        <BlueprintCTA className="mb-12" />
 
         <EmailCapture source="tier-lists-hub" />
       </section>
