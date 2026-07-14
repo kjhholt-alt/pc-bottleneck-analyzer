@@ -1,5 +1,32 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-14: operator tick — per-post FAQPage JSON-LD (AEO) — branch `feat/faq-schema-aeo`, awaiting merge
+
+Acted on the 2026-07-13 research-scout headline (AI-Overview visibility is now
+a measurable threat to pcbottleneck's organic upgrade-intent traffic; the $0
+counter is AEO structure on the content). Found the concrete gap: **24 of 73
+posts already ship a hand-written `## FAQ` / `## Frequently Asked Questions`
+section, but `blog/[slug]` only emitted `Article` schema** — the Q&A was
+invisible to AI answer engines and Google FAQ rich results. FAQ structured data
+mirroring real buyer queries is a documented AI-citation factor; the copy
+already exists, so this is pure surfacing, not new content.
+
+- `src/lib/mdx.ts`: `parseFaqsFromContent()` / `getFaqsFromMdx()` parse the FAQ
+  section (H3 questions + prose answers) into clean plain-text Q&A pairs
+  (strip `<AffiliateLink>`/JSX, markdown links, emphasis, code). Component posts
+  / unknown slugs return `[]`.
+- `blog/[slug]/page.tsx`: emit a `FAQPage` JSON-LD `<script>` when a post has
+  >= 2 parsed Q&A pairs, alongside the existing `Article` LD. New posts from the
+  autopilot content lane that include an FAQ section get schema automatically.
+
+**Verify:** vitest **94 passed** (was 87, +7 incl. a real-content integration
+test); `tsc --noEmit` clean; `next build` green (all 73 posts prerendered);
+baked HTML confirms the RTX 5090 post gains a **2nd** FAQPage block with 5
+questions while a non-FAQ post keeps only the global one. Additive structured
+data — no visible content, revenue-flag, or scanner behavior touched. Commit
+`d6447ea`. Left on a branch (not pushed to `main`) so the prod-deploying merge
+stays a visible step. (operator tick)
+
 ## 2026-07-10: Audit — verified recent work is landing, not churning (gl-0452)
 
 Greenlight flagged 44 commits/30d with zero matched Claude Code sessions as a
