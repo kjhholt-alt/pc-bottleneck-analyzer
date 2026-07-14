@@ -5,6 +5,111 @@ import type { BlogPost } from "@/data/blog-posts";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/blog");
 
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+/**
+ * Flatten a snippet of MDX prose to clean plain text for a FAQPage answer.
+ * `acceptedAnswer.text` should read as prose, so strip <AffiliateLink> and any
+ * other JSX tags (keeping the product name / inner text), markdown links,
+ * images, emphasis, and inline code, then collapse whitespace.
+ */
+function cleanFaqText(md: string): string {
+  return md
+    // <AffiliateLink name="AMD Ryzen 7 9800X3D" /> -> the product name
+    .replace(
+      /<AffiliateLink\b[^>]*\bname=["']([^"']+)["'][^>]*\/?>/g,
+      "$1"
+    )
+    // any remaining self-closing / paired JSX tags -> drop tag, keep inner text
+    .replace(/<\/?[A-Za-z][^>]*>/g, "")
+    // images ![alt](url) -> alt  (before the link rule, which is a subset)
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+    // links [text](url) -> text
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    // bold / italic / inline code markers
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Parse a post body into FAQ Q&A pairs. Convention across the content lane
+ * (stable — see the 24 posts that already ship one):
+ *   `## FAQ` / `## Frequently Asked Questions` (H2, optional trailing text)
+ *   opens the section; each question is an `### ...` (H3); the answer is the
+ *   prose until the next H3, and the section ends at the next H2.
+ * Returns [] when there is no parseable FAQ section.
+ */
+export function parseFaqsFromContent(content: string): FaqItem[] {
+  const lines = content.split(/\r?\n/);
+
+  // Locate the FAQ section header (H2 whose text begins FAQ / Frequently Asked).
+  let start = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^##\s+(FAQ|Frequently Asked)/i.test(lines[i])) {
+      start = i + 1;
+      break;
+    }
+  }
+  if (start === -1) return [];
+
+  const faqs: FaqItem[] = [];
+  let question: string | null = null;
+  let answerLines: string[] = [];
+
+  const flush = () => {
+    if (question) {
+      const answer = cleanFaqText(answerLines.join(" "));
+      const q = cleanFaqText(question);
+      if (q && answer) faqs.push({ question: q, answer });
+    }
+    question = null;
+    answerLines = [];
+  };
+
+  for (let i = start; i < lines.length; i++) {
+    const line = lines[i];
+    // A new H2 (exactly `## `, not `###`) ends the FAQ section.
+    if (/^##\s+/.test(line)) {
+      flush();
+      break;
+    }
+    const h3 = line.match(/^###\s+(.+?)\s*$/);
+    if (h3) {
+      flush();
+      question = h3[1];
+    } else if (question && !/^-{3,}\s*$/.test(line)) {
+      answerLines.push(line);
+    }
+  }
+  flush();
+
+  return faqs;
+}
+
+/**
+ * Read a post's MDX source and extract its FAQ Q&A pairs (see
+ * {@link parseFaqsFromContent}). Used by the blog page to emit FAQPage
+ * structured data — AI answer engines and Google rich results preferentially
+ * cite pages whose Q&A is machine-readable, and the copy already exists.
+ * Safe for slugs with no `.mdx` file (e.g. component posts): returns [].
+ */
+export function getFaqsFromMdx(slug: string): FaqItem[] {
+  const filePath = path.join(CONTENT_DIR, `${slug}.mdx`);
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const raw = fs.readFileSync(filePath, "utf-8");
+    return parseFaqsFromContent(matter(raw).content);
+  } catch {
+    return [];
+  }
+}
+
 export function getMdxPosts(): BlogPost[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { getAllPosts, getPostBySlug } from "@/data/blog-posts";
+import { getFaqsFromMdx } from "@/lib/mdx";
 import { NavHeader } from "@/components/NavHeader";
 import { EmailCapture } from "@/components/EmailCapture";
 import { GpuBottleneckingCpu } from "./posts/gpu-bottlenecking-cpu";
@@ -86,6 +87,24 @@ export default async function BlogPostPage({
     mainEntityOfPage: `https://pcbottleneck.buildkit.store/blog/${slug}`,
   };
 
+  // Surface the post's existing FAQ copy as FAQPage structured data so AI
+  // answer engines / Google rich results can cite it. Only emit when the post
+  // ships a real FAQ section (>= 2 Q&A pairs); component posts have no .mdx and
+  // return [].
+  const faqs = getFaqsFromMdx(slug);
+  const faqJsonLd =
+    faqs.length >= 2
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: { "@type": "Answer", text: f.answer },
+          })),
+        }
+      : null;
+
   return (
     <main className="min-h-screen">
       <NavHeader />
@@ -150,6 +169,12 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
     </main>
   );
 }
