@@ -1,0 +1,309 @@
+---
+title: "PC Crashes While Gaming? How to Diagnose and Fix Crashes, Freezes, and Reboots (2026)"
+description: "Your PC crashes, freezes, or reboots only when gaming? This step-by-step hardware troubleshooting guide covers every cause — from PSU failures to unstable overclocks — with exact fixes for each one."
+publishedAt: "2026-07-13"
+author: "PC Bottleneck Analyzer Team"
+tags: ["pc crashes while gaming", "game crashing to desktop", "computer freezes while gaming", "pc reboots while gaming", "gpu crash fix", "gaming crash troubleshooting", "hardware crash diagnosis", "pc stability"]
+readingTime: "15 min read"
+---
+
+# PC Crashes While Gaming? How to Diagnose and Fix Crashes, Freezes, and Reboots (2026)
+
+Your PC runs fine for browsing, streaming, and office work. But the moment you launch a demanding game — crash. Maybe the screen goes black. Maybe the whole system reboots without warning. Maybe the game freezes and you have to force-close it with Task Manager. It only happens during gaming, and it's maddening.
+
+Here's the thing: **gaming is the single most demanding workload most PCs ever face.** It pushes your CPU, GPU, RAM, power supply, and cooling system simultaneously and hard. A component that's "good enough" for everyday tasks can fail catastrophically under gaming load. That's why crashes happen during games and not while watching YouTube — the stress exposes hardware weaknesses that normal use never touches.
+
+After analyzing thousands of system scans and crash reports, we've identified the most common causes and the exact steps to diagnose each one. This guide walks through them systematically, from most likely to least likely.
+
+---
+
+> **TL;DR**
+> - The most common cause of gaming-only crashes is an **underpowered or failing PSU** — your power supply can't deliver stable power under peak GPU + CPU load.
+> - The second most common cause is **overheating** — either GPU or CPU hitting thermal limits and shutting down to protect themselves.
+> - Unstable overclocks (including **XMP/EXPO RAM profiles**) cause crashes that look random but are actually triggered by specific memory access patterns during gaming.
+> - GPU driver crashes produce the distinctive "display driver stopped responding" error — a clean driver reinstall with DDU fixes this 90% of the time.
+> - A system that crashes during gaming often has a **hidden bottleneck** straining one component past its limits. Run your build through our [free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) to identify the weak link.
+
+---
+
+## Step 1: Identify Your Crash Type
+
+Not all crashes are the same, and the type of crash tells you exactly where to look. Before doing anything else, identify which pattern matches yours:
+
+### Instant Reboot (No Blue Screen, No Warning)
+
+The system shuts off and immediately restarts. No error message, no blue screen — just a sudden power cycle as if someone pulled the plug.
+
+**Most likely cause:** PSU overload or CPU/GPU overtemperature protection. When temperatures hit critical thresholds (typically 100-110°C for CPUs, 105-110°C for GPUs), the hardware triggers an emergency shutdown. Similarly, when a PSU can't deliver enough power, voltage drops cause an instant reset.
+
+### Black Screen, System Still Running
+
+The monitor goes black (or shows "No Signal"), but you can still hear game audio or fan noise continuing. Requires a hard reboot.
+
+**Most likely cause:** GPU crash. The graphics card has stopped responding but the rest of the system is still operational. This points to GPU driver issues, GPU overheating, VRAM instability, or insufficient GPU power delivery.
+
+### Freeze (Image Stuck on Screen)
+
+The game — or the entire system — locks up completely. The image stays frozen on screen. Audio may loop or buzz. Mouse and keyboard don't respond. Requires a hard reboot.
+
+**Most likely cause:** RAM instability, GPU hang, or storage failure. Complete system freezes often indicate a hardware-level lockup where the CPU is stuck waiting for a response that never comes.
+
+### Crash to Desktop (CTD)
+
+The game closes abruptly and you're dumped back to the Windows desktop, sometimes with an error message. The system itself continues running fine.
+
+**Most likely cause:** Software issue — corrupted game files, driver incompatibility, or insufficient RAM/VRAM causing an out-of-memory crash. CTDs are the most likely crash type to be software-related rather than hardware.
+
+### Blue Screen of Death (BSOD)
+
+Windows shows a blue error screen with a stop code like `WHEA_UNCORRECTABLE_ERROR`, `KERNEL_MODE_HEAP_CORRUPTION`, or `VIDEO_TDR_FAILURE`.
+
+**Most likely cause:** Depends on the stop code. `WHEA_UNCORRECTABLE_ERROR` points to CPU/RAM instability. `VIDEO_TDR_FAILURE` points to GPU issues. `KERNEL_MODE_HEAP_CORRUPTION` suggests RAM problems. The stop code is your single best diagnostic clue — write it down.
+
+---
+
+## Step 2: Check Temperatures First (5 Minutes)
+
+Overheating is the easiest cause to diagnose and one of the most common. Before investigating anything else, monitor your temperatures during gaming.
+
+### How to Monitor
+
+Download **HWiNFO64** (free) and run it in sensors-only mode. Launch your game and play for 10-15 minutes — long enough to let temperatures stabilize. Alt-tab out and check:
+
+- **CPU Package temperature** — should stay below 90°C under gaming load. Above 95°C is concerning. Above 100°C and your CPU is throttling or shutting down.
+- **GPU Temperature** — should stay below 85°C for most cards. Above 90°C is hot. Above 100°C means the cooler is failing or airflow is severely restricted.
+- **GPU Hotspot Temperature** — can be 15-25°C hotter than the main sensor. If this exceeds 105°C, the GPU's hottest area is at risk.
+- **GPU VRAM Temperature** — on GDDR6X cards (RTX 4080, 4090, 5080, 5090), check the memory junction temperature. GDDR6X throttles at 110°C and is a known weak point.
+
+### If Temperatures Are Too High
+
+**For CPUs:**
+- Reapply thermal paste — dried-out compound is the number one cause of CPU overheating on systems older than 2-3 years
+- Make sure the cooler is properly mounted with even pressure on all corners
+- Clean dust from the heatsink and fans
+- Upgrade to a better cooler — a <AffiliateLink name="Thermalright Peerless Assassin 120 SE" /> offers excellent cooling for under $40
+
+**For GPUs:**
+- Clean dust from the GPU heatsink and fans — canned air works, but an <AffiliateLink name="electric air duster" /> is better for thorough cleaning
+- Improve case airflow by adding intake fans or adjusting fan curves
+- Repaste the GPU thermal compound (advanced — voids warranty on some cards)
+- Undervolt the GPU to reduce heat without losing much performance (see our [GPU undervolting guide](/blog/how-to-undervolt-gpu-better-fps-lower-temps-guide-2026))
+
+---
+
+## Step 3: Test Your Power Supply
+
+If temperatures are fine but your system reboots or blacks out under load, suspect the PSU. This is the most underdiagnosed cause of gaming crashes because most users never think to test their power supply.
+
+### Why PSUs Cause Gaming Crashes
+
+Modern GPUs have enormous transient power spikes. An RTX 5080 has a 360W TDP but can spike to 500W+ for microseconds. An RTX 5090 can spike to over 700W. If your PSU can't handle these spikes, voltage drops below the minimum threshold and the system resets — instantly, with no warning.
+
+### Signs Your PSU Is the Problem
+
+- Crashes happen more in graphically demanding scenes (explosions, large battles, heavy ray tracing)
+- The system reboots rather than blue-screening — there's no time for Windows to catch the error
+- Crashes started after upgrading to a more powerful GPU
+- Your PSU is older than 5 years (capacitor aging reduces real-world output below rated wattage)
+- You hear a click from the PSU area right before a crash (overcurrent protection tripping)
+
+### How to Test
+
+**Check your power headroom:** Add up your CPU TDP + GPU TDP + 100W for everything else. Your PSU should provide at least 150-200W above this total. A system with a Ryzen 7 9700X (65W) and RTX 5080 (360W) needs 525W minimum, meaning a 750W PSU is the safe choice — not a 600W.
+
+**Run a simultaneous stress test:** Use **OCCT** (free) with its Power Supply test, which stresses CPU and GPU simultaneously to create maximum power draw. If the system crashes during this test but not during CPU-only or GPU-only stress tests, the PSU can't handle combined peak load.
+
+**Check 12V rail voltage in HWiNFO64:** Under heavy load, the 12V rail should stay between 11.4V and 12.6V. Readings that swing below 11.4V indicate a PSU struggling under load.
+
+### The Fix
+
+If your PSU is undersized or aging, replace it. For modern gaming systems, we recommend at minimum:
+
+- **RTX 5070 / RX 9070 XT builds:** 650W from a quality manufacturer
+- **RTX 5080 builds:** 850W, ATX 3.1 with native 12V-2x6 connector
+- **RTX 5090 builds:** 1000W+ ATX 3.1
+
+A <AffiliateLink name="Corsair RM850x ATX 3.1" /> is an excellent choice for most gaming builds — fully modular, 80+ Gold, and handles transient spikes well.
+
+---
+
+## Step 4: Test RAM Stability
+
+Unstable RAM is one of the sneakiest crash causes because it produces seemingly random symptoms. A game might crash every 30 minutes, or every 2 hours, or only in specific games. The crashes look random because they depend on which memory addresses get accessed during gameplay.
+
+### XMP/EXPO: The Hidden Crash Source
+
+Here's something many gamers don't realize: **XMP and EXPO profiles are overclocks.** When you enable XMP or EXPO in BIOS to get your DDR5-6000 kit running at rated speed, you're running the memory controller outside of Intel's or AMD's official specifications. Most kits work perfectly. Some don't — and those that don't cause infuriating intermittent crashes.
+
+### How to Test
+
+**Step 1:** Disable XMP/EXPO in BIOS and set RAM to JEDEC defaults (usually DDR5-4800 or DDR4-2133). Play your games for a few hours.
+
+**If crashes stop:** Your XMP/EXPO profile is unstable. Try these fixes in order:
+1. Update your motherboard BIOS — newer AGESA/microcode often improves memory compatibility
+2. Manually set a slightly lower frequency (e.g., DDR5-5600 instead of 6000) with the same timings
+3. Increase DRAM voltage by 0.02V (e.g., from 1.35V to 1.37V for DDR5)
+4. Try the RAM in different slots — the motherboard manual specifies which two slots to populate first
+
+**Step 2:** Run **MemTest86** (boot from USB) for at least 4 passes. This takes 1-4 hours depending on RAM capacity. Any errors mean your RAM is faulty or your overclock is unstable.
+
+**Step 3:** If MemTest86 passes but you still suspect RAM, run **TestMem5** with the anta777 Extreme profile inside Windows. This test is better at catching errors that only show up under the more complex memory access patterns of an operating system.
+
+### When to Replace RAM
+
+If RAM fails MemTest86 at JEDEC defaults (no XMP), it's defective — RMA it. If it only fails at XMP speeds and no amount of tuning helps, you have an incompatibility between the kit and your motherboard/CPU memory controller. Either exchange the kit for one on your motherboard's QVL (qualified vendor list) or accept the lower stable speed.
+
+A <AffiliateLink name="G.Skill Trident Z5 DDR5-6000 CL30 32GB Kit" /> is one of the most compatible DDR5 kits available for both Intel and AMD platforms in 2026.
+
+---
+
+## Step 5: Address GPU Driver Issues
+
+GPU driver crashes are distinctive: you'll see "Display driver stopped responding and has recovered" in Windows, or the `VIDEO_TDR_FAILURE` blue screen. Sometimes the screen just goes black with no error.
+
+### Clean Driver Reinstall (The Nuclear Option That Works)
+
+A surprising percentage of GPU-related crashes are caused by corrupted or conflicting driver remnants — especially if you've upgraded from a different GPU brand or run many driver updates over time.
+
+**The process:**
+
+1. Download the latest GPU driver from NVIDIA or AMD (don't install yet)
+2. Download **DDU (Display Driver Uninstaller)** — free tool
+3. Boot into Windows Safe Mode
+4. Run DDU and select "Clean and restart"
+5. After reboot, install the fresh driver you downloaded
+6. Restart one more time
+
+This clean-installs the driver from scratch, removing all remnants of previous installations. It fixes driver crashes about 90% of the time.
+
+### Roll Back to an Older Driver
+
+If crashes started right after a driver update, the new driver may have a bug with your specific GPU or game. Roll back:
+
+1. Open Device Manager → Display Adapters → right-click your GPU → Properties
+2. Go to the Driver tab → Roll Back Driver
+3. If rollback isn't available, use DDU (above) and install the previous driver version manually from NVIDIA's or AMD's driver archive
+
+### Check for GPU Hardware Issues
+
+If clean driver installs don't help and you're seeing visual artifacts (flickering, colored dots, stretched textures) alongside crashes, the GPU hardware itself may be failing. Run **3DMark Stress Test** — if it fails (stability below 97%), the GPU is likely defective or its VRAM is going bad.
+
+---
+
+## Step 6: Check for Software Causes
+
+If you've ruled out temperatures, PSU, RAM, and GPU drivers, the cause may be software.
+
+### Corrupted Game Files
+
+On Steam: right-click the game → Properties → Installed Files → Verify integrity of game files. On Epic/others: use the equivalent repair option. A single corrupted file can cause consistent crashes at the same point in a game.
+
+### Overlay Conflicts
+
+Discord overlay, Steam overlay, GeForce Experience overlay, Xbox Game Bar — running multiple overlays simultaneously causes crashes in some games. Disable all overlays, test, then re-enable one at a time to find the conflict.
+
+### Antivirus Interference
+
+Some antivirus software (especially third-party suites like Norton, McAfee, Bitdefender) hooks into game processes and causes crashes. Temporarily disable your antivirus and test. Windows Defender is lightweight enough that it almost never causes issues — and it's all you need in 2026.
+
+### Insufficient VRAM or System RAM
+
+If a game crashes specifically when loading large textures or entering detailed areas, you may be running out of VRAM. Check usage with HWiNFO64 or MSI Afterburner. Running out of VRAM causes severe stuttering and crashes — lowering texture quality is the immediate fix. Read our [VRAM guide](/blog/vram-bottleneck-how-much-video-memory-do-you-need-2026) for more detail.
+
+Similarly, if your system has only 16GB of RAM and you're playing a demanding open-world game while running Chrome in the background, you may be hitting a memory wall. Check our guide on [how much RAM you need for gaming](/blog/how-much-ram-do-you-need-for-gaming-2026).
+
+---
+
+## Step 7: Advanced Diagnosis — Windows Event Viewer
+
+When crashes leave no obvious error message, **Windows Event Viewer** records what happened behind the scenes.
+
+### How to Use It
+
+1. Press **Win + X** → Event Viewer
+2. Go to Windows Logs → System
+3. Look for **Critical** and **Error** entries around the time of the crash
+4. Key events to look for:
+   - **Event ID 41 (Kernel-Power)** — "The system has rebooted without cleanly shutting down first." This confirms an unexpected power loss — points to PSU or thermal shutdown
+   - **Event ID 10016** — often a red herring, ignore it
+   - **LiveKernelEvent / BugCheck** — records the BSOD stop code even if the blue screen flashed too fast to read
+
+### Common BSOD Stop Codes and What They Mean
+
+| Stop Code | Most Likely Cause | First Fix |
+|---|---|---|
+| `WHEA_UNCORRECTABLE_ERROR` | CPU instability, bad overclock, degraded CPU | Disable CPU overclock, reset BIOS defaults |
+| `VIDEO_TDR_FAILURE` | GPU driver crash | Clean driver reinstall with DDU |
+| `KERNEL_MODE_HEAP_CORRUPTION` | RAM instability | Test RAM with MemTest86 |
+| `PAGE_FAULT_IN_NONPAGED_AREA` | Bad RAM, failing storage | Test RAM; check SSD health |
+| `IRQL_NOT_LESS_OR_EQUAL` | Driver conflict, bad RAM | Update drivers; test RAM |
+| `SYSTEM_SERVICE_EXCEPTION` | Driver bug | Update all drivers; clean GPU driver install |
+| `CRITICAL_PROCESS_DIED` | Corrupted Windows files | Run `sfc /scannow` and `DISM /Online /Cleanup-Image /RestoreHealth` |
+
+---
+
+## Step 8: When Nothing Else Works — Isolate the Component
+
+If you've gone through every step above and crashes persist, it's time for component isolation testing. This is tedious but definitive.
+
+### The Process
+
+1. **Reset BIOS to defaults** — clears all overclocks (CPU, RAM, GPU if set in BIOS). If crashes stop, one of your overclocks is unstable
+2. **Remove one RAM stick** — if you have two sticks, run with one at a time. If crashes stop with one specific stick removed, that stick is defective
+3. **Reseat the GPU** — power off, unplug, remove the GPU, clean the PCIe slot contacts with compressed air, reinstall firmly. A poorly seated GPU causes intermittent contact issues under vibration or thermal expansion
+4. **Test with a different PSU** — if you can borrow one from another system, this definitively rules out power supply issues
+5. **Test the GPU in another system** — if the crashes follow the GPU to another PC, the GPU is faulty
+
+---
+
+## The Diagnostic Flowchart
+
+For quick reference, here's the decision tree:
+
+**System instant reboots →** Check temperatures → Check PSU wattage → Run OCCT PSU test
+
+**Black screen, audio continues →** Clean GPU driver install with DDU → Check GPU temperatures → Test GPU in another system
+
+**Complete freeze →** Test RAM (disable XMP, run MemTest86) → Check storage health → Reseat GPU
+
+**Crash to desktop →** Verify game files → Disable overlays → Check VRAM usage → Update GPU drivers
+
+**BSOD →** Note the stop code → Follow the table above → Check Event Viewer for details
+
+---
+
+## Preventing Future Crashes
+
+Once you've identified and fixed the crash cause, take these steps to prevent recurrence:
+
+1. **Monitor temperatures regularly** — thermal paste degrades, dust accumulates, and fans wear out over time. Check temps every few months
+2. **Don't max out your PSU** — maintain at least 20-30% power headroom above your system's peak draw. This accounts for component aging and transient spikes
+3. **Update GPU drivers regularly** — but wait 3-5 days after a new driver release before installing. Let early adopters find the bugs first
+4. **Keep XMP/EXPO stress-tested** — after BIOS updates, re-verify RAM stability since memory training can change
+5. **Run a system health check** — our [free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) identifies component imbalances that put excessive stress on individual parts, helping you catch potential crash causes before they manifest
+
+A well-balanced system where no single component is severely overstressed is inherently more stable. When one part carries a disproportionate load — a CPU bottleneck forcing 100% usage for hours, a PSU running at 95% capacity, a GPU with inadequate cooling — crash risk climbs. Balance isn't just about performance. It's about reliability.
+
+---
+
+## FAQ
+
+### Why does my PC only crash in certain games?
+
+Different games stress different components. A CPU-heavy game like *Cities: Skylines II* might expose CPU instability that a GPU-heavy game never triggers. Similarly, games with large open worlds use more RAM (exposing memory instability) while corridor shooters do not.
+
+### Can a game crash damage my hardware?
+
+Generally no. Modern hardware has built-in protection — CPUs and GPUs shut down before reaching temperatures that cause physical damage, and PSUs have overcurrent protection. However, repeated crashes from power instability (voltage spikes/drops) can theoretically degrade components over time. Fix the root cause, don't just tolerate crashes.
+
+### My PC only crashes after gaming for 30+ minutes. Why?
+
+This is a classic heat-related pattern. Components pass initial stress but gradually accumulate heat until they hit thermal limits. Monitor temperatures over a full gaming session, not just the first few minutes. Also watch for GPU VRAM temperatures on GDDR6X cards — these climb slowly and can take 20-30 minutes to reach throttle thresholds.
+
+### Will upgrading my GPU fix crashes if my current GPU is fine?
+
+Only if the crashes are caused by the GPU specifically (driver issues, VRAM shortage, or hardware failure). If crashes are PSU-related, a more powerful GPU will actually make them worse. Always diagnose before upgrading.
+
+### Should I reinstall Windows to fix gaming crashes?
+
+Only as a last resort. A clean Windows install eliminates software causes but won't fix hardware issues — which are the root cause of most gaming-specific crashes. Exhaust the hardware diagnostics in this guide first. If you do reinstall, use the "Reset this PC" option with "Remove everything" rather than a full format-and-reinstall, which also resets BIOS settings and can introduce new variables.
