@@ -1,5 +1,58 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-16: operator tick — FAQ parser reads the lane's 2nd question style; measured the AEO ceiling — same branch `feat/faq-schema-aeo`, still awaiting merge
+
+Scan found no regression (all **76** posts on `origin/main` lint clean, prod
+healthy, revenue products parked/green), so this tick audited the feature the
+07-14 tick shipped and found it under-delivering in two ways.
+
+**1. Fixed — a post with visible FAQ copy was silently getting no schema.**
+`parseFaqsFromContent` only accepted `### ` H3 questions, but the content lane
+uses **two** conventions: `rx-9070-xt-vs-rtx-5070-gpu-comparison-bottleneck-2026`
+writes its 5 questions as standalone bold lines (`**Is the RX 9070 XT better…?**`).
+The parser returned `[]` and the post emitted no FAQPage — exactly the "the copy
+already exists, just surface it" case the feature is for. The parser now accepts
+a bold line ending in `?` as a question alongside H3. The `?` is required so a
+bold lead-in inside an answer (`**Short answer:** …`) isn't misread as a question
+— covered by a test.
+
+**2. Measured — the AEO ceiling is lower than the 07-14 entry implies, and it is
+shrinking.** That entry's "new posts from the autopilot content lane that include
+an FAQ section get schema automatically" is true but the condition rarely holds:
+
+- **24 of 76** posts (32%) have an FAQ section — the other 52 emit `Article` only.
+- Of the **last 15 published, only 2** have one (13%). The external autopilot does
+  not reliably write FAQ sections, so this lever barely compounds to new content.
+- **The autopilot actively destroys the asset.** It republishes existing slugs
+  (`is-my-gpu-bottlenecking-my-cpu-find-out-now` has 3 `autopilot: publish`
+  commits). Its 07-14 rewrite (`2b9dc7a`) **deleted that post's
+  `## FAQ: People Also Ask` section** and **reset `publishedAt` 07-09 → 07-14**.
+  So a post that had FAQ schema lost it, and its SEO date reset. Note
+  `scripts/generate-tier-list.ts` deliberately preserves `publishedAt` across
+  regens for this exact reason; the blog autopilot does not.
+
+**The generator is external** (not in this repo, not in operator-scripts, not a
+scheduled task — see `project_pcbottleneck_autopilot_deploys`), so raising FAQ
+coverage or stopping the FAQ-stripping rewrites **cannot be fixed from here** —
+it needs the generator's prompt/template. Flagging, not building. Deliberately
+**not** done: auto-generating FAQPage schema from H2-question headings would put
+invisible/fabricated Q&A in structured data — a Google policy violation risking a
+manual action on a revenue site.
+
+Also merged `origin/main` into this branch (no force-push) so the gated merge
+stays a clean fast-forward and the parser is verified against the current corpus.
+
+**Verify:** vitest **98 passed** (was 94, +4 bold-question tests incl. a real-content
+integration test on the previously-skipped post); `tsc --noEmit` clean; `next build`
+green (81 blog pages prerendered). Baked HTML: the RX 9070 XT post goes from **1
+FAQPage block (global only) → 2**, gaining its **5** real questions; corpus posts
+emitting a per-post FAQPage **23 → 24**; the no-FAQ control still bakes only the
+global 1. The 07-13 autopilot post `pc-crashes-while-gaming` — which this branch had
+never seen — bakes its own FAQPage with 5 questions, proving fresh content with an
+FAQ section is picked up. Additive structured data only; no visible content,
+revenue-flag, or scanner behavior touched. Still **left on the branch** — the
+prod-deploying merge stays a visible Kruz step. (operator tick)
+
 ## 2026-07-14: operator tick — per-post FAQPage JSON-LD (AEO) — branch `feat/faq-schema-aeo`, awaiting merge
 
 Acted on the 2026-07-13 research-scout headline (AI-Overview visibility is now

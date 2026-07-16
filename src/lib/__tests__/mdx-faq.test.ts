@@ -74,12 +74,64 @@ describe("parseFaqsFromContent", () => {
     const faqs = parseFaqsFromContent(alt);
     expect(faqs.map((f) => f.question)).toEqual(["Q one?", "Q two?"]);
   });
+
+  it("reads bold questions, the lane's other convention", () => {
+    const bold = `## Frequently Asked Questions
+
+**Is the RX 9070 XT better than the RTX 5070 for 1440p?**
+In pure rasterization, the RTX 5070 is 5-8% faster.
+
+**Will a Ryzen 5 7600 bottleneck the RTX 5070?**
+At 1080p, yes — expect 8-12% in CPU-heavy titles.
+`;
+    const faqs = parseFaqsFromContent(bold);
+    expect(faqs).toHaveLength(2);
+    expect(faqs[0].question).toBe(
+      "Is the RX 9070 XT better than the RTX 5070 for 1440p?"
+    );
+    expect(faqs[0].answer).toBe("In pure rasterization, the RTX 5070 is 5-8% faster.");
+    expect(faqs[1].question).toBe("Will a Ryzen 5 7600 bottleneck the RTX 5070?");
+  });
+
+  it("does not read a bold lead-in inside an answer as a question", () => {
+    const mixed = `## FAQ
+
+### Real question?
+
+**Short answer:** it depends on resolution.
+More prose here.
+`;
+    const faqs = parseFaqsFromContent(mixed);
+    expect(faqs).toHaveLength(1);
+    expect(faqs[0].question).toBe("Real question?");
+    expect(faqs[0].answer).toBe("Short answer: it depends on resolution. More prose here.");
+  });
+
+  it("supports both question styles in one section", () => {
+    const both = "## FAQ\n\n### H3 question?\n\nA one.\n\n**Bold question?**\nA two.\n";
+    expect(parseFaqsFromContent(both).map((f) => f.question)).toEqual([
+      "H3 question?",
+      "Bold question?",
+    ]);
+  });
 });
 
 describe("getFaqsFromMdx", () => {
   it("returns [] for a slug with no .mdx file (component posts, unknown slugs)", () => {
     expect(getFaqsFromMdx("this-slug-does-not-exist-anywhere")).toEqual([]);
     expect(getFaqsFromMdx("gpu-bottlenecking-cpu")).toEqual([]); // component post
+  });
+
+  it("parses the real bold-question post the H3-only parser silently skipped", () => {
+    const faqs = getFaqsFromMdx(
+      "rx-9070-xt-vs-rtx-5070-gpu-comparison-bottleneck-2026"
+    );
+    expect(faqs.length).toBeGreaterThanOrEqual(2);
+    for (const f of faqs) {
+      expect(f.question).toMatch(/\?$/);
+      expect(f.answer.length).toBeGreaterThan(0);
+      expect(f.answer).not.toContain("**");
+    }
   });
 
   it("parses a real shipped post with a FAQ section", () => {

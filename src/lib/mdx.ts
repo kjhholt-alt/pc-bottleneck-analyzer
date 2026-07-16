@@ -38,12 +38,14 @@ function cleanFaqText(md: string): string {
 }
 
 /**
- * Parse a post body into FAQ Q&A pairs. Convention across the content lane
- * (stable — see the 24 posts that already ship one):
+ * Parse a post body into FAQ Q&A pairs. Convention across the content lane:
  *   `## FAQ` / `## Frequently Asked Questions` (H2, optional trailing text)
- *   opens the section; each question is an `### ...` (H3); the answer is the
- *   prose until the next H3, and the section ends at the next H2.
- * Returns [] when there is no parseable FAQ section.
+ *   opens the section; the answer is the prose until the next question, and
+ *   the section ends at the next H2.
+ * A question is either an `### ...` (H3) or a standalone all-bold line ending
+ * in `?` (`**Is X better than Y?**`) — the content lane uses both. The `?` is
+ * required on the bold form so a bold lead-in inside an answer isn't read as a
+ * question. Returns [] when there is no parseable FAQ section.
  */
 export function parseFaqsFromContent(content: string): FaqItem[] {
   const lines = content.split(/\r?\n/);
@@ -80,9 +82,10 @@ export function parseFaqsFromContent(content: string): FaqItem[] {
       break;
     }
     const h3 = line.match(/^###\s+(.+?)\s*$/);
-    if (h3) {
+    const boldQ = line.match(/^\*\*(.+\?)\*\*\s*$/);
+    if (h3 || boldQ) {
       flush();
-      question = h3[1];
+      question = (h3 ?? boldQ)![1];
     } else if (question && !/^-{3,}\s*$/.test(line)) {
       answerLines.push(line);
     }
