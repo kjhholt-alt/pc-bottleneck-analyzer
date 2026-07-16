@@ -10,6 +10,7 @@ import { BestUpgrades2026 } from "./posts/best-upgrades-pc-bottlenecks-2026";
 import { IBuiltAFreeBottleneckAnalyzer } from "./posts/i-built-a-free-pc-bottleneck-analyzer";
 import { CpuVsGpuBottleneck } from "./posts/cpu-vs-gpu-bottleneck";
 import { RamBottleneckSignsFixes } from "./posts/ram-bottleneck-signs-fixes";
+import { ThermalThrottlingFixGuide } from "./posts/thermal-throttling-fix-guide";
 
 const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "gpu-bottlenecking-cpu": GpuBottleneckingCpu,
@@ -17,6 +18,7 @@ const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "i-built-a-free-pc-bottleneck-analyzer": IBuiltAFreeBottleneckAnalyzer,
   "cpu-vs-gpu-bottleneck": CpuVsGpuBottleneck,
   "ram-bottleneck-signs-fixes": RamBottleneckSignsFixes,
+  "thermal-throttling-fix-guide": ThermalThrottlingFixGuide,
 };
 
 export function generateStaticParams() {

@@ -63,6 +63,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["RAM", "bottleneck", "DDR5", "memory upgrade", "gaming"],
     readingTime: "11 min read",
   },
+  {
+    slug: "thermal-throttling-fix-guide",
+    title:
+      "Thermal Throttling: Why Your PC Slows Down Under Load (and How to Fix It)",
+    description:
+      "Learn how to identify thermal throttling on your CPU and GPU, what causes it, and step-by-step fixes ranked from free to budget-friendly — including the best coolers, thermal paste, and airflow upgrades for 2026.",
+    publishedAt: "2026-07-16",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["thermal throttling", "overheating", "CPU cooler", "PC cooling", "bottleneck"],
+    readingTime: "12 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {
