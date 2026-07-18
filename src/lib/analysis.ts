@@ -865,8 +865,12 @@ function calculateScore(
   cpuEntry: ReturnType<typeof lookupCPU>,
   gpuEntry: ReturnType<typeof lookupGPU>,
 ): PerformanceScore {
-  let cpuScore = 25;
-  let gpuScore = 25;
+  // Unknown hardware must NOT score perfect marks (gl-0489: an unrecognized
+  // CPU silently got 25/25, which cascaded into absurd upgrade advice). When
+  // the lookup fails we fall back to the mid-tier default (14) — an honest
+  // neutral prior, same value an unrecognized tier gets below.
+  let cpuScore = 14;
+  let gpuScore = 14;
   let ramScore = 20;
   let storageScore = 15;
   let settingsScore = 15;

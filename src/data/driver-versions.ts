@@ -2,7 +2,9 @@
 //
 // Hardcoded latest stable driver versions for NVIDIA, AMD, and Intel GPUs.
 // Updated periodically — these represent the latest stable (non-beta) releases
-// as of February 2026.
+// as of July 2026 (gl-0489: refresh whenever these drift stale; a user's
+// installed driver being NEWER than these is handled gracefully by
+// checkDriverStatus, but the displayed "latest" should stay current).
 
 export interface DriverInfo {
   vendor: "nvidia" | "amd" | "intel";
@@ -15,28 +17,28 @@ export interface DriverInfo {
 // Latest stable NVIDIA Game Ready driver
 export const NVIDIA_LATEST: DriverInfo = {
   vendor: "nvidia",
-  latestVersion: "572.83",
-  releaseDate: "2026-02-18",
+  latestVersion: "610.74",
+  releaseDate: "2026-07-07",
   downloadUrl: "https://www.nvidia.com/Download/index.aspx",
-  releaseName: "Game Ready Driver 572.83",
+  releaseName: "Game Ready Driver 610.74",
 };
 
 // Latest stable AMD Adrenalin driver
 export const AMD_LATEST: DriverInfo = {
   vendor: "amd",
-  latestVersion: "25.1.1",
-  releaseDate: "2026-01-28",
+  latestVersion: "26.6.4",
+  releaseDate: "2026-07-15",
   downloadUrl: "https://www.amd.com/en/support",
-  releaseName: "Adrenalin Edition 25.1.1",
+  releaseName: "Adrenalin Edition 26.6.4",
 };
 
 // Latest stable Intel Arc driver
 export const INTEL_LATEST: DriverInfo = {
   vendor: "intel",
-  latestVersion: "32.0.101.6314",
-  releaseDate: "2026-01-15",
+  latestVersion: "32.0.101.8860",
+  releaseDate: "2026-07-07",
   downloadUrl: "https://www.intel.com/content/www/us/en/download-center/home.html",
-  releaseName: "Arc Graphics Driver 32.0.101.6314",
+  releaseName: "Arc Graphics Driver 32.0.101.8860",
 };
 
 export type DriverStatus = "up_to_date" | "outdated" | "very_outdated" | "unknown";

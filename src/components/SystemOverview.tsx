@@ -42,6 +42,10 @@ function formatTemp(temp: number | null): string {
 
 function formatCache(kb: number | null): string {
   if (kb === null) return "N/A";
+  // Scans from old scanner builds mis-parsed cpuinfo's "96 MiB"-style strings
+  // and stored the MB number in this KB field. No modern desktop CPU has less
+  // than 512 KB of L3, so a tiny value here is MB in disguise (gl-0489 fix 7).
+  if (kb < 512) return `${kb} MB`;
   if (kb >= 1024) return `${(kb / 1024).toFixed(0)} MB`;
   return `${kb} KB`;
 }
