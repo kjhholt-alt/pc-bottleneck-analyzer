@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Monitor, RotateCcw, DollarSign, CheckCircle2, XCircle, Wrench, ExternalLink, TrendingUp, TrendingDown } from "lucide-react";
 import { getAffiliateLinks } from "@/lib/affiliate";
@@ -205,6 +205,15 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
   const [selectedCPU, setSelectedCPU] = useState("");
   const [selectedGPU, setSelectedGPU] = useState("");
 
+  // Reset selections whenever the underlying scan changes (gl-0489 fix 6:
+  // loading a different scan from History used to keep the previous scan's
+  // picks applied — and their cost — against the new baseline).
+  const scanId = scan.scan_id;
+  useEffect(() => {
+    setSelectedCPU("");
+    setSelectedGPU("");
+  }, [scanId]);
+
   const cpuOptions = useMemo(() => getCPUOptions(), []);
   const gpuOptions = useMemo(() => getGPUOptions(), []);
 
@@ -272,7 +281,7 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
           icon={Cpu}
           label="CPU"
           currentName={scan.cpu.model_name}
-          currentScore={lookupCPU(scan.cpu.model_name)?.gaming_score ?? 50}
+          currentScore={lookupCPU(scan.cpu.model_name)?.gaming_score ?? 0}
           value={selectedCPU}
           onChange={setSelectedCPU}
           options={cpuOptions}
@@ -281,7 +290,7 @@ export function UpgradeSimulator({ scan, currentAnalysis, onStartWalkthrough }: 
           icon={Monitor}
           label="GPU"
           currentName={scan.gpu.model_name}
-          currentScore={lookupGPU(scan.gpu.model_name)?.gaming_score ?? 50}
+          currentScore={lookupGPU(scan.gpu.model_name)?.gaming_score ?? 0}
           value={selectedGPU}
           onChange={setSelectedGPU}
           options={gpuOptions}

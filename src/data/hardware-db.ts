@@ -1501,8 +1501,15 @@ export function tierIndex(tier: HardwareTier): number {
 /**
  * Normalize a model name for matching by stripping common noise that Windows
  * and WMI inject into hardware names. For example:
- *   "12th Gen Intel(R) Core(TM) i5-12400F @ 2.50GHz" → "intel core i5-12400f"
+ *   "12th Gen Intel(R) Core(TM) i5-12400F @ 2.50GHz"  → "intel core i5-12400f"
+ *   "AMD Ryzen 7 5700X3D 8-Core Processor"            → "amd ryzen 7 5700x3d"
+ *   "AMD Ryzen 7 5700G with Radeon Graphics"          → "amd ryzen 7 5700g"
  *   "NVIDIA GeForce RTX 4070 Founders Edition"        → "nvidia geforce rtx 4070 founders edition"
+ *
+ * The "N-Core Processor" / "with Radeon Graphics" suffixes matter: WMI reports
+ * them on every AMD CPU, and leaving them in made real scanner names fail the
+ * 60% length-ratio guard in lookupHardware (gl-0489 root cause — the CPU was
+ * silently treated as unknown and scored perfect marks).
  */
 function normalizeModelName(name: string): string {
   return name
@@ -1514,6 +1521,8 @@ function normalizeModelName(name: string): string {
     .replace(/\d+nd gen\s*/gi, "")
     .replace(/\d+rd gen\s*/gi, "")
     .replace(/@\s*[\d.]+\s*ghz/gi, "")
+    .replace(/\s*\d+[- ]core processor\b/gi, "")
+    .replace(/\s*with radeon graphics\b/gi, "")
     .replace(/\s+/g, " ")
     .trim();
 }

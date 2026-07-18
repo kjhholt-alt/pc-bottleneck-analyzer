@@ -208,12 +208,21 @@ def scan_cpu() -> dict:
                     # If raw int, assume bytes and convert to KB
                     return int(val / 1024) if val >= 1024 else val
                 s = str(val).upper().replace(",", "")
-                m = re.search(r"([\d.]+)\s*(KB|MB|GB|B)?", s)
+                # py-cpuinfo reports friendly strings like "96 MiB" / "512 KiB".
+                # The old pattern didn't match the IEC units, so "96 MiB" fell
+                # through to the KB default and the dashboard showed "96 KB"
+                # (gl-0489 fix 7).
+                m = re.search(r"([\d.]+)\s*(KIB|MIB|GIB|KB|MB|GB|B)?", s)
                 if not m:
                     return None
                 num = float(m.group(1))
                 unit = m.group(2) or "KB"
-                mult_to_kb = {"B": 1/1024, "KB": 1, "MB": 1024, "GB": 1024**2}
+                mult_to_kb = {
+                    "B": 1 / 1024,
+                    "KB": 1, "KIB": 1,
+                    "MB": 1024, "MIB": 1024,
+                    "GB": 1024**2, "GIB": 1024**2,
+                }
                 return int(num * mult_to_kb.get(unit, 1))
 
             if l1_data or l1_inst:

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estimateFPS } from "../fps-estimator";
+import { estimateFPS, gpuThroughputRatio } from "../fps-estimator";
 import { estFps } from "../gpu-for-game";
 import { generateBlueprint } from "../blueprint";
 import { planGoalUpgrade } from "../goal-planner";
@@ -227,50 +227,71 @@ describe("calibration anchor", () => {
   it("RTX 4070 + a reference-class CPU @ 1080p Ultra matches today's value within +-2 FPS", () => {
     // AMD Ryzen 7 5800X (gaming_score 78) — comfortably reference-class,
     // matches the fps-estimator.ts calibration commentary (~80-class CPU).
+    // gl-0489 recalibration: the 4070 IS the reference card (throughput ratio
+    // 1.0), so this anchor sits at baseFps * Ultra multiplier = 85 * 0.85 ≈ 72.
     const cyberpunkFps = fpsFor("AMD Ryzen 7 5800X", REFERENCE_GPU_NAME, "cyberpunk", "1080p", "Ultra");
-    expect(cyberpunkFps).toBeGreaterThanOrEqual(64);
-    expect(cyberpunkFps).toBeLessThanOrEqual(68);
+    expect(cyberpunkFps).toBeGreaterThanOrEqual(70);
+    expect(cyberpunkFps).toBeLessThanOrEqual(74);
 
     // A second reference-class CPU (Intel Core i7-13700K, gaming_score 89)
     // should land on the same GPU-limited ceiling for this title/settings.
     const cyberpunkFpsIntel = fpsFor("Intel Core i7-13700K", REFERENCE_GPU_NAME, "cyberpunk", "1080p", "Ultra");
-    expect(cyberpunkFpsIntel).toBeGreaterThanOrEqual(64);
-    expect(cyberpunkFpsIntel).toBeLessThanOrEqual(68);
+    expect(cyberpunkFpsIntel).toBeGreaterThanOrEqual(70);
+    expect(cyberpunkFpsIntel).toBeLessThanOrEqual(74);
   });
 });
 
-describe("estFps without a CPU arg is unchanged vs the current implementation", () => {
-  // Pinned exact values for 3 (gpu, game, res) triples, hardcoded to today's
-  // real output. If fpsCore's constants or the estFps GPU-only path ever
-  // shift, these fail loudly instead of silently drifting.
+describe("flagship 4K calibration (gl-0489 fix 4 — no more score-ratio compression)", () => {
+  it("RTX 5090 / Cyberpunk 2077 / 4K Ultra lands in the published real-world band (~65-80), not ~40", () => {
+    const fps = fpsFor("AMD Ryzen 9 9950X3D", "NVIDIA GeForce RTX 5090", "cyberpunk", "4K", "Ultra");
+    expect(fps).toBeGreaterThanOrEqual(65);
+    expect(fps).toBeLessThanOrEqual(80);
+  });
+
+  it("RTX 5090 / Elden Ring / 4K clears the smooth (60 FPS) bar at High", () => {
+    const fps = fpsFor("AMD Ryzen 9 9950X3D", "NVIDIA GeForce RTX 5090", "elden-ring", "4K", "High");
+    expect(fps).toBeGreaterThanOrEqual(60);
+  });
+
+  it("relative throughput doubles roughly every +24 gaming_score points", () => {
+    expect(gpuThroughputRatio(68)).toBeCloseTo(1.0, 5); // RTX 4070 reference
+    expect(gpuThroughputRatio(92)).toBeCloseTo(2.0, 5);
+    expect(gpuThroughputRatio(44)).toBeCloseTo(0.5, 5); // RTX 3060 class
+  });
+});
+
+describe("estFps GPU-only path — pinned to the gl-0489 recalibrated model", () => {
+  // Pinned exact values for 3 (gpu, game, res) triples, hardcoded to the
+  // recalibrated (exponential-throughput) model's output. If fpsCore's
+  // constants or the estFps GPU-only path ever shift, these fail loudly
+  // instead of silently drifting.
   it("NVIDIA GeForce RTX 4070 / Cyberpunk 2077 / 1080p", () => {
     const gpu = lookupGPU("NVIDIA GeForce RTX 4070")!;
     const game = gameBenchmarks.find((g) => g.id === "cyberpunk")!;
-    expect(estFps(gpu, game, "1080p")).toBe(77);
+    expect(estFps(gpu, game, "1080p")).toBe(85);
   });
 
   it("NVIDIA GeForce RTX 3060 / Valorant / 1440p", () => {
     const gpu = lookupGPU("NVIDIA GeForce RTX 3060")!;
     const game = gameBenchmarks.find((g) => g.id === "valorant")!;
-    expect(estFps(gpu, game, "1440p")).toBe(127);
+    expect(estFps(gpu, game, "1440p")).toBe(108);
   });
 
   it("NVIDIA GeForce RTX 5090 / Counter-Strike 2 / 4K", () => {
     const gpu = lookupGPU("NVIDIA GeForce RTX 5090")!;
     const game = gameBenchmarks.find((g) => g.id === "cs2")!;
-    expect(estFps(gpu, game, "4K")).toBe(140);
+    expect(estFps(gpu, game, "4K")).toBe(265);
   });
 
   it("omitting cpu is identical to explicitly passing no CPU cap (GPU-only ceiling)", () => {
     // rankGpus()/pickGpus() in gpu-for-game.ts and every existing SEO page
-    // call estFps with no 4th arg — this must keep behaving exactly as
-    // before the CPU-aware overload was added.
+    // call estFps with no 4th arg — the GPU-only ceiling must stay stable.
     const gpu = lookupGPU("NVIDIA GeForce RTX 4090")!;
     const game = gameBenchmarks.find((g) => g.id === "gta5")!;
     const a = estFps(gpu, game, "1080p");
     const b = estFps(gpu, game, "1080p");
     expect(a).toBe(b);
-    expect(a).toBe(141);
+    expect(a).toBe(247);
   });
 });
 

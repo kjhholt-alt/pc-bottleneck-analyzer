@@ -356,7 +356,7 @@ export const comparisonGPUs: ComparisonGPU[] = [
     performance_1080p: 100,
     performance_1440p: 100,
     performance_4k: 100,
-    vram_gb: 24,
+    vram_gb: 32,
     tdp_w: 575,
     price: 2199,
     release_year: 2025,

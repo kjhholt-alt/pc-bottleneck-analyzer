@@ -2,8 +2,25 @@ import type { SystemScan, AnalysisResult } from "@/lib/types";
 import { RESOLUTION_MULTIPLIERS, QUALITY_MULTIPLIERS, type GameBenchmark, type Resolution, type QualityPreset } from "@/data/game-benchmarks";
 import { lookupCPU, lookupGPU } from "@/data/hardware-db";
 
-// RTX 4070 = gaming_score 75 in our DB — the calibration reference card
-const GPU_REFERENCE_SCORE = 75;
+// RTX 4070 = gaming_score 68 in hardware-db.ts — the calibration reference card
+const GPU_REFERENCE_SCORE = 68;
+
+// The gaming_score scale is a compressed *rank* scale at the top end: score
+// deltas understate real throughput deltas (RTX 5090 = 100 vs RTX 4070 = 68
+// is ~2.5x real-world 4K raster performance, not 100/68 = 1.47x). A linear
+// score ratio therefore crushed flagship FPS estimates — a 5090 was predicted
+// at ~40 FPS in Cyberpunk 4K Ultra (real: ~65-75) and the UI told 5090 owners
+// to drop to 1440p (gl-0489 fix 4). Model relative GPU throughput as
+// exponential in score instead: every +24 gaming_score points ≈ 2x real FPS.
+// Calibrated against published 4K raster geomeans (RTX 4070 = 1.0):
+//   4060 (50) ≈ 0.6× · 4070S (73) ≈ 1.15× · 4080 (84) ≈ 1.6× ·
+//   4090 (96) ≈ 2.2× · 5090 (100) ≈ 2.5×
+const GPU_SCORE_DOUBLING = 24;
+
+/** Relative GPU throughput vs the reference card (RTX 4070 = 1.0). */
+export function gpuThroughputRatio(gpuScore: number): number {
+  return Math.pow(2, (gpuScore - GPU_REFERENCE_SCORE) / GPU_SCORE_DOUBLING);
+}
 // Ryzen 7 5800X (78) / i7-13700K (89) class = ~80 in our DB (hardware-db.ts)
 const CPU_REFERENCE_SCORE = 80;
 
@@ -53,7 +70,7 @@ export function fpsCore(
   const resMult = RESOLUTION_MULTIPLIERS[resolution];
   const qualMult = QUALITY_MULTIPLIERS[quality];
 
-  const gpuLimitedFps = game.baseFps * (gpuScore / GPU_REFERENCE_SCORE) * resMult * qualMult;
+  const gpuLimitedFps = game.baseFps * gpuThroughputRatio(gpuScore) * resMult * qualMult;
 
   if (cpuScore === null) return gpuLimitedFps;
 
@@ -73,7 +90,11 @@ export function estimateFPS(
   const cpuEntry = lookupCPU(scan.cpu.model_name);
   const gpuEntry = lookupGPU(scan.gpu.model_name);
 
-  const cpuScore = cpuEntry?.gaming_score ?? 50;
+  // Unknown CPU → no CPU cap (honest: we can't invent a ceiling from a name
+  // we don't recognize; gl-0489 fix 2 — the old fallback of 50 fabricated a
+  // mid-tier cap). Unknown GPU keeps a mid prior since the GPU term is the
+  // core of the estimate and 50 ≈ mid-range.
+  const cpuScore = cpuEntry?.gaming_score ?? null;
   const gpuScore = gpuEntry?.gaming_score ?? 50;
 
   let fps = fpsCore(cpuScore, gpuScore, game, resolution, quality);
