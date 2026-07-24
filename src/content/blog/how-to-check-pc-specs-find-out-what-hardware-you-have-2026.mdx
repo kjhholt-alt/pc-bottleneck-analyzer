@@ -1,0 +1,272 @@
+---
+title: "How to Check Your PC Specs — Find Out Exactly What Hardware You Have (2026)"
+description: "Learn how to check your PC specs on Windows 10 and 11. Find your CPU, GPU, RAM, storage, and motherboard details using built-in tools and free software — then check if your hardware is bottlenecking your performance."
+publishedAt: "2026-07-24"
+author: "PC Bottleneck Analyzer Team"
+tags: ["check PC specs", "how to find PC specs", "what GPU do I have", "what CPU do I have", "check RAM speed", "system information Windows", "PC hardware info", "computer specs", "DxDiag", "HWiNFO"]
+readingTime: "12 min read"
+---
+
+# How to Check Your PC Specs — Find Out Exactly What Hardware You Have (2026)
+
+You need to know your PC specs. Maybe you're checking whether your rig can handle a new game, troubleshooting a performance problem, planning an upgrade, or listing your system for sale. Whatever the reason, "what's actually in this machine?" is one of the most common questions PC owners ask — and Windows doesn't make the answer immediately obvious.
+
+The good news: you can find every detail about your CPU, GPU, RAM, storage, and motherboard without opening your case or installing anything. Windows has built-in tools that reveal most of what you need, and free third-party utilities fill in the gaps.
+
+This guide covers every method from the quickest one-click checks to the deep-dive tools that hardware enthusiasts swear by. Once you know your specs, you can run them through our [PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) to see if your components are well-matched or if one part is holding the rest back.
+
+> **TL;DR**
+> - **Fastest method:** Press `Win + Pause/Break` or search "About" in Settings to see CPU, RAM, and Windows version instantly.
+> - **GPU info:** Right-click the desktop → Display Settings → Advanced Display → Display adapter properties (or open Task Manager → Performance → GPU).
+> - **Full details:** Run `dxdiag` or download free tools like HWiNFO, CPU-Z, or GPU-Z.
+> - **After finding your specs:** Paste them into our [bottleneck analyzer](https://pcbottleneck.buildkit.store) to check for mismatches.
+
+---
+
+## Method 1: Windows Settings (30 Seconds)
+
+The fastest way to check your core specs requires zero downloads and zero technical knowledge.
+
+### Find Your CPU and RAM
+
+1. Press **Windows key + I** to open Settings.
+2. Navigate to **System → About** (on Windows 11) or scroll to the bottom of the System page (Windows 10).
+3. Under **Device specifications**, you'll see:
+   - **Processor:** Your CPU model and clock speed (e.g., "AMD Ryzen 7 9800X3D 4.70 GHz")
+   - **Installed RAM:** Total memory (e.g., "32.0 GB")
+   - **System type:** Whether you're running 64-bit or 32-bit Windows
+
+This tells you what CPU you have and how much RAM is installed, but it won't tell you your RAM speed, your GPU, or your storage configuration. For those, keep reading.
+
+### Keyboard Shortcut
+
+On many keyboards, pressing **Win + Pause/Break** jumps directly to the About page. On laptops without a Pause/Break key, the shortcut may not work — use the Settings method above instead.
+
+---
+
+## Method 2: Task Manager (CPU, GPU, RAM, and Disk at a Glance)
+
+Task Manager is more powerful than most people realize. In Windows 10 and 11, the Performance tab gives you real-time specs and utilization for every major component.
+
+1. Press **Ctrl + Shift + Esc** to open Task Manager.
+2. Click the **Performance** tab (if you see a simplified view, click "More details" first).
+3. You'll see tabs for:
+   - **CPU:** Model name, base speed, cores/threads, cache sizes, and real-time utilization
+   - **Memory:** Total installed RAM, speed (e.g., 6000 MHz), slots used, and form factor
+   - **GPU 0 (and GPU 1, if applicable):** Model name, driver version, VRAM amount, and real-time utilization
+   - **Disk 0, 1, etc.:** Drive model, type (SSD/HDD), capacity, and read/write speeds
+
+### What Task Manager Tells You That Settings Doesn't
+
+Task Manager reveals your **RAM speed** — critical information for diagnosing performance issues. If you have DDR5 RAM but Task Manager shows it running at 4800 MHz instead of 6000 MHz, you probably haven't enabled [XMP or EXPO in your BIOS](/blog/xmp-expo-not-enabled-ram-running-slow-how-to-fix-2026). That single setting can make a meaningful FPS difference, especially on AMD Ryzen systems.
+
+Task Manager also shows your **GPU model and VRAM** — the two most important specs for gaming. If you see something like "Intel UHD Graphics 770" as your only GPU, you're running on [integrated graphics](/blog/gaming-on-integrated-graphics-apu-without-gpu-2026) and will need a dedicated GPU for serious gaming.
+
+---
+
+## Method 3: DxDiag (The Classic Quick Scan)
+
+DirectX Diagnostic Tool has been in Windows since the XP era, and it's still one of the cleanest ways to get a system summary.
+
+1. Press **Win + R** to open the Run dialog.
+2. Type `dxdiag` and press Enter.
+3. The **System** tab shows your CPU, RAM, Windows version, and BIOS version.
+4. The **Display** tab shows your GPU model, VRAM, driver version, and monitor resolution.
+5. The **Render** tab (if present) shows your dedicated rendering GPU — useful for laptops with both integrated and discrete graphics.
+
+### Why DxDiag Matters
+
+DxDiag is particularly useful because it shows your **current display resolution and refresh rate** — information that directly affects gaming performance. If you have a 144Hz monitor but DxDiag shows 60Hz, you're leaving half your monitor's capability unused. Check your display settings and make sure your [cable supports your monitor's full spec](/blog/hdmi-vs-displayport-gaming-does-cable-affect-fps-refresh-rate-2026).
+
+DxDiag also lets you **save all information to a text file** by clicking "Save All Info." This creates a comprehensive text dump you can share with tech support, paste into forum posts, or reference later.
+
+---
+
+## Method 4: System Information (msinfo32) — Deep Dive
+
+For a more detailed system report, Windows includes a built-in tool called System Information.
+
+1. Press **Win + R**, type `msinfo32`, and press Enter.
+2. The **System Summary** shows your motherboard model, BIOS version, CPU, and RAM.
+3. Expand **Components** to find:
+   - **Display:** GPU model, VRAM, driver version, and resolution
+   - **Storage → Disks:** Every physical drive, including model number, capacity, and partition layout
+   - **Memory:** Individual memory modules with manufacturer, part number, speed, and capacity
+
+### Finding Your Motherboard Model
+
+Your motherboard model is listed as **BaseBoard Product** in the System Summary. This is crucial information when you're planning upgrades — it determines which CPUs you can install, how many RAM slots you have, which [PCIe generation](/blog/pcie-gen-3-vs-gen-4-vs-gen-5-gpu-bottleneck-guide) your GPU slot supports, and whether your [motherboard is bottlenecking your system](/blog/motherboard-bottleneck-can-your-mobo-hold-back-cpu-gpu-2026).
+
+If the BaseBoard field shows "To Be Filled By O.E.M." (common in some prebuilt PCs), you'll need a third-party tool like HWiNFO or CPU-Z to identify the board.
+
+---
+
+## Method 5: Command Prompt and PowerShell (For the Terminal-Inclined)
+
+If you prefer typing over clicking, Windows command-line tools can pull specs quickly.
+
+### Quick System Summary
+
+Open Command Prompt or PowerShell and run:
+
+```
+systeminfo
+```
+
+This outputs your OS version, CPU model, total physical memory, network adapters, and more. It's the same information as msinfo32 but in plain text — useful for copying into support tickets or scripts.
+
+### GPU Information via Command Line
+
+```
+wmic path win32_VideoController get Name, AdapterRAM, DriverVersion
+```
+
+This returns your GPU name, VRAM (in bytes — divide by 1,073,741,824 to get GB), and driver version.
+
+### Storage Drive Details
+
+```
+wmic diskdrive get Model, Size, MediaType
+```
+
+This lists every physical drive with its model number, capacity, and whether it's an SSD or HDD. If you see "Fixed hard disk media" for every drive, the MediaType field isn't always reliable — check your drive model number online to confirm whether it's an NVMe SSD, SATA SSD, or mechanical HDD.
+
+---
+
+## Method 6: Free Third-Party Tools (The Full Picture)
+
+Windows built-in tools cover the basics, but dedicated hardware info utilities go much deeper. These are the tools that PC enthusiasts, overclockers, and system builders actually use daily.
+
+### HWiNFO — The Gold Standard
+
+[HWiNFO](https://www.hwinfo.com/) is the most comprehensive hardware information and monitoring tool available. It's free, portable (no install required), and reveals details that no other tool matches.
+
+What HWiNFO shows that nothing else does:
+
+- **CPU:** Exact stepping, silicon quality (VID), per-core temperatures, and real-time power draw
+- **RAM:** Full SPD data including XMP/EXPO profiles, manufacturer, die type, and whether you're running single or [dual channel](/blog/single-channel-vs-dual-channel-ram-gaming-bottleneck-2026)
+- **GPU:** Hot spot temperature (not just edge temp), VRAM temperature, real-time clock speeds, and power limit status
+- **Storage:** SSD health, total bytes written, remaining lifespan estimate, and SMART data
+- **Motherboard:** VRM temperatures, chipset details, and PCIe link speed (so you can verify your GPU isn't running at a reduced bandwidth)
+
+HWiNFO's sensor monitoring mode is also the best way to [monitor temperatures while gaming](/blog/how-to-monitor-pc-performance-while-gaming-best-overlay-guide-2026) through its integration with RTSS (RivaTuner Statistics Server).
+
+### CPU-Z — Quick CPU and RAM Details
+
+[CPU-Z](https://www.cpuid.com/softwares/cpu-z.html) is a lightweight tool focused on processor and memory details. It's the fastest way to check:
+
+- Your exact CPU model, stepping, and revision
+- Current and maximum clock speeds (including boost behavior)
+- [L2 and L3 cache sizes](/blog/cpu-cache-explained-how-l2-l3-cache-affects-gaming-fps-2026) (important for gaming, especially on AMD's X3D chips)
+- RAM speed, timings (CL, tRCD, tRP, tRAS), and whether XMP/EXPO is active
+- Number of memory modules installed and which slots they occupy
+
+CPU-Z also includes a built-in benchmark that lets you compare your CPU's single-core and multi-core performance against other processors. This gives you a quick sanity check — if your i7-14700K scores significantly below the reference, something might be wrong (thermal throttling, power limits, background processes).
+
+### GPU-Z — Everything About Your Graphics Card
+
+[GPU-Z](https://www.techpowerup.com/gpuz/) is the GPU equivalent of CPU-Z. It shows:
+
+- GPU model, chip variant, and revision
+- VRAM type (GDDR6, GDDR6X, GDDR7), size, and bus width
+- Current and boost clock speeds
+- Real-time temperature, fan speed, and power draw
+- PCIe lane configuration (x16, x8, x4) and generation (helps you spot a [PCIe bottleneck](/blog/pcie-gen-3-vs-gen-4-vs-gen-5-gpu-bottleneck-guide))
+- BIOS version and driver version
+
+GPU-Z's sensor tab updates in real time, making it useful for monitoring during gaming sessions. Look at the "PerfCap Reason" sensor — it tells you whether your GPU is being limited by temperature, power, voltage, or utilization, which directly tells you [where your bottleneck is](/blog/how-to-detect-gpu-bottlenecks-complete-guide-2026).
+
+### Speccy — Simple Overview
+
+If you want a clean, visual summary without the depth of HWiNFO, [Speccy](https://www.ccleaner.com/speccy) by Piriform shows your CPU, GPU, RAM, motherboard, storage, and operating system on a single screen with temperature readings. It's the easiest option for less technical users who just need the basics.
+
+---
+
+## What Each Spec Means for Gaming Performance
+
+Knowing your specs is step one. Understanding what they mean for performance is step two. Here's a quick reference for what matters most:
+
+### CPU (Processor)
+
+| Spec | Why It Matters |
+|---|---|
+| Model/generation | Newer architectures deliver more performance per clock. A Ryzen 7 9800X3D demolishes a Ryzen 7 3800X despite similar-sounding names. |
+| Clock speed | Higher is better for gaming, but only meaningful when comparing within the same architecture. |
+| Core count | [Most games need 6 cores](/blog/how-many-cpu-cores-for-gaming-2026). Beyond 8 cores, gaming returns diminish sharply. |
+| Cache (L3) | 3D V-Cache chips (like the 9800X3D) gain 15–25% FPS from extra cache alone. |
+
+### GPU (Graphics Card)
+
+| Spec | Why It Matters |
+|---|---|
+| Model/tier | The single most important spec for gaming FPS. An RTX 5070 and RTX 5060 are different performance tiers despite similar names. |
+| VRAM | Determines how much texture data the card can hold. [8GB is tight for 4K](/blog/vram-bottleneck-how-much-video-memory-do-you-need-2026) in 2026. |
+| Bus width | Wider memory bus = faster VRAM throughput. 256-bit beats 128-bit at high resolutions. |
+
+### RAM (Memory)
+
+| Spec | Why It Matters |
+|---|---|
+| Capacity | [16GB is the minimum for gaming](/blog/is-16gb-ram-enough-for-gaming-2026), 32GB gives you headroom. |
+| Speed | DDR5-6000+ provides measurable FPS gains on Ryzen, [DDR4 vs DDR5 matters less on Intel](/blog/ddr4-vs-ddr5-gaming-performance-is-it-worth-upgrading-2026). |
+| Channel config | [Dual channel doubles bandwidth](/blog/single-channel-vs-dual-channel-ram-gaming-bottleneck-2026). Running one stick is a major bottleneck. |
+
+### Storage
+
+| Spec | Why It Matters |
+|---|---|
+| Type (NVMe/SATA/HDD) | NVMe SSDs load games 3–5x faster than HDDs. Some games require SSD for asset streaming. |
+| Capacity | Modern games are 80–150GB each. Running out of SSD space forces overflow to slower drives. |
+| Health | Degrading SSDs slow down. Check SMART data in HWiNFO or CrystalDiskInfo. |
+
+---
+
+## After Checking: Find Your Bottleneck
+
+Knowing your specs is useful. Knowing whether they work well *together* is what actually improves your experience. A system with a Ryzen 5 9600X and an RTX 5090 has a clear [CPU bottleneck](/blog/how-to-fix-cpu-bottleneck-without-upgrading-free-tweaks-2026) — the processor can't feed frames fast enough to keep the GPU busy. Conversely, an RTX 5060 paired with a Ryzen 9 9950X means the GPU is the limiter at any resolution.
+
+These mismatches aren't always obvious from specs alone. That's why we built the [PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) — plug in your CPU, GPU, RAM, and resolution, and it identifies exactly where your system's weak point is, how severe it is, and what upgrade would make the biggest difference.
+
+Once you know your bottleneck, you can make informed decisions:
+
+- **CPU bottleneck?** Try [free software tweaks](/blog/how-to-fix-cpu-bottleneck-without-upgrading-free-tweaks-2026) before spending money, or [decide whether to upgrade the CPU first](/blog/should-i-upgrade-cpu-or-gpu-first-2026-guide).
+- **GPU bottleneck?** Enable [DLSS or FSR](/blog/dlss-vs-fsr-frame-generation-fix-bottleneck-2026) to boost FPS without upgrading, or check our [best GPU picks for your budget](/blog/best-graphics-cards-2026-ranked).
+- **RAM bottleneck?** [Enable XMP/EXPO](/blog/xmp-expo-not-enabled-ram-running-slow-how-to-fix-2026) as a free fix, or upgrade to [faster RAM](/blog/best-ram-speed-timings-for-gaming-does-faster-ram-improve-fps-2026).
+- **Thermal bottleneck?** Check if [your temperatures are in the safe range](/blog/normal-cpu-gpu-temperature-while-gaming-safe-temp-ranges-2026) and address cooling if needed.
+
+---
+
+## Frequently Asked Questions
+
+**How do I check my PC specs without turning it on?**
+If the PC won't boot, check the physical hardware: the CPU model is printed on the chip itself (visible if you remove the cooler), GPU model is on a sticker on the card's backplate or PCB, and RAM sticks have labels showing capacity, speed, and timings. Your motherboard model is silk-screened onto the PCB between the PCIe slots or near the CPU socket.
+
+**Why does Windows show less RAM than I installed?**
+If you installed 32GB but Windows reports 31.9GB, that's normal — a small portion is reserved for hardware. If it shows significantly less (e.g., 16GB when you installed 32GB), one of your RAM sticks may not be seated properly, or you might have a dead DIMM slot.
+
+**My GPU shows 0MB VRAM in DxDiag — is it broken?**
+No. This is a known display bug in DxDiag with certain driver versions and GPUs (particularly AMD cards). Use GPU-Z or Task Manager's Performance tab instead, which will show the correct VRAM amount.
+
+**How do I check specs on a laptop vs. a desktop?**
+The methods are identical. The only difference is that laptops often have two GPUs — integrated graphics in the CPU and a discrete GPU. Make sure you're checking the discrete GPU's specs, not the integrated one. Task Manager shows both under the Performance tab.
+
+**How often should I check my specs?**
+Your hardware specs don't change unless you physically swap components. What can change are clock speeds (if thermal throttling occurs), RAM speed (if XMP resets after a BIOS update), and storage health. Check temperatures and speeds periodically using HWiNFO, especially after BIOS updates or if you notice [sudden performance drops](/blog/why-fps-drops-after-playing-for-a-while-fix-performance-degradation-2026).
+
+---
+
+## The Quick Reference Checklist
+
+Here's a printable checklist for finding every important spec on your system:
+
+| Component | Quick Method | Detailed Method |
+|---|---|---|
+| CPU model + speed | Settings → About | CPU-Z or HWiNFO |
+| GPU model + VRAM | Task Manager → Performance → GPU | GPU-Z |
+| RAM amount + speed | Task Manager → Performance → Memory | CPU-Z or HWiNFO |
+| Storage type + capacity | Task Manager → Performance → Disk | CrystalDiskInfo or HWiNFO |
+| Motherboard model | msinfo32 → BaseBoard Product | CPU-Z or HWiNFO |
+| Monitor resolution + refresh rate | DxDiag → Display | Windows Display Settings |
+| Temperatures | — | HWiNFO or HWMonitor |
+
+Grab your specs, run them through the [PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store), and find out if your components are holding each other back — or if your build is perfectly balanced.
