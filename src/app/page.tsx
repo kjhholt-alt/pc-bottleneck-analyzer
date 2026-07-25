@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { QuickPairCheck } from "@/components/QuickPairCheck";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -166,6 +167,14 @@ export default function LandingPage() {
               Download Scanner (.exe)
             </a>
           </div>
+        </FadeIn>
+
+        {/* The front-door answer: a real result from two dropdowns, no download.
+            Sits directly under the hero because every visitor previously had to
+            get past an admin-privileged .exe before learning anything -- and on
+            a phone that is a dead end, not a hurdle. */}
+        <FadeIn delay={0.1} className="mt-10 mx-auto w-full max-w-2xl">
+          <QuickPairCheck />
         </FadeIn>
 
         {/* Score preview */}
