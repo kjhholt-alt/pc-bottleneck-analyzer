@@ -1,5 +1,19 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-07-26: independent Forge Deep-Dive launch-readiness verify
+
+The clean current main commit `baffa4a` was transferred to
+`Kruz2ndDevBox` without changing Vercel, Lemon Squeezy, Supabase, billing
+flags, or production. A clean install completed in 12.227 seconds. TypeScript,
+all **154 tests** (including the $29 Deep-Dive test-mode purchase → generate →
+deliver E2E), and the 150-page production build passed together in 28.551
+seconds. The Forge checkout remained clean.
+
+No engineering blocker surfaced. The next action remains the Kruz-gated
+test-mode setup: provision the durable order table, create the $29 Lemon
+Squeezy test product, set the dormant flags, and complete one test-card
+purchase. Real-money mode stays off until explicit approval.
+
 ## 2026-07-10: Audit — verified recent work is landing, not churning (gl-0452)
 
 Greenlight flagged 44 commits/30d with zero matched Claude Code sessions as a
