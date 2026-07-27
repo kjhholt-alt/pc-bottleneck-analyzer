@@ -5,6 +5,11 @@ Kruz runs the steps below. This is the one hard gate — do not flip any of thes
 flags autonomously. (Rail: nothing goes live until fully tested and Kruz clears
 it; real-money listings need explicit Kruz yes.)
 
+**See `RUNBOOK-CHECKOUT.md` (repo root) for the click-by-click version of
+this same recipe** — which dashboard, which button, which exact value, what
+to verify after each step. This doc stays as the technical reference; that
+one is the thing to actually follow.
+
 The product is fully built and verified in test mode (see the E2E suite
 `src/app/api/report/__tests__/e2e.test.ts` and `STATUS.md`). Turning it on is a
 short, ordered checklist.
@@ -31,7 +36,8 @@ rehearse a full purchase, and only then arm real fulfillment.
 
 Report orders MUST live in Supabase in prod (Vercel functions are stateless, so
 the file backend can't carry an order across the checkout→webhook→delivery
-hops). Run this once in the pcbottleneck Supabase project (SQL editor):
+hops). The schema is now a checked-in migration file —
+`supabase/migrations/0001_report_orders.sql` — instead of hand-typed SQL:
 
 ```sql
 create table if not exists public.report_orders (
@@ -50,9 +56,13 @@ create unique index if not exists report_orders_token_key
 alter table public.report_orders enable row level security;
 ```
 
-Then in Vercel set `DEEPDIVE_STORE=supabase` (or leave it unset — it defaults to
-Supabase whenever `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` are present, which they
-already are for analytics).
+Apply it with the Supabase MCP's `apply_migration` tool (ask Claude to run it
+against that file — no hand-typed SQL), or with the self-serve fallback
+`node scripts/apply-report-orders-migration.mjs` if the MCP isn't
+authenticated for the session (see `RUNBOOK-CHECKOUT.md` Step 1 for the exact
+setup). Then in Vercel set `DEEPDIVE_STORE=supabase` (or leave it unset — it
+defaults to Supabase whenever `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` are
+present, which they already are for analytics).
 
 ## Step 1 — Create the Lemon Squeezy product
 
