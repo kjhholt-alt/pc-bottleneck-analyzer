@@ -1,0 +1,310 @@
+---
+title: "What to Do After Building a Gaming PC — First Boot Setup and Optimization Checklist (2026)"
+description: "Just finished your build? Follow this step-by-step checklist to set up your new gaming PC for maximum performance — from BIOS settings and driver installs to bottleneck testing and Windows optimization."
+publishedAt: "2026-09-01"
+author: "PC Bottleneck Analyzer Team"
+tags: ["new gaming PC setup", "PC build checklist", "first boot gaming PC", "post-build optimization", "gaming PC setup 2026", "PC optimization checklist"]
+readingTime: "16 min read"
+---
+
+# What to Do After Building a Gaming PC — First Boot Setup and Optimization Checklist (2026)
+
+You pressed the power button. The fans spun up. The motherboard POST screen appeared. Congratulations — your new gaming PC is alive.
+
+Now what?
+
+The hardware is only half the job. A freshly built gaming PC with default settings leaves **15–30% of its performance on the table**. Your RAM is probably running at half its rated speed. Your GPU drivers are missing. Windows is doing things in the background that actively hurt your frame rate.
+
+This checklist walks you through every step from first boot to your first game launch — in the right order, so nothing gets missed. Follow it once and your system will be running at full potential from day one.
+
+> **TL;DR**
+> 1. Configure BIOS first (enable XMP/EXPO, set boot order, enable Resizable BAR).
+> 2. Install Windows, then chipset drivers, then GPU drivers (in that order).
+> 3. Optimize Windows settings (disable background apps, set power plan, enable Game Mode).
+> 4. Verify everything with a [free bottleneck scan](https://pcbottleneck.buildkit.store) and benchmark run.
+> 5. Each step has a "why it matters" so you understand what you're gaining.
+
+---
+
+## Phase 1: BIOS Configuration (Before Installing Windows)
+
+Your motherboard's BIOS is where the most impactful settings live — and the defaults are almost always conservative. Spending five minutes here before you install Windows prevents headaches later.
+
+### Step 1: Enable XMP or EXPO
+
+This is the single biggest free performance boost most builders miss.
+
+Your DDR5-6000 kit? It's running at 4800 MT/s right now. Your DDR4-3600 kit? It's at 2133 MHz. That's because RAM ships at a safe "JEDEC" default speed, and your motherboard respects that until you tell it otherwise.
+
+**How to enable it:**
+1. Enter BIOS (press Delete or F2 during POST — your motherboard manual tells you which).
+2. Find the XMP (Intel) or EXPO/DOCP (AMD) setting. It's usually on the main page or under an "OC" or "Tweaker" tab.
+3. Select **Profile 1** and save.
+
+**What you gain:** 10–25% improvement in CPU-bound games. This is not optional — it's enabling the speed you already paid for.
+
+For a deeper walkthrough with per-manufacturer BIOS screenshots, see our [complete XMP/EXPO guide](/blog/xmp-expo-not-enabled-ram-running-slow-how-to-fix-2026).
+
+### Step 2: Enable Resizable BAR / Smart Access Memory
+
+Resizable BAR (Intel) and Smart Access Memory (AMD) let your CPU access the full GPU VRAM at once instead of in small 256 MB windows. Most modern motherboards support it, but it's often disabled by default.
+
+**Where to find it:** BIOS → Advanced → PCI Subsystem Settings → Re-Size BAR Support → Enabled. Also enable "Above 4G Decoding" if prompted.
+
+**What you gain:** 3–10% FPS in supported games, completely free. See our [Resizable BAR guide](/blog/resizable-bar-rebar-gaming-fps-boost-2026) for game-by-game benchmarks.
+
+### Step 3: Set Boot Order
+
+Set your NVMe SSD as the first boot device. This sounds basic, but if you have multiple drives, the BIOS might default to the wrong one — or worse, try to boot from a USB drive you forgot to unplug.
+
+### Step 4: Verify RAM Is Detected Correctly
+
+While you're in BIOS, check that:
+- **Both sticks are detected** — if you installed 2x16 GB, the BIOS should show 32 GB total. If it shows 16 GB, one stick isn't seated properly. Power off, reseat it, and try again.
+- **Dual-channel mode is active** — most BIOS screens show "Dual" somewhere near the memory info. If it says "Single," your sticks are in the wrong slots. Check your motherboard manual: most boards use slots 2 and 4 (counting from the CPU) for dual-channel with two sticks.
+
+Running in single-channel mode cuts your memory bandwidth in half. That's a [significant bottleneck](/blog/single-channel-vs-dual-channel-ram-gaming-bottleneck-2026), especially in CPU-bound titles.
+
+### Step 5: Check CPU and Cooler Are Working
+
+Look at the CPU temperature reading in BIOS. At idle (BIOS counts as idle), you should see:
+- **Air cooler:** 30–45 °C
+- **AIO liquid cooler:** 25–40 °C
+
+If you're seeing 60 °C+ at idle, something is wrong — the cooler isn't mounted properly, the thermal paste application is bad, or the pump isn't running. Fix it before proceeding. Our [safe temperature guide](/blog/normal-cpu-gpu-temperature-while-gaming-safe-temp-ranges-2026) has the reference ranges.
+
+---
+
+## Phase 2: Install Windows
+
+With BIOS configured, you're ready to install Windows.
+
+### Step 6: Install Windows 11 (or 10) From a USB Drive
+
+Use Microsoft's Media Creation Tool on another PC to create a bootable USB drive with the latest Windows 11. Install to your fastest NVMe drive.
+
+**Why Windows 11 over 10?** DirectStorage support, better thread scheduling for hybrid CPUs (Intel 12th gen and newer), and native Auto HDR. If you're running a modern CPU, Windows 11 is the right choice in 2026. For a detailed comparison, see our [Windows 11 gaming optimization guide](/blog/optimize-windows-11-for-gaming-fix-hidden-bottlenecks-2026).
+
+**During installation:**
+- Disconnect your Ethernet cable or skip Wi-Fi setup if you want a local account instead of a Microsoft account.
+- Choose your NVMe SSD as the install drive. If you have multiple drives, unplug the others during installation to avoid accidentally formatting the wrong one.
+
+### Step 7: Install Chipset Drivers First
+
+Before anything else, install your motherboard's chipset drivers from the manufacturer's website (ASUS, MSI, Gigabyte, ASRock). These let Windows properly communicate with your CPU, USB ports, audio, and networking hardware.
+
+**Why chipset first?** Because GPU driver installers sometimes behave differently depending on whether the chipset is configured. Installing in the wrong order can cause subtle performance issues or USB disconnects.
+
+Go to your motherboard manufacturer's support page, enter your exact board model, and download the latest chipset driver package.
+
+### Step 8: Install GPU Drivers
+
+Now install your graphics card drivers:
+
+- **NVIDIA:** Download GeForce Experience or the standalone driver from [nvidia.com/drivers](https://www.nvidia.com/drivers). Choose "Custom Install" and check "Perform a clean installation."
+- **AMD:** Download AMD Software: Adrenalin Edition from [amd.com/drivers](https://www.amd.com/drivers). Use "Factory Reset" during installation.
+
+**Always do a clean install** on a fresh system. This prevents driver conflicts and ensures every component is configured from scratch. For troubleshooting existing systems, see our [DDU clean driver install guide](/blog/clean-install-gpu-drivers-ddu-fix-fps-crashes-stuttering-2026).
+
+After installation, open your GPU control panel and verify:
+- Resizable BAR shows as "Enabled" (NVIDIA Control Panel → System Information)
+- Your monitor is running at its rated refresh rate (144 Hz, not 60 Hz — this catches more people than you'd think)
+
+### Step 9: Install Remaining Drivers
+
+Install in this order:
+1. **Networking drivers** (if not auto-detected by Windows) — LAN and Wi-Fi
+2. **Audio drivers** (Realtek or whatever your board uses)
+3. **Peripheral firmware** — mouse, keyboard, headset software
+
+Skip the bloatware your motherboard manufacturer bundles. You don't need RGB control suites, "AI overclocking" tools, or system monitors running at startup. They consume CPU cycles and RAM for no gaming benefit.
+
+---
+
+## Phase 3: Windows Optimization
+
+Windows out of the box is configured for general use, not gaming. These changes take ten minutes and make a measurable difference.
+
+### Step 10: Set the Power Plan
+
+1. Open Settings → System → Power → Additional power settings.
+2. Select **High Performance**. If it's not visible, click "Show additional plans."
+3. On AMD Ryzen systems, install the AMD Chipset Driver (Step 7) which adds the "AMD Ryzen High Performance" plan — use that instead.
+
+The "Balanced" default aggressively parks CPU cores and downclocks to save power. That's great for a laptop; it's leaving FPS on the table for a desktop gaming PC.
+
+### Step 11: Disable Startup Programs
+
+Press Ctrl+Shift+Esc → Startup tab. Disable everything except:
+- Your GPU driver tray (if you want instant overlay access)
+- Audio/peripheral software you actively use
+
+Common FPS killers that sneak into startup: Discord auto-update, Spotify, OneDrive, Adobe Creative Cloud, Steam client bootstrapper (Steam can run fine when you launch it manually), hardware manufacturer bloatware.
+
+For a full list of what's safe to disable, see our [background processes guide](/blog/background-processes-killing-gaming-fps-how-to-fix-2026).
+
+### Step 12: Disable Hardware-Accelerated GPU Scheduling Issues
+
+Hardware-accelerated GPU scheduling (HAGS) is enabled by default in Windows 11. In most cases this is fine, but some games stutter with it on. If you experience frame time spikes in specific titles:
+
+Settings → System → Display → Graphics → Change default graphics settings → turn off "Hardware-accelerated GPU scheduling."
+
+Test with it on first. Only disable it if you notice [stuttering issues](/blog/how-to-fix-game-stuttering-high-fps-frame-time-spikes-guide-2026).
+
+### Step 13: Configure Game Mode and Game Bar
+
+- **Game Mode** (Settings → Gaming → Game Mode): **Leave it ON.** Despite old advice to turn it off, Game Mode in Windows 11 2026 correctly prevents Windows Update from installing during gaming and stabilizes frame rates.
+- **Game Bar** (Settings → Gaming → Game Bar): Disable it unless you use it for screenshots or Xbox social features. The overlay consumes a small amount of GPU resources.
+- **Captures** (Settings → Gaming → Captures): Turn off "Record what happened" (background recording). This silently encodes video in the background, costing 3–8% GPU performance at all times.
+
+### Step 14: Set Your Monitor to Its Full Refresh Rate
+
+Right-click desktop → Display settings → Advanced display → choose your monitor's maximum refresh rate.
+
+This is the single most common "why does my PC feel slow" issue on new builds. Your 165 Hz monitor defaults to 60 Hz until you change this setting. You paid for high refresh — use it.
+
+Also check your [display cable matters](/blog/hdmi-vs-displayport-gaming-does-cable-affect-fps-refresh-rate-2026). HDMI 2.0 caps at 4K 60 Hz; you need DisplayPort or HDMI 2.1 for high refresh.
+
+---
+
+## Phase 4: Verify and Benchmark
+
+Your system is configured. Now prove it's running at full potential.
+
+### Step 15: Run a Bottleneck Scan
+
+Before you launch a single game, run your system through our **[free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store/dashboard)**. It will:
+
+- Score your build out of 100
+- Identify any hardware imbalances (CPU/GPU mismatch, insufficient RAM, storage bottleneck)
+- Tell you if your RAM is running at the correct speed
+- Flag thermal issues before they cost you FPS
+
+This takes about 30 seconds and catches problems that benchmarks alone won't surface — like a CPU that's fine under synthetic load but bottlenecks your specific GPU at 1440p.
+
+### Step 16: Run a Stress Test
+
+A new build can have subtle issues: a RAM stick that's slightly unstable at XMP speeds, a CPU cooler that isn't mounted evenly, a GPU that thermal throttles under sustained load. Stress testing surfaces these before you're mid-game in a ranked match.
+
+Run each for 15–30 minutes and monitor temperatures:
+
+| Component | Tool | What to Watch |
+|---|---|---|
+| CPU | Cinebench R24 (free) | Temps should stay under 90 °C. Score should match reviews of your CPU. |
+| GPU | FurMark or Unigine Superposition (free) | Temps should stay under 85 °C. No artifacts or flickering. |
+| RAM | MemTest86 (free, bootable USB) | Zero errors after one pass. Any error means your XMP profile is unstable. |
+
+If RAM shows errors: try the other XMP/EXPO profile, or manually set the speed one step lower (e.g., DDR5-5600 instead of 6000). One unstable RAM stick causes random crashes, BSODs, and game corruption that are extremely hard to diagnose later.
+
+For a complete testing walkthrough, see our [stress testing guide](/blog/how-to-stress-test-pc-find-hidden-bottlenecks-guide-2026).
+
+### Step 17: Run a Game Benchmark
+
+Now run an actual game benchmark to establish your baseline. Good built-in benchmarks:
+
+- **Shadow of the Tomb Raider** — CPU-bound at 1080p, GPU-bound at 4K. Great for detecting both bottleneck types.
+- **Cyberpunk 2077** — built-in benchmark with detailed frame time data. Excellent for testing ray tracing and DLSS/FSR.
+- **3DMark Time Spy** (free demo on Steam) — compare your score against identical hardware online to verify your system is performing as expected.
+
+If your scores are more than 10% below review benchmarks for the same hardware, something is misconfigured. Check our guide on [why your PC is slower than benchmarks](/blog/why-gaming-pc-slower-than-benchmarks-how-to-match-review-fps-2026).
+
+---
+
+## Phase 5: Game-Specific Optimization
+
+Your system is verified. Here's how to get the most from every game.
+
+### Step 18: Configure Per-Game Graphics Settings
+
+Don't just set everything to Ultra. Some settings destroy FPS for minimal visual improvement:
+
+- **Volumetric fog/clouds:** Often a 15–25% FPS hit for a subtle visual upgrade. Set to Medium.
+- **Shadow quality:** Ultra shadows vs. High is almost invisible in motion. Set to High.
+- **Screen-space reflections:** High cost, often replaced by RT reflections anyway.
+- **Chromatic aberration, film grain, motion blur:** Visual preference, but they can mask stutter and add post-processing cost. Disable for competitive games.
+
+For the full breakdown of which settings matter and which are FPS traps, see our [graphics settings guide](/blog/graphics-settings-explained-which-ones-tank-fps-guide-2026).
+
+### Step 19: Enable DLSS, FSR, or XeSS
+
+Modern upscaling technology is essentially free FPS. If your game supports it:
+
+- **NVIDIA GPU:** Use DLSS (Quality or Balanced mode). Enable Frame Generation if your card supports it (RTX 40/50 series).
+- **AMD GPU:** Use FSR 3.1 (Quality mode). Enable Fluid Motion Frames if supported.
+- **Intel GPU:** Use XeSS.
+
+At Quality mode, these upscalers are nearly indistinguishable from native resolution while giving you 40–70% more FPS. There is no reason not to use them. See our [DLSS vs FSR comparison](/blog/dlss-vs-fsr-frame-generation-fix-bottleneck-2026) for the full breakdown.
+
+### Step 20: Enable G-Sync or FreeSync
+
+If your monitor supports variable refresh rate (most gaming monitors sold since 2022 do):
+
+- **NVIDIA:** NVIDIA Control Panel → Display → Set up G-SYNC → enable for both fullscreen and windowed.
+- **AMD:** AMD Software → Gaming → Display → AMD FreeSync → Enabled.
+
+This eliminates screen tearing without the input lag penalty of VSync. For a detailed comparison of sync technologies, read our [VSync vs G-Sync vs FreeSync guide](/blog/vsync-vs-gsync-vs-freesync-best-sync-for-gaming-2026).
+
+---
+
+## The Complete Checklist (Save This)
+
+Here's every step in order. Check them off as you go:
+
+| # | Step | Where | Time |
+|---|---|---|---|
+| 1 | Enable XMP/EXPO | BIOS | 1 min |
+| 2 | Enable Resizable BAR | BIOS | 1 min |
+| 3 | Set boot order | BIOS | 30 sec |
+| 4 | Verify RAM (capacity + dual-channel) | BIOS | 1 min |
+| 5 | Check idle CPU temps | BIOS | 30 sec |
+| 6 | Install Windows 11 | USB installer | 15 min |
+| 7 | Install chipset drivers | Mobo website | 5 min |
+| 8 | Install GPU drivers (clean install) | NVIDIA/AMD site | 5 min |
+| 9 | Install remaining drivers | Various | 10 min |
+| 10 | Set power plan to High Performance | Windows Settings | 1 min |
+| 11 | Disable startup bloatware | Task Manager | 2 min |
+| 12 | Check GPU scheduling | Windows Settings | 30 sec |
+| 13 | Configure Game Mode + disable captures | Windows Settings | 1 min |
+| 14 | Set monitor refresh rate | Display settings | 30 sec |
+| 15 | Run bottleneck scan | pcbottleneck.buildkit.store | 30 sec |
+| 16 | Stress test CPU, GPU, RAM | Cinebench, FurMark, MemTest86 | 30 min |
+| 17 | Run game benchmark | Any built-in benchmark | 10 min |
+| 18 | Optimize per-game settings | In-game | Per game |
+| 19 | Enable DLSS/FSR/XeSS | In-game | Per game |
+| 20 | Enable G-Sync/FreeSync | GPU control panel | 1 min |
+
+**Total time for steps 1–17: about 90 minutes.** That's 90 minutes to unlock the full performance of hardware you spent hundreds (or thousands) on. Worth it.
+
+---
+
+## Common First-Boot Problems (and Quick Fixes)
+
+### "No display output"
+- Is your monitor plugged into the **GPU**, not the motherboard? This is the most common new-build mistake.
+- Try each GPU display output. Some default to DisplayPort 1 only.
+- Reseat the GPU — pull it out and push it firmly back into the PCIe slot until the latch clicks.
+
+### "Only one RAM stick detected"
+- Power off, unplug, reseat both sticks. Push harder than feels comfortable — RAM clicks take real force.
+- Try each stick individually to identify if one is dead.
+- Double-check you're using the correct slots (usually 2 and 4, not 1 and 2).
+
+### "Windows says 60 Hz even though my monitor is 165 Hz"
+- Use DisplayPort, not HDMI (unless you have HDMI 2.1 on both ends).
+- Install GPU drivers first — Windows generic drivers cap refresh rate.
+- Check the monitor's own OSD menu. Some monitors have their high refresh rate disabled by default.
+
+### "Games stutter despite high FPS"
+- Check our [frame time spikes guide](/blog/how-to-fix-game-stuttering-high-fps-frame-time-spikes-guide-2026).
+- Disable background recording (Step 13 above).
+- Enable [shader pre-caching](/blog/shader-compilation-stuttering-fix-pc-games-2026) in Steam and your GPU driver.
+
+---
+
+## Check Your PC Before You Play
+
+Even if you followed every step on this list, hardware imbalances can leave performance on the table. A GPU that's too powerful for your CPU, RAM that's too slow for your resolution target, or a storage drive that causes hitching — these are things settings can't fix.
+
+Run your system through our **[free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store/dashboard)** to get a full hardware score, bottleneck diagnosis, and specific upgrade recommendations. It takes 30 seconds and tells you exactly whether your build is balanced.
+
+👉 **[Analyze your PC for free](https://pcbottleneck.buildkit.store/dashboard)** — know your score before your first game.
