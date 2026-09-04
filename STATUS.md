@@ -1,5 +1,21 @@
 # PC Bottleneck Analyzer — Status
 
+## 2026-09-04: operator tick — fixed "Lint blog content" CI, red for 2+ weeks
+
+`gh run list` showed the "Lint blog content" check failing on **every** push
+to `main` since 2026-08-20 (15+ consecutive runs, one per autopilot blog
+post + a couple manual pushes) — silently red the whole time since nothing
+downstream depended on it. Root cause: `scripts/lint-blog-content.py` globs
+*every* `.mdx` file on each run (not just the changed one), and one
+pre-existing post — `best-gaming-pc-build-under-2000-high-end-no-bottleneck-2026.mdx:189`
+— had a raw `<2%` in a markdown table cell, exactly the JSX-parser-breaking
+pattern the linter exists to catch (the same bug class that caused the
+2026-05-12 15h prod-deploy incident). Escaped it to `&lt;2%`. Verified:
+`py scripts/lint-blog-content.py` → `OK — 108 blog files clean` (was 1
+issue); pushed directly to `main` (commit `71e3dbe`), CI run confirmed
+green. Did not touch the `revenue/deepdive-checkout-staging` branch or its
+WIP.
+
 ## 2026-07-26: independent Forge Deep-Dive launch-readiness verify
 
 The clean current main commit `baffa4a` was transferred to
