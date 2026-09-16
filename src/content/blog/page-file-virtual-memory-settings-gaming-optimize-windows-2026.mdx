@@ -1,0 +1,219 @@
+---
+title: "How to Optimize Page File (Virtual Memory) for Gaming — Fix Crashes and Stuttering"
+description: "Your Windows page file settings could be causing game crashes, stuttering, and out-of-memory errors. Learn how to set the optimal page file size for gaming in 2026 — whether you have 16GB, 32GB, or 64GB of RAM."
+publishedAt: "2026-09-16"
+author: "PC Bottleneck Analyzer Team"
+tags: ["page file", "virtual memory", "gaming optimization", "Windows settings", "RAM", "game crashes fix", "stuttering fix", "Windows 11 gaming"]
+readingTime: "12 min read"
+---
+
+# How to Optimize Page File (Virtual Memory) for Gaming — Fix Crashes and Stuttering
+
+You have 32GB of RAM. Your system never hits 100% memory usage. So why did your game just crash with an "out of memory" error? Or why does your system stutter every time you alt-tab back into a game after browsing Chrome?
+
+The answer is almost always your **page file** — Windows' virtual memory system that most gamers either ignore completely or misconfigure based on outdated advice. The wrong page file settings can cause crashes, stuttering, and performance drops even on systems with plenty of physical RAM.
+
+This guide explains exactly what the page file does, why it matters for gaming in 2026, and the optimal settings for every RAM configuration.
+
+> **TL;DR**
+> - Never disable the page file, even with 64GB of RAM — some games and Windows itself require it.
+> - Set a custom fixed size (min = max) to prevent fragmentation and dynamic resizing lag.
+> - Recommended: **1.5x your RAM** for 16GB systems, **16–24GB** for 32GB systems, **16GB** for 64GB+ systems.
+> - Put the page file on your fastest NVMe SSD, not an HDD.
+> - Run your system through our [free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) to find out if RAM is actually your bottleneck.
+
+---
+
+## What Is the Page File and Why Does It Matter for Gaming?
+
+The page file (pagefile.sys) is a hidden file on your drive that Windows uses as an extension of your physical RAM. When your system needs more memory than your RAM sticks can hold — or when Windows *predicts* it might — it moves less-used data from RAM to the page file on your drive.
+
+Think of it as overflow parking for your memory. Your RAM is the fast parking garage right next to the building. The page file is the lot three blocks away — slower to get to, but it means nobody gets turned away.
+
+### Why gamers should care
+
+Modern games are memory-hungry. Here's what typical titles consume in 2026:
+
+| Game | Typical RAM Usage | VRAM Usage | Notes |
+|---|---|---|---|
+| Cyberpunk 2077: Ultimate | 14–18 GB | 10–16 GB | Path tracing mode uses more |
+| Star Wars Outlaws | 12–16 GB | 8–12 GB | Open world streaming |
+| Black Myth: Wukong | 12–14 GB | 8–14 GB | Dense environments |
+| Hogwarts Legacy | 10–14 GB | 6–10 GB | Depends on settings |
+| Cities: Skylines 2 | 16–24 GB | 6–8 GB | RAM scales with city size |
+| Microsoft Flight Sim 2024 | 16–32 GB | 8–12 GB | Scenery streaming |
+
+When a game needs 16GB and you have 16GB of RAM, Windows doesn't have room for itself, your browser, Discord, and the game simultaneously. Without a properly configured page file, you get one of three things: a crash, a stutter, or Windows killing background processes without asking.
+
+---
+
+## The Three Page File Mistakes Gamers Make
+
+### Mistake 1: Disabling the page file entirely
+
+The internet is full of advice from 2015 saying "just disable the page file if you have enough RAM." This was questionable advice then. In 2026, it's actively harmful.
+
+**Why disabling breaks things:**
+- Some games hardcode page file checks and refuse to launch without one (Forza Horizon 5, Star Citizen, and several Unreal Engine 5 titles).
+- Windows crash dumps require a page file. No page file means no crash dump, which means no diagnostic data when something goes wrong.
+- Several Windows system processes commit virtual memory against the page file even if they never use it. Removing the page file makes these allocations fail silently.
+- When RAM fills up with no page file, Windows has exactly two options: kill a process or freeze. Neither is what you want mid-match.
+
+### Mistake 2: Letting Windows manage it automatically
+
+Windows' automatic page file management sets an initial size of your RAM amount and a maximum of 3x your RAM. On a 32GB system, that means a page file that can grow up to 96GB — chewing through your SSD space and causing performance hiccups every time Windows decides to resize it.
+
+The resizing itself is the real problem. When Windows expands the page file mid-game, it pauses to allocate and zero-fill the new space on your drive. That pause becomes a frame time spike — the kind of stutter that happens randomly once every few minutes and drives you crazy trying to diagnose.
+
+### Mistake 3: Setting it too small
+
+A page file that's too small (like 1GB or 2GB) is almost as bad as no page file. Windows will constantly hit the ceiling, trigger "Your computer is low on memory" warnings, and force-close background apps. You'll see this especially when alt-tabbing between a game and a browser, or when a game loads a new area that needs to shuffle large amounts of memory.
+
+---
+
+## Optimal Page File Size for Gaming in 2026
+
+The goal is a page file that's large enough to never run out, small enough to not waste SSD space, and fixed in size to prevent resizing stutters.
+
+| Physical RAM | Recommended Page File (Fixed) | Why |
+|---|---|---|
+| **8 GB** | 12–16 GB | You're RAM-bottlenecked — the page file does real work here |
+| **16 GB** | 16–24 GB | Many modern games push past 16GB with background apps |
+| **32 GB** | 16–24 GB | Safety net — rarely used but prevents edge-case crashes |
+| **64 GB+** | 16 GB | Minimum viable for crash dumps and system stability |
+
+**The key rule: set the initial size and maximum size to the same number.** This creates a fixed-size page file that Windows allocates once and never resizes, eliminating resize-related stutters entirely.
+
+---
+
+## How to Set Your Page File (Step-by-Step)
+
+### Windows 11 / Windows 10
+
+1. Press **Win + R**, type `SystemPropertiesAdvanced`, press Enter.
+2. Under Performance, click **Settings**.
+3. Go to the **Advanced** tab, then click **Change** under Virtual Memory.
+4. Uncheck **"Automatically manage paging file size for all drives."**
+5. Select your **fastest NVMe SSD** (the one with your OS, unless you have a faster secondary drive).
+6. Choose **Custom size**.
+7. Set both **Initial size** and **Maximum size** to the same value (in MB).
+   - For 32GB RAM: set both to **20480** (20 GB).
+   - For 16GB RAM: set both to **24576** (24 GB).
+8. Click **Set**, then **OK** through all dialogs.
+9. **Restart your PC** — page file changes require a reboot.
+
+### Which drive should the page file go on?
+
+| Drive Type | Page File Speed | Verdict |
+|---|---|---|
+| **NVMe Gen 4/5 SSD** | 5,000–14,000 MB/s | Best — put it here |
+| **NVMe Gen 3 SSD** | 2,000–3,500 MB/s | Great |
+| **SATA SSD** | 500 MB/s | Acceptable |
+| **HDD** | 80–160 MB/s | Avoid — massive stutter when paging |
+
+If your OS drive is an NVMe SSD, keep the page file there. If your OS is on a SATA SSD but you have an NVMe data drive, move the page file to the NVMe. If your OS is on an HDD (time to upgrade), put the page file on any SSD you have.
+
+Having the page file on an HDD is one of the most common hidden causes of random stuttering, especially in open-world games that stream assets in the background.
+
+> **Storage upgrade tip:** If you're still gaming on an HDD, a fast NVMe SSD is one of the cheapest meaningful upgrades you can make. Check our guide on [SSD vs HDD gaming performance](/blog/ssd-vs-hdd-gaming-load-times-fps-performance-2026) for specific recommendations.
+
+---
+
+## How to Tell If Your Page File Is Actually Being Used
+
+Before you spend time tweaking, it helps to know whether the page file is even part of your problem.
+
+### Check with Task Manager
+
+1. Open **Task Manager** (Ctrl + Shift + Esc).
+2. Go to the **Performance** tab → **Memory**.
+3. Look at **Committed** memory (bottom right). This shows total memory committed by all processes.
+4. If **Committed > Installed RAM**, your page file is actively being used.
+
+For example: if you have 32GB of RAM and Committed shows 34.2 / 48.5 GB, your system has committed 34.2GB of memory against a 48.5GB total (32GB RAM + 16.5GB page file). You're actively using about 2.2GB of page file.
+
+### Check with Resource Monitor
+
+1. Open **Resource Monitor** (search in Start menu).
+2. Go to the **Memory** tab.
+3. Look at the bar chart at the bottom: **Standby** (cached), **Free**, and **Modified** tell you how RAM is being used.
+4. Check **Hard Faults/sec** — this shows how often Windows reads from the page file. Occasional spikes are normal. Sustained high values (100+/sec) during gaming mean you need more physical RAM.
+
+### What the numbers mean
+
+| Scenario | What's Happening | Action |
+|---|---|---|
+| Committed < RAM, Hard Faults near 0 | Page file exists but isn't needed | Settings are fine — leave the safety net |
+| Committed > RAM, occasional Hard Faults | Page file working as designed | Optimal — your settings are preventing crashes |
+| Committed > RAM, constant Hard Faults 100+/sec | RAM is genuinely too small | You need more physical RAM — [check our RAM guide](/blog/ram-bottleneck-signs-diagnosis-and-fixes-for-2026) |
+| Committed hitting max, "low memory" warnings | Page file too small or disabled | Increase page file size using the settings above |
+
+---
+
+## Page File on SSD: Will It Wear Out My Drive?
+
+This concern made sense with early SSDs that had write endurance measured in the low hundreds of terabytes. Modern NVMe SSDs are rated for 300–2400 TBW (terabytes written) depending on capacity.
+
+Let's do the math: even if Windows wrote 10GB to the page file every single day (which would be extreme), that's 3.65 TB per year. A 1TB NVMe drive rated for 600 TBW would last over 160 years of that abuse. Your page file is not going to kill your SSD.
+
+The performance difference between page file on an NVMe vs. an HDD is so dramatic that worrying about SSD wear is like refusing to drive your car because it puts miles on the odometer.
+
+---
+
+## Special Cases
+
+### Modded games (Minecraft, Skyrim, Cities: Skylines 2)
+
+Heavily modded games are the most common reason for page file exhaustion. A modded Minecraft instance with 200+ mods and shader packs can easily consume 12–16GB of RAM on its own. Cities: Skylines 2 with asset mods can exceed 32GB. If you mod heavily, increase your page file beyond the standard recommendations — 32GB fixed size is reasonable for extreme mod setups with 32GB of RAM.
+
+### Content creation alongside gaming (OBS, Premiere, Blender)
+
+If you stream with OBS or run creative apps alongside your game, your total memory footprint climbs fast. OBS alone adds 1–3GB. Having Premiere or After Effects open in the background can hold 8–16GB. For dual-use systems, err on the larger page file — 24–32GB with 32GB of RAM.
+
+### Multiple monitors with browser tabs
+
+The most common real-world scenario: you're gaming on one monitor while Discord, Spotify, and 30 Chrome tabs run on the other. Chrome alone can use 4–8GB of RAM with moderate tab counts. This is exactly the situation where a properly sized page file prevents the game from stuttering every time Chrome's garbage collector runs in the background.
+
+---
+
+## When the Page File Isn't Your Problem
+
+Page file optimization is worth doing, but it's also worth knowing when your problem is somewhere else entirely:
+
+- **Stuttering with consistent frame times:** If your frame times are even but you still see visual stuttering, the issue is likely VSync/frame pacing, not memory. Check our [VSync vs GSync vs FreeSync guide](/blog/vsync-vs-gsync-vs-freesync-best-sync-for-gaming-2026).
+- **Low FPS across the board:** That's a CPU or GPU bottleneck, not a memory issue. Run our [free bottleneck analyzer](https://pcbottleneck.buildkit.store) to find out which.
+- **Crashes without memory errors:** If the crash doesn't mention memory, the page file probably isn't the cause. Check our [PC crash diagnosis guide](/blog/pc-crashes-while-gaming-how-to-diagnose-fix-2026).
+- **Stuttering only in specific games:** Could be shader compilation stutter. Check our [shader compilation fix guide](/blog/shader-compilation-stuttering-fix-pc-games-2026).
+
+---
+
+## Quick Checklist
+
+Use this as a reference after reading the full guide:
+
+- [ ] Page file is **enabled** (never disabled)
+- [ ] Page file is on your **fastest SSD** (NVMe preferred)
+- [ ] **Custom size** is set (not "System managed")
+- [ ] **Initial = Maximum** size (prevents resizing stutter)
+- [ ] Size follows the table above for your RAM amount
+- [ ] You've **restarted** after making changes
+- [ ] Verified with Task Manager that Committed memory has headroom
+
+---
+
+## Is Your RAM Actually the Bottleneck?
+
+Tweaking your page file is a band-aid if your real problem is not having enough physical RAM. The page file keeps things from crashing, but it's 50–200x slower than actual DDR5 memory — it's not a replacement for having enough RAM in the first place.
+
+If you're regularly seeing hard faults during gaming, or if your Committed memory consistently exceeds your physical RAM by more than a few gigabytes, the real fix is a RAM upgrade. Check our [complete RAM bottleneck guide](/blog/ram-bottleneck-signs-diagnosis-and-fixes-for-2026) or run your system through our **[free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store)** — it scores your entire system, identifies your real bottleneck, and tells you exactly which component to upgrade first.
+
+👉 **[Analyze your PC for free](https://pcbottleneck.buildkit.store/dashboard)** — it takes about 30 seconds.
+
+## Related Guides
+
+- [RAM Bottleneck: Signs, Diagnosis, and Fixes for 2026](/blog/ram-bottleneck-signs-diagnosis-and-fixes-for-2026)
+- [DDR4 vs DDR5: Is It Worth Upgrading in 2026?](/blog/ddr4-vs-ddr5-gaming-performance-is-it-worth-upgrading-2026)
+- [Best RAM Speed and Timings for Gaming](/blog/best-ram-speed-timings-for-gaming-does-faster-ram-improve-fps-2026)
+- [SSD vs HDD: Gaming Load Times and FPS Performance](/blog/ssd-vs-hdd-gaming-load-times-fps-performance-2026)
+- [How to Fix Game Stuttering and Frame Time Spikes](/blog/how-to-fix-game-stuttering-high-fps-frame-time-spikes-guide-2026)
+- [Background Processes Killing Gaming FPS — How to Fix](/blog/background-processes-killing-gaming-fps-how-to-fix-2026)
