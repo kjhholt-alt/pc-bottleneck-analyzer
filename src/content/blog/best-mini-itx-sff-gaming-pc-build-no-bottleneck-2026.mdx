@@ -1,0 +1,304 @@
+---
+title: "Best Mini ITX Gaming PC Build 2026: How to Go Small Without Bottlenecks"
+description: "Small form factor gaming PCs look incredible, but cramped cases create unique bottlenecks. Learn how to build a compact mini ITX gaming PC in 2026 that stays cool, quiet, and fast &mdash; with the best SFF cases, low-profile coolers, SFX PSUs, and compact GPUs at every budget."
+publishedAt: "2026-09-22"
+author: "PC Bottleneck Analyzer Team"
+tags: ["mini ITX gaming PC", "SFF gaming build", "small form factor PC", "compact gaming PC 2026", "best mini ITX case", "SFF bottleneck", "small gaming PC thermal"]
+readingTime: "14 min read"
+---
+
+# Best Mini ITX Gaming PC Build 2026: How to Go Small Without Bottlenecks
+
+Small form factor (SFF) gaming PCs are the most satisfying builds to pull off &mdash; and the easiest to screw up. You get a machine that sits on your desk instead of under it, travels to LAN parties, and looks like a piece of industrial design rather than a black monolith. The trade-off is that every component choice carries thermal consequences that don't exist in a full-tower build.
+
+Cram a 250W CPU and a 350W GPU into a case the size of a shoebox, and you're not building a PC &mdash; you're building a space heater with a bottleneck timer. The hardware will boost for a few minutes, then thermal throttle its way back to mid-range performance. Worse, many SFF builders don't realize this is happening because the system looks fine at first launch. It takes 20 minutes of gaming for the heat to build up and the throttling to begin.
+
+This guide covers how to build a mini ITX gaming PC in 2026 that actually delivers the performance you paid for &mdash; by choosing the right case, cooler, PSU, and GPU for the available thermal budget, and avoiding the bottlenecks that plague most compact builds.
+
+> **TL;DR**
+> - SFF builds live and die on thermal management. Your case's cooling capacity determines the maximum hardware you can run without throttling.
+> - **Case:** Pick for airflow and GPU clearance first, aesthetics second. The <AffiliateLink name="Fractal Design Terra" /> and <AffiliateLink name="Lian Li A4-H2O" /> are the best overall.
+> - **CPU cooler:** Tower coolers beat AIO in most SFF cases. The <AffiliateLink name="Noctua NH-L12S Low Profile CPU Cooler" /> fits almost everywhere and handles 65W TDP chips without breaking a sweat.
+> - **PSU:** SFX or SFX-L format is mandatory. The <AffiliateLink name="Corsair SF750 Platinum SFX Power Supply" /> remains the gold standard.
+> - **GPU:** Check the case's GPU length limit before buying. Two-slot cards run cooler than 3.5-slot monsters in tight enclosures.
+> - **Rule of thumb:** If your total system power draw exceeds what the case can cool, you'll thermal throttle no matter how good the hardware is. SFF means making smart pairings, not stuffing a full-tower build into a small box.
+> - Run your planned build through our [free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) to check for compatibility issues before you buy.
+
+---
+
+## Why SFF Builds Create Unique Bottlenecks
+
+A standard ATX mid-tower has 50+ liters of internal volume, multiple fan mounting points, and enough clearance that components barely affect each other's thermals. A typical SFF case has 10&ndash;20 liters. That difference changes the physics of cooling fundamentally.
+
+### The Thermal Budget Problem
+
+Every watt your components consume becomes heat inside the case. In an ATX build, that heat dissipates easily through multiple exhaust paths. In an SFF case, the same heat has nowhere to go. Your CPU's exhaust air becomes your GPU's intake air. Your GPU's waste heat raises the ambient temperature for the PSU. Everything heats everything else.
+
+This creates a **thermal ceiling** &mdash; the maximum sustained wattage your case and cooling solution can dissipate without temperatures climbing into throttling territory. Exceed it, and your expensive hardware throttles down to stay alive.
+
+| System Power Draw | Required Case Cooling Capacity | Typical Build Tier |
+|---|---|---|
+| &lt;200W total | Most SFF cases handle this | Budget: Ryzen 5 + RX 9060 XT |
+| 200&ndash;350W total | Well-ventilated sandwich-layout cases | Mid-range: Ryzen 7 + RTX 5070 |
+| 350&ndash;500W total | Premium airflow SFF cases only | High-end: Ryzen 9 / i9 + RTX 5080 |
+| 500W+ total | Not recommended for SFF | Full-tower territory |
+
+### GPU Clearance: The Invisible Bottleneck
+
+Modern GPUs are enormous. The RTX 5080 Founders Edition is 304mm long and 2.5 slots thick. Many aftermarket cards are 330mm+ and 3.5 slots. SFF cases typically support 280&ndash;330mm lengths and 2&ndash;3 slot widths. Buy the wrong GPU and it literally won't fit.
+
+Even when a card physically fits, thickness matters for thermals. A 3.5-slot GPU in a case that technically supports it leaves almost no gap between the GPU and the side panel, starving the card of intake air. A 2-slot card with a blower-style cooler can actually outperform a thicker card in an SFF enclosure because it exhausts heat out the back instead of recirculating it inside the case.
+
+---
+
+## Choosing an SFF Case: The Foundation of Your Build
+
+The case determines your maximum cooler height, GPU length, PSU format, and airflow pattern. Get this wrong and everything downstream is a compromise.
+
+### What to Look For
+
+- **Sandwich layout.** The CPU and GPU sit on opposite sides of the motherboard with independent airflow paths. This prevents heat crossover &mdash; the single biggest thermal issue in SFF builds.
+- **Mesh panels or large ventilation.** Solid panels look clean but trap heat. Every restriction forces fans to spin faster and louder.
+- **SFX PSU mounting.** SFX power supplies are shorter than ATX, leaving more room for airflow and cable routing in tight enclosures.
+- **Riser cable included.** Sandwich-layout cases need a PCIe riser cable to connect the GPU. Quality varies wildly &mdash; cheap risers can cause crashes, artifacting, or PCIe bandwidth limits. Look for PCIe Gen 4.0 risers included.
+
+### Best Mini ITX Cases for Gaming in 2026
+
+| Case | Volume | Max GPU Length | Max Cooler Height | Layout | Best For |
+|---|---|---|---|---|---|
+| <AffiliateLink name="Fractal Design Terra" /> | 10.4L | 322mm | 77mm | Sandwich | Best overall &mdash; stunning design, excellent thermals |
+| <AffiliateLink name="Lian Li A4-H2O" /> | 11L | 322mm | 55mm (AIO) | Sandwich | Best AIO liquid cooling support |
+| <AffiliateLink name="Cooler Master NR200P MAX" /> | 18.25L | 336mm | 155mm | Traditional | Best for tall tower coolers |
+| <AffiliateLink name="NCASE M1" /> | 12.6L | 322mm | 130mm | Traditional | Best balance of size and compatibility |
+| <AffiliateLink name="Dan Case A4-SFXv4.1" /> | 7.25L | 295mm | 48mm | Sandwich | Absolute smallest viable gaming case |
+| <AffiliateLink name="Meshlicious PCIE 4.0" /> | 14.6L | 336mm | 70mm (AIO) | Vertical sandwich | Best value SFF case |
+
+The <AffiliateLink name="Fractal Design Terra" /> deserves special mention. At 10.4 liters it's genuinely compact, but its sliding top panel and wood accent give it a furniture-grade aesthetic. More importantly, its sandwich layout provides clean separation between CPU and GPU airflow paths. It fits 322mm GPUs (which covers the RTX 5070 and 5080 Founders Edition) and supports low-profile coolers up to 77mm.
+
+---
+
+## CPU and Cooler: Managing Heat in Tight Spaces
+
+In an SFF build, the CPU cooler is usually your biggest constraint. Full-tower builds can run 160mm tower coolers or 360mm AIOs. Most SFF cases limit you to 48&ndash;77mm low-profile coolers or a 240mm AIO if the case supports one.
+
+### Which CPUs Work Best in SFF
+
+The best SFF CPUs are power-efficient chips that deliver strong gaming performance without consuming 200W+. High TDP processors that need massive cooling are a poor fit for compact builds.
+
+| CPU | TDP / PBP | Gaming Performance | SFF Suitability |
+|---|---|---|---|
+| AMD Ryzen 7 9800X3D | 120W | Excellent (3D V-Cache king) | Great &mdash; runs cool for its performance |
+| AMD Ryzen 7 9700X | 65W | Very good | Excellent &mdash; low power, low heat |
+| Intel Core Ultra 7 265K | 125W | Very good | Good &mdash; manageable with quality cooler |
+| AMD Ryzen 5 9600X | 65W | Good | Excellent &mdash; ideal budget SFF chip |
+| Intel Core Ultra 5 245K | 125W | Good | Good &mdash; mid-range sweet spot |
+
+The **Ryzen 7 9800X3D** is the best gaming CPU you can put in an SFF build. Its 3D V-Cache gives it class-leading gaming performance while its 120W TDP stays manageable with a good low-profile cooler. The **Ryzen 7 9700X** at 65W TDP is the efficiency champion &mdash; it runs so cool that even the most constrained SFF cases handle it easily.
+
+### Best CPU Coolers for SFF Cases
+
+| Cooler | Height | TDP Handling | Noise | Best For |
+|---|---|---|---|---|
+| <AffiliateLink name="Noctua NH-L12S Low Profile CPU Cooler" /> | 70mm | Up to 95W sustained | Very quiet | Best overall SFF cooler |
+| <AffiliateLink name="Noctua NH-L9a-AM5 Low Profile CPU Cooler" /> | 37mm | Up to 65W sustained | Quiet | Ultra-compact cases (&lt;48mm clearance) |
+| <AffiliateLink name="Thermalright AXP120-X67 CPU Cooler" /> | 67mm | Up to 120W sustained | Quiet | Best value low-profile cooler |
+| <AffiliateLink name="EK-AIO 240mm Basic" /> | N/A (radiator) | Up to 200W+ | Moderate | Cases with AIO support (A4-H2O, Meshlicious) |
+| <AffiliateLink name="Noctua NH-U9S CPU Cooler" /> | 125mm | Up to 130W sustained | Very quiet | Taller cases (NR200P, NCASE M1) |
+
+**Pro tip:** In SFF cases where the CPU cooler sits very close to the side panel, the fan orientation matters. Set the cooler fan to exhaust toward the nearest mesh panel, not toward the motherboard. This prevents hot air from recirculating over VRM heatsinks and RAM.
+
+---
+
+## GPU Selection: Fitting Power Into a Small Box
+
+The GPU is usually the hottest, largest, and loudest component in any gaming PC. In an SFF build, getting the GPU right is critical.
+
+### Size Matters More Than Specs
+
+A GPU that physically fits is not the same as a GPU that thermally fits. A card crammed against a solid side panel with 5mm of clearance will run 15&ndash;20&deg;C hotter than the same card in an ATX case with unrestricted airflow. That temperature difference can mean the difference between full boost clocks and constant thermal throttling.
+
+**Rules for SFF GPU selection:**
+
+1. **Check the case's GPU length AND thickness limits.** Length is usually listed; thickness often isn't. Measure twice.
+2. **Prefer 2-slot or 2.5-slot cards** over 3-slot or 3.5-slot models. Thinner cards leave more room for airflow.
+3. **Founders Edition cards are often the best fit.** NVIDIA and AMD reference designs tend to be shorter and thinner than aftermarket cards.
+4. **Blower-style coolers have a place in SFF.** They exhaust heat directly out the back of the case instead of dumping it inside. In a cramped enclosure, this can result in lower system temperatures despite higher GPU temperatures.
+
+### Best GPUs for SFF Gaming Builds (2026)
+
+| GPU | Length | Thickness | TDP | SFF Fit |
+|---|---|---|---|---|
+| <AffiliateLink name="NVIDIA RTX 5070 Founders Edition" /> | 267mm | 2 slots | 250W | Excellent &mdash; fits virtually all SFF cases |
+| <AffiliateLink name="AMD RX 9070 XT" /> | 276mm | 2.5 slots | 300W | Very good &mdash; strong value option |
+| <AffiliateLink name="NVIDIA RTX 5080 Founders Edition" /> | 304mm | 2.5 slots | 360W | Good &mdash; fits most cases, needs good airflow |
+| <AffiliateLink name="NVIDIA RTX 5070 Ti Founders Edition" /> | 267mm | 2 slots | 300W | Excellent &mdash; compact and powerful |
+| <AffiliateLink name="AMD RX 9060 XT" /> | 240mm | 2 slots | 150W | Best for ultra-compact/budget SFF builds |
+
+The **RTX 5070 Founders Edition** at 267mm and 2 slots is arguably the best GPU for SFF builds in 2026. It fits every case on our list, its 250W TDP is manageable even in 10-liter enclosures, and its gaming performance is excellent at 1440p. The **RX 9060 XT** is the sleeper pick for sub-200W builds where thermals are extremely tight.
+
+---
+
+## Power Supply: SFX Is Non-Negotiable
+
+Standard ATX power supplies are 150mm long. SFX units are 100mm. That 50mm difference is the margin between a buildable SFF system and an impossible cable management nightmare. Most SFF cases require SFX or SFX-L format PSUs.
+
+### Best SFX Power Supplies for SFF Gaming (2026)
+
+| PSU | Wattage | Efficiency | Fan Mode | Best For |
+|---|---|---|---|---|
+| <AffiliateLink name="Corsair SF750 Platinum SFX Power Supply" /> | 750W | 80+ Platinum | Semi-passive | Best overall &mdash; handles any SFF build |
+| <AffiliateLink name="Cooler Master V850 SFX Gold Power Supply" /> | 850W | 80+ Gold | Semi-passive | High-end builds with RTX 5080 |
+| <AffiliateLink name="Corsair SF1000L SFX-L Power Supply" /> | 1000W | 80+ Platinum | Semi-passive | Extreme builds (top-tier GPU + CPU) |
+| <AffiliateLink name="Silverstone SX700-G SFX Power Supply" /> | 700W | 80+ Gold | Active | Budget-friendly option |
+
+**Important:** Don't undersize your PSU to save space. A PSU running at 90%+ capacity generates significantly more heat and noise than one at 60&ndash;70% load. In an SFF case where the PSU sits inches from your CPU or GPU, that extra heat matters. Size your PSU for 150&ndash;200W of headroom above your system's peak draw.
+
+---
+
+## Motherboard: Features Without the Footprint
+
+Mini ITX motherboards are 170mm x 170mm &mdash; they have one PCIe slot, two RAM slots, and limited VRM cooling compared to full-size ATX boards. This creates specific constraints.
+
+### What to Prioritize
+
+- **VRM quality.** Small VRM heatsinks in a cramped case run hot. A board with strong VRMs keeps your CPU stable under sustained load without thermal throttling at the VRM level. This is especially important for 125W+ CPUs.
+- **Rear I/O connectivity.** With only one PCIe slot (used by your GPU), you can't add expansion cards. Make sure the motherboard has the USB ports, audio, and networking you need built in.
+- **Wi-Fi 7 and Bluetooth 5.4.** SFF builds often sit on desks away from ethernet drops. Built-in Wi-Fi 7 eliminates the need for a USB adapter.
+- **Two M.2 slots.** With no room for 2.5" drives in most SFF cases, NVMe M.2 storage is your only practical option. Two slots gives you a boot drive and a game drive without adapters.
+
+### Top Mini ITX Boards for 2026
+
+| Board | Socket | Key Features | Price Range |
+|---|---|---|---|
+| <AffiliateLink name="ASUS ROG Strix B850-I Gaming WiFi" /> | AM5 | Strong VRMs, Wi-Fi 7, dual M.2 | ~$220 |
+| <AffiliateLink name="Gigabyte B850I Aorus Pro WiFi" /> | AM5 | Great value, solid VRMs, dual M.2 | ~$190 |
+| <AffiliateLink name="MSI MEG Z890I ACE" /> | LGA 1851 | Premium VRMs, Thunderbolt 4, Wi-Fi 7 | ~$350 |
+| <AffiliateLink name="ASRock B850M-ITX WiFi" /> | AM5 | Budget pick, Wi-Fi 6E, dual M.2 | ~$160 |
+
+---
+
+## Complete SFF Build Guides by Budget
+
+### Budget SFF Build (~$900) &mdash; 1080p/1440p Gaming
+
+| Component | Pick | Price |
+|---|---|---|
+| CPU | <AffiliateLink name="AMD Ryzen 5 9600X" /> | ~$200 |
+| Cooler | <AffiliateLink name="Noctua NH-L9a-AM5 Low Profile CPU Cooler" /> | ~$45 |
+| Motherboard | <AffiliateLink name="ASRock B850M-ITX WiFi" /> | ~$160 |
+| RAM | <AffiliateLink name="Corsair Vengeance DDR5 32GB 6000MHz" /> | ~$80 |
+| GPU | <AffiliateLink name="AMD RX 9060 XT" /> | ~$230 |
+| Storage | <AffiliateLink name="WD Black SN850X 1TB NVMe" /> | ~$80 |
+| PSU | <AffiliateLink name="Silverstone SX700-G SFX Power Supply" /> | ~$100 |
+| Case | <AffiliateLink name="Meshlicious PCIE 4.0" /> | ~$110 |
+| **Total** | | **~$1,005** |
+
+This build draws under 200W total, keeping thermals easy in the Meshlicious. The Ryzen 5 9600X's 65W TDP means the tiny NH-L9a handles it comfortably. The RX 9060 XT at 150W stays cool with plenty of airflow in the vertical sandwich layout.
+
+### Mid-Range SFF Build (~$1,500) &mdash; 1440p 144Hz Gaming
+
+| Component | Pick | Price |
+|---|---|---|
+| CPU | <AffiliateLink name="AMD Ryzen 7 9800X3D" /> | ~$380 |
+| Cooler | <AffiliateLink name="Thermalright AXP120-X67 CPU Cooler" /> | ~$40 |
+| Motherboard | <AffiliateLink name="Gigabyte B850I Aorus Pro WiFi" /> | ~$190 |
+| RAM | <AffiliateLink name="G.Skill Trident Z5 Neo DDR5 32GB 6000MHz" /> | ~$90 |
+| GPU | <AffiliateLink name="NVIDIA RTX 5070 Founders Edition" /> | ~$550 |
+| Storage | <AffiliateLink name="Samsung 990 Pro 2TB NVMe" /> | ~$140 |
+| PSU | <AffiliateLink name="Corsair SF750 Platinum SFX Power Supply" /> | ~$130 |
+| Case | <AffiliateLink name="Fractal Design Terra" /> | ~$160 |
+| **Total** | | **~$1,680** |
+
+The sweet spot for SFF gaming. The Ryzen 7 9800X3D is the best gaming CPU available, and its 120W TDP stays manageable with the AXP120-X67 in the Terra's 77mm cooler clearance. The RTX 5070 FE fits easily at 267mm and runs cool at 250W. Total system power under 400W &mdash; well within the Terra's thermal ceiling.
+
+### High-End SFF Build (~$2,200) &mdash; 1440p/4K Gaming
+
+| Component | Pick | Price |
+|---|---|---|
+| CPU | <AffiliateLink name="AMD Ryzen 7 9800X3D" /> | ~$380 |
+| Cooler | <AffiliateLink name="EK-AIO 240mm Basic" /> | ~$90 |
+| Motherboard | <AffiliateLink name="ASUS ROG Strix B850-I Gaming WiFi" /> | ~$220 |
+| RAM | <AffiliateLink name="G.Skill Trident Z5 Neo DDR5 32GB 6000MHz" /> | ~$90 |
+| GPU | <AffiliateLink name="NVIDIA RTX 5080 Founders Edition" /> | ~$1,000 |
+| Storage | <AffiliateLink name="Samsung 990 Pro 2TB NVMe" /> | ~$140 |
+| PSU | <AffiliateLink name="Cooler Master V850 SFX Gold Power Supply" /> | ~$150 |
+| Case | <AffiliateLink name="Lian Li A4-H2O" /> | ~$130 |
+| **Total** | | **~$2,200** |
+
+This is close to the practical limit for SFF builds. The A4-H2O supports a 240mm AIO, which the RTX 5080's 360W TDP practically demands &mdash; you need the CPU cooler to handle its heat without adding to the GPU's thermal environment. The 850W SFX PSU provides the headroom this 480W+ system needs. Going beyond this (RTX 5090, high-end Intel i9) is technically possible in larger SFF cases like the NR200P MAX but pushes thermal limits hard.
+
+---
+
+## SFF-Specific Bottleneck Issues and How to Fix Them
+
+### 1. Thermal Throttling From Heat Crossover
+
+**The problem:** Your CPU exhaust heats your GPU intake (or vice versa). Both components run 10&ndash;15&deg;C hotter than they would in an ATX case, causing intermittent throttling during sustained gaming sessions.
+
+**The fix:** Choose a sandwich-layout case where CPU and GPU have independent airflow paths. If using a traditional layout case, set fan curves to exhaust CPU heat upward and away from the GPU.
+
+### 2. VRM Overheating on Mini ITX Boards
+
+**The problem:** Mini ITX boards have smaller VRM heatsinks. Under sustained CPU load in a hot case, VRMs overheat and throttle your CPU's power delivery, reducing clock speeds even if the CPU itself is cool enough.
+
+**The fix:** Choose a motherboard with strong VRM cooling (look for heatsinks with thermal pads covering all phases). Keep airflow moving across the motherboard &mdash; a small 40mm fan zip-tied near the VRM can drop temperatures by 10&deg;C.
+
+### 3. Cable Clutter Blocking Airflow
+
+**The problem:** SFF cases have almost no cable management space. Loose cables block fan intakes and exhausts, reducing cooling efficiency by 10&ndash;20%.
+
+**The fix:** Use custom-length cables or short cable kits designed for SFF builds. The <AffiliateLink name="CableMod ModFlex Sleeved Cable Kit" /> comes in lengths designed for popular SFF cases. Route every cable flat against the case wall.
+
+### 4. PSU Fan Noise in Close Quarters
+
+**The problem:** In an SFF case, the PSU sits inches from your ears (on a desk). A PSU fan that's inaudible in a floor-standing ATX case becomes annoying in a compact desktop build.
+
+**The fix:** Choose a semi-passive PSU (fan off at low loads). The <AffiliateLink name="Corsair SF750 Platinum SFX Power Supply" /> doesn't spin its fan until system power draw exceeds 300W &mdash; meaning it's completely silent during desktop use, web browsing, and lighter games.
+
+### 5. Storage Overheating Under the GPU
+
+**The problem:** Many mini ITX boards put the primary M.2 slot on the back side, directly behind the GPU. NVMe drives generate heat, and being sandwiched between a hot GPU and the case panel causes thermal throttling on the SSD, leading to stuttering during game loads.
+
+**The fix:** Use the front-side M.2 slot (under the motherboard's heatsink) for your primary drive. If only a rear slot is available, add a small M.2 heatsink with thermal pad. Alternatively, choose a drive with a built-in heatsink like the <AffiliateLink name="Samsung 990 Pro with Heatsink 2TB" />.
+
+---
+
+## SFF Build Tips That Most Guides Skip
+
+1. **Build outside the case first.** Assemble CPU, cooler, RAM, and M.2 drive on the motherboard before putting anything in the case. In a 10-liter enclosure, installing a cooler after the board is mounted ranges from difficult to impossible.
+
+2. **Test thermals before closing the case.** Run a 15-minute stress test with the side panel off, then again with it on. If temperatures jump more than 8&ndash;10&deg;C with the panel on, your airflow needs work.
+
+3. **Undervolt your GPU.** SFF builds benefit enormously from GPU undervolting. A 100mV undervolt on an RTX 5070 typically reduces power consumption by 30&ndash;50W with zero performance loss. That's 30&ndash;50W less heat inside your tiny case. Read our [GPU undervolting guide](/blog/how-to-undervolt-gpu-better-fps-lower-temps-guide-2026) for step-by-step instructions.
+
+4. **Use slim fans where standard fans won't fit.** Standard 120mm fans are 25mm thick. Slim fans are 15mm. In cases where a 25mm fan doesn't clear the side panel, a <AffiliateLink name="Noctua NF-A12x15 PWM Slim 120mm Fan" /> can add exhaust airflow that wouldn't otherwise be possible.
+
+5. **Set custom fan curves in BIOS.** Default fan curves are tuned for ATX cases with more thermal mass. In SFF, temperatures rise faster, so fans need to ramp earlier. Set your CPU fan to reach 80% speed by 75&deg;C instead of the default 85&ndash;90&deg;C.
+
+---
+
+## Is an SFF Build Right for You?
+
+An SFF gaming PC is worth building if:
+
+- You want your PC on or near your desk (not under it)
+- You value aesthetics and a clean setup
+- You attend LAN events or move your PC regularly
+- You're willing to spend 10&ndash;15% more for SFX PSUs and compact coolers
+- You're comfortable with slightly higher temperatures than an ATX build
+
+An SFF build is NOT the right choice if:
+
+- You want the absolute fastest hardware (RTX 5090 + i9-14900K) without thermal compromise
+- You plan to upgrade frequently (SFF cases limit future GPU sizes)
+- You need multiple PCIe expansion cards (mini ITX has one slot)
+- You want the cheapest possible build (SFF components carry a premium)
+- You're a first-time builder (start with ATX &mdash; it's more forgiving)
+
+---
+
+## Check Your SFF Build for Bottlenecks
+
+Before you buy components for your compact build, run the specs through our [free PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store). It checks CPU/GPU pairing efficiency, flags thermal risks based on your hardware's TDP ratings, and identifies potential performance imbalances &mdash; the kind of issues that hit SFF builds hardest. One scan before you order saves you from discovering a bottleneck after everything's assembled in a case that's a pain to take apart.
+
+No signup required. Free forever.
