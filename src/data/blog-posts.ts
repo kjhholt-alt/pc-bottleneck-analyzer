@@ -74,6 +74,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["thermal throttling", "overheating", "CPU cooler", "PC cooling", "bottleneck"],
     readingTime: "12 min read",
   },
+  {
+    slug: "ssd-vs-hdd-storage-bottleneck",
+    title:
+      "SSD vs HDD: Is Your Storage Drive Bottlenecking Your PC? (Signs and Fixes)",
+    description:
+      "How to tell if your hard drive or SSD is bottlenecking your PC — HDD vs SATA SSD vs NVMe compared with real-world load times, plus the best storage upgrades at every budget in 2026.",
+    publishedAt: "2026-10-15",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["SSD", "HDD", "NVMe", "storage bottleneck", "PC upgrade", "gaming"],
+    readingTime: "11 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {

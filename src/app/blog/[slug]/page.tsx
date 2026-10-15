@@ -11,6 +11,7 @@ import { IBuiltAFreeBottleneckAnalyzer } from "./posts/i-built-a-free-pc-bottlen
 import { CpuVsGpuBottleneck } from "./posts/cpu-vs-gpu-bottleneck";
 import { RamBottleneckSignsFixes } from "./posts/ram-bottleneck-signs-fixes";
 import { ThermalThrottlingFixGuide } from "./posts/thermal-throttling-fix-guide";
+import { SsdVsHddStorageBottleneck } from "./posts/ssd-vs-hdd-storage-bottleneck";
 
 const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "gpu-bottlenecking-cpu": GpuBottleneckingCpu,
@@ -19,6 +20,7 @@ const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "cpu-vs-gpu-bottleneck": CpuVsGpuBottleneck,
   "ram-bottleneck-signs-fixes": RamBottleneckSignsFixes,
   "thermal-throttling-fix-guide": ThermalThrottlingFixGuide,
+  "ssd-vs-hdd-storage-bottleneck": SsdVsHddStorageBottleneck,
 };
 
 export function generateStaticParams() {
