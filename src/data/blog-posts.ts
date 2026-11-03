@@ -85,6 +85,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["SSD", "HDD", "NVMe", "storage bottleneck", "PC upgrade", "gaming"],
     readingTime: "11 min read",
   },
+  {
+    slug: "vram-bottleneck-signs-fixes",
+    title:
+      "VRAM Bottleneck: 6 Signs Your GPU Is Running Out of Memory (and How to Fix It)",
+    description:
+      "How to tell if your GPU's VRAM is bottlenecking your PC — texture pop-in, stuttering, and out-of-memory crashes explained, plus the best GPU upgrades for more VRAM at every budget in 2026.",
+    publishedAt: "2026-11-03",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["VRAM", "GPU", "bottleneck", "video memory", "GPU upgrade", "gaming"],
+    readingTime: "12 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {
