@@ -96,6 +96,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["VRAM", "GPU", "bottleneck", "video memory", "GPU upgrade", "gaming"],
     readingTime: "12 min read",
   },
+  {
+    slug: "psu-bottleneck-signs-fixes",
+    title:
+      "PSU Bottleneck: 5 Signs Your Power Supply Is Limiting Your PC's Performance (and How to Fix It)",
+    description:
+      "How to tell if your power supply is bottlenecking your PC — random shutdowns, GPU crashes, and missed boost clocks explained, plus the best PSU upgrades at every wattage tier in 2026.",
+    publishedAt: "2026-11-05",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["PSU", "power supply", "bottleneck", "PC upgrade", "ATX 3.0", "gaming"],
+    readingTime: "12 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {
