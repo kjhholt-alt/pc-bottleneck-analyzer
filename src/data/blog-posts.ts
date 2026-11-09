@@ -107,6 +107,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["PSU", "power supply", "bottleneck", "PC upgrade", "ATX 3.0", "gaming"],
     readingTime: "12 min read",
   },
+  {
+    slug: "motherboard-bottleneck-signs-fixes",
+    title:
+      "Motherboard Bottleneck: 6 Ways Your Board Is Secretly Limiting Your PC's Performance (and How to Fix It)",
+    description:
+      "How to tell if your motherboard is bottlenecking your PC — PCIe generation mismatches, VRM throttling, RAM speed limits, and missing I/O explained, plus the best motherboard upgrades for every platform in 2026.",
+    publishedAt: "2026-11-09",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["motherboard", "bottleneck", "PCIe", "VRM", "PC upgrade", "gaming"],
+    readingTime: "13 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {

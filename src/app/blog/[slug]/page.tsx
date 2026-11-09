@@ -14,6 +14,7 @@ import { ThermalThrottlingFixGuide } from "./posts/thermal-throttling-fix-guide"
 import { SsdVsHddStorageBottleneck } from "./posts/ssd-vs-hdd-storage-bottleneck";
 import { VramBottleneckSignsFixes } from "./posts/vram-bottleneck-signs-fixes";
 import { PsuBottleneckSignsFixes } from "./posts/psu-bottleneck-signs-fixes";
+import { MotherboardBottleneckSignsFixes } from "./posts/motherboard-bottleneck-signs-fixes";
 
 const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "gpu-bottlenecking-cpu": GpuBottleneckingCpu,
@@ -25,6 +26,7 @@ const POST_COMPONENTS: Record<string, React.ComponentType> = {
   "ssd-vs-hdd-storage-bottleneck": SsdVsHddStorageBottleneck,
   "vram-bottleneck-signs-fixes": VramBottleneckSignsFixes,
   "psu-bottleneck-signs-fixes": PsuBottleneckSignsFixes,
+  "motherboard-bottleneck-signs-fixes": MotherboardBottleneckSignsFixes,
 };
 
 export function generateStaticParams() {
