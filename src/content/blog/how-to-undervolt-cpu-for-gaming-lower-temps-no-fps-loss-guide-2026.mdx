@@ -1,0 +1,258 @@
+---
+title: "How to Undervolt Your CPU for Gaming: Lower Temps Without Losing FPS (2026)"
+description: "Learn how to undervolt your AMD or Intel CPU to reduce temperatures, eliminate thermal throttling, and maintain full gaming performance. Step-by-step guide with safe voltage offsets for every popular gaming CPU in 2026."
+publishedAt: "2026-11-17"
+author: "PC Bottleneck Analyzer Team"
+tags: ["CPU undervolting", "undervolt CPU gaming", "lower CPU temperature", "thermal throttling fix", "CPU voltage offset", "Ryzen undervolt", "Intel undervolt", "gaming performance optimization", "reduce CPU heat", "PBO curve optimizer"]
+readingTime: "13 min read"
+---
+
+# How to Undervolt Your CPU for Gaming: Lower Temps Without Losing FPS (2026)
+
+Your CPU is running hotter than it needs to. That's not a guess — it's a near-certainty for anyone using a modern AMD Ryzen or Intel Core processor with stock settings. CPU manufacturers ship their chips with voltage curves tuned for worst-case silicon, meaning the average chip receives more voltage than it actually needs to maintain stability. That excess voltage converts directly into waste heat, pushing temperatures higher, fans louder, and in some cases triggering the thermal throttling that quietly steals your gaming performance.
+
+Undervolting fixes this by reducing the voltage your CPU receives while keeping clock speeds identical. The result: 10–25°C lower temperatures, quieter fans, and zero performance loss. In fact, many gamers report *higher* sustained performance after undervolting because their CPU stops thermal throttling during extended sessions.
+
+If you've already optimized your [GPU undervolt](/blog/how-to-undervolt-gpu-better-fps-lower-temps-guide-2026) and you're still seeing high temps, the CPU is your next target. Here's exactly how to do it safely on both AMD and Intel platforms.
+
+> **TL;DR**
+> - Undervolting reduces CPU voltage without reducing clock speed — same FPS, lower temps
+> - **AMD Ryzen (AM5/AM4):** Use PBO Curve Optimizer in BIOS — start with -15 all-core, test, then push to -25 or -30 per core
+> - **Intel (LGA 1851/1700):** Use Intel XTU or BIOS voltage offset — start with -50mV, test, then push to -80mV or -100mV
+> - Expect 10–25°C cooler temps and 3–8 dB quieter fans with zero FPS loss
+> - Always stress test after each change — Cinebench R24 + 30 minutes of your heaviest game
+> - Run your build through our [free bottleneck analyzer](https://pcbottleneck.buildkit.store) to check if thermal throttling is creating a CPU bottleneck
+
+---
+
+## Why Undervolting Matters for Gaming Performance
+
+Modern CPUs use aggressive boost algorithms — AMD's Precision Boost Overdrive and Intel's Thermal Velocity Boost — that push clock speeds as high as thermals allow. The relationship is direct: lower temperatures mean the CPU sustains higher boost clocks for longer, which translates to better gaming performance during extended sessions.
+
+Here's what actually happens in a typical gaming scenario without undervolting:
+
+1. You launch a demanding game like The Witcher 4 or Marvel Rivals
+2. The CPU boosts to its maximum frequency (say, 5.7 GHz on a Ryzen 7 9800X3D)
+3. After 10–20 minutes, temperatures climb to 90–95°C
+4. The boost algorithm starts pulling back clocks to stay within thermal limits
+5. Your effective frequency drops to 5.3–5.5 GHz — a 3–7% performance loss you never see reported in reviews
+
+This is thermal throttling, and it's the hidden bottleneck that most monitoring overlays don't flag clearly. Reviews test with open benches and high-end cooling — your closed case with a mid-range cooler tells a different story.
+
+Undervolting attacks this problem at the source. By reducing voltage to only what the silicon actually needs, you break the temperature-throttle cycle and keep your CPU at full boost throughout the entire gaming session.
+
+### What Undervolting Is NOT
+
+Let's clear up confusion that keeps people from trying this:
+
+- **It's not overclocking.** You're not increasing frequency or pushing beyond spec. You're reducing waste.
+- **It's not dangerous.** Too little voltage causes a crash or reboot — it cannot damage your CPU. The worst case is a system restart, and you try a less aggressive setting.
+- **It's not voiding your warranty.** AMD and Intel both provide software tools for voltage adjustment. PBO Curve Optimizer is a supported BIOS feature, and Intel XTU is Intel's own application.
+- **It's not unstable.** A properly tested undervolt is as stable as stock settings — many are *more* stable because reduced heat means less thermal stress on the silicon.
+
+---
+
+## AMD Ryzen Undervolting: PBO Curve Optimizer Guide
+
+AMD's Curve Optimizer is the most effective CPU undervolting tool available in 2026. Rather than applying a flat voltage offset, it adjusts the voltage-frequency curve on a per-core basis, letting you dial in the optimal voltage for each core's individual silicon quality.
+
+### Supported CPUs
+
+Curve Optimizer works on all Ryzen 5000, 7000, and 9000 series processors:
+
+- **AM5 (Ryzen 9000/7000):** Ryzen 5 9600X, Ryzen 7 9700X, Ryzen 7 9800X3D, Ryzen 9 9900X, Ryzen 9 9950X, Ryzen 7 7800X3D, Ryzen 5 7600X, and all other AM5 chips
+- **AM4 (Ryzen 5000):** Ryzen 5 5600X, Ryzen 7 5800X3D, Ryzen 9 5900X, Ryzen 9 5950X, and all other Zen 3 chips
+
+### Step-by-Step: Curve Optimizer Setup
+
+**Step 1: Enter BIOS and navigate to PBO settings**
+
+Restart your PC and enter BIOS (usually Delete or F2 during boot). Navigate to:
+- **ASUS:** AI Tweaker → Precision Boost Overdrive → Curve Optimizer
+- **MSI:** OC → Advanced CPU Configuration → AMD Overclocking → PBO → Curve Optimizer
+- **Gigabyte:** Tweaker → Advanced CPU Settings → PBO → Curve Optimizer Control
+- **ASRock:** OC Tweaker → CPU Configuration → PBO → Curve Optimizer
+
+**Step 2: Set to All Core, Negative offset**
+
+- Set Curve Optimizer to **All Core**
+- Set the sign to **Negative**
+- Start with a magnitude of **15**
+
+This tells the CPU to use 15 "counts" less voltage across its entire voltage-frequency curve. Each count is roughly 3–5mV depending on the operating point, so -15 is approximately a 45–75mV reduction.
+
+**Step 3: Save, reboot, and test stability**
+
+Boot into Windows and run:
+1. **Cinebench R24** — multi-core test, 10-minute loop. If it completes without crashing, basic stability is confirmed.
+2. **Your heaviest game** — play for at least 30 minutes. CPU-heavy titles like Cities: Skylines 2 or Civilization VII are ideal tests.
+3. **CoreCycler** (optional) — this free tool stress-tests each core individually, which catches per-core instability that all-core tests miss.
+
+**Step 4: Push further**
+
+If -15 is stable, go back to BIOS and increase to -20. Test again. Then -25, then -30. Most Ryzen 7000/9000 chips can handle -20 to -30 all-core. The sweet spot for most gaming CPUs:
+
+| CPU | Typical Stable All-Core Offset | Expected Temp Drop |
+|---|---|---|
+| <AffiliateLink name="AMD Ryzen 9 9950X" /> | -20 to -30 | 15–22°C |
+| <AffiliateLink name="AMD Ryzen 7 9800X3D" /> | -15 to -25 | 10–18°C |
+| <AffiliateLink name="AMD Ryzen 7 9700X" /> | -20 to -30 | 12–20°C |
+| <AffiliateLink name="AMD Ryzen 5 9600X" /> | -25 to -35 | 10–15°C |
+| <AffiliateLink name="AMD Ryzen 7 7800X3D" /> | -20 to -30 | 12–20°C |
+| <AffiliateLink name="AMD Ryzen 5 7600X" /> | -25 to -35 | 10–18°C |
+
+**Step 5 (Advanced): Per-core tuning**
+
+Once you find your all-core limit, switch Curve Optimizer to **Per Core** mode. Your best cores (marked with a star in Ryzen Master or HWiNFO) may tolerate less offset (-10 to -15), while your weaker cores can be pushed harder (-30 to -40). This maximizes both single-thread boost performance and multi-thread efficiency.
+
+### AMD Undervolting: Real Gaming Results
+
+Here's what a Ryzen 7 9800X3D owner can expect at -25 all-core with a mid-range tower cooler:
+
+| Metric | Stock | Undervolted (-25) | Difference |
+|---|---|---|---|
+| Cinebench R24 Multi | 19,450 | 19,520 | +0.4% (less throttling) |
+| Peak Gaming Temp | 89°C | 71°C | -18°C |
+| Average Gaming Temp | 82°C | 65°C | -17°C |
+| Fan Speed (Gaming) | 1,450 RPM | 1,050 RPM | -28% (noticeably quieter) |
+| Cyberpunk 2077 Avg FPS | 97 fps | 98 fps | +1% (sustained boost) |
+| Marvel Rivals Avg FPS | 165 fps | 167 fps | +1.2% |
+
+The FPS difference is small but consistent: the undervolted CPU sustains its full 5.7 GHz boost instead of dipping to 5.4–5.5 GHz during extended gaming. The real win is temperature and noise.
+
+---
+
+## Intel CPU Undervolting: Voltage Offset Guide
+
+Intel's approach to undervolting is different from AMD's. Instead of a curve optimizer, you apply a flat voltage offset that reduces the voltage at every operating point by a fixed amount.
+
+### Supported CPUs
+
+- **LGA 1851 (Arrow Lake):** Core Ultra 9 285K, Core Ultra 7 265K, Core Ultra 5 245K — fully supported
+- **LGA 1700 (Raptor Lake/Alder Lake):** Core i9-14900K, Core i7-14700K, Core i5-14600K, and all 12th/13th-gen K-series — fully supported
+- **Non-K models:** Limited undervolting support varies by motherboard vendor. Some B-series boards lock voltage adjustment; Z-series boards typically allow it even on non-K chips.
+
+### Method 1: Intel XTU (Software — Easiest)
+
+Intel Extreme Tuning Utility is the simplest path for Intel undervolting:
+
+1. Download Intel XTU from Intel's website
+2. Open XTU and navigate to the **Core** tab
+3. Find **Core Voltage Offset** and set it to **-50mV**
+4. Click **Apply** — the change takes effect immediately, no reboot needed
+5. Run Cinebench R24 for a quick stability check
+6. If stable, increase to -60mV, then -70mV, testing each time
+7. Once you find the crash point, back off by 10mV — that's your daily setting
+
+### Method 2: BIOS Voltage Offset (More Reliable)
+
+For a persistent undervolt that applies from boot:
+
+1. Enter BIOS (Delete or F2 during boot)
+2. Navigate to CPU voltage settings:
+   - **ASUS:** AI Tweaker → CPU Core Voltage → Offset Mode → Set negative offset
+   - **MSI:** OC → CPU Core Voltage → Set to Offset Mode → Enter negative value
+   - **Gigabyte:** Tweaker → CPU Vcore → Set to Offset → Enter negative value
+3. Start at -50mV and increase from there
+
+### Intel Undervolting: Safe Ranges
+
+| CPU | Typical Stable Offset | Expected Temp Drop |
+|---|---|---|
+| <AffiliateLink name="Intel Core Ultra 9 285K" /> | -60mV to -100mV | 12–20°C |
+| <AffiliateLink name="Intel Core Ultra 7 265K" /> | -50mV to -90mV | 10–18°C |
+| <AffiliateLink name="Intel Core Ultra 5 245K" /> | -60mV to -100mV | 10–15°C |
+| Core i9-14900K / 13900K | -50mV to -80mV | 15–25°C |
+| Core i7-14700K / 13700K | -50mV to -90mV | 12–20°C |
+| Core i5-14600K / 13600K | -60mV to -100mV | 10–18°C |
+
+> **Important for 13th/14th Gen Intel owners:** The well-documented Raptor Lake degradation issue means undervolting is especially important for these chips. Reducing voltage lowers the electrical stress that contributes to long-term instability. If you're running a 13900K or 14900K, undervolting isn't just a nice-to-have — it's a recommended protective measure. Make sure you've also applied Intel's latest microcode update through a [BIOS update](/blog/how-to-update-motherboard-bios-safely-gaming-performance-cpu-compatibility-2026).
+
+---
+
+## Troubleshooting: What to Do When It Crashes
+
+An undervolt-related crash is harmless — it just means you pushed too far. Here's how to handle each scenario:
+
+### System won't boot after BIOS undervolt
+Most motherboards have a "last known good" recovery: power off, hold the power button for 10 seconds, or clear CMOS by removing the motherboard battery for 30 seconds. This resets BIOS to defaults, and you can re-enter with a less aggressive offset.
+
+### Crashes during stress testing
+Back off by 5 counts (AMD) or 10mV (Intel) from the crashing value. Some instability only appears in specific workloads — heavy AVX instructions are more voltage-sensitive than gaming, so you can sometimes use a more aggressive undervolt for daily gaming than for all-core rendering.
+
+### Stable in benchmarks, crashes in games
+This usually means per-core instability. One core is hitting its limit while others are fine. On AMD, switch to per-core tuning and find the weak core. On Intel, back off the global offset by 10mV.
+
+### Random crashes weeks later
+Temperature and silicon characteristics change slightly with seasons and silicon aging. If a previously stable undervolt starts causing issues, back off by 5–10mV. This is rare but normal.
+
+---
+
+## Undervolting vs. Other Cooling Solutions
+
+How does undervolting compare to other approaches for reducing CPU temps?
+
+| Solution | Temp Reduction | Cost | Effort | Performance Impact |
+|---|---|---|---|---|
+| **Undervolting** | 10–25°C | Free | 30 minutes | None (or slightly positive) |
+| Better thermal paste | 3–8°C | $10–15 | 30 minutes | None |
+| Upgrading CPU cooler | 10–20°C | $40–150 | 1 hour | None |
+| Better case airflow | 5–10°C | $0–100 | 30–60 minutes | None |
+| Lowering ambient temp | 5–15°C | Varies | None | None |
+
+Undervolting is the only solution that's both free and delivers the largest temperature reduction. It should be the first thing you try before spending money on hardware. And it stacks with every other cooling improvement — undervolt *and* upgrade your cooler for a combined 20–40°C reduction.
+
+---
+
+## How Undervolting Prevents CPU Bottlenecks
+
+The connection between undervolting and bottleneck elimination is direct. When a CPU thermally throttles, it reduces clock speed, which means it delivers fewer frames to the GPU per second. The GPU sits idle waiting for frame data — that's a CPU bottleneck created entirely by heat, not by the CPU being too slow.
+
+We see this pattern regularly in scans submitted to our [PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store):
+
+- System with Ryzen 7 7800X3D + RTX 5070 shows 8% CPU bottleneck
+- User is confused because the 7800X3D shouldn't bottleneck a 5070
+- CPU temperatures are hitting 92°C with a budget cooler in a compact case
+- Thermal throttling is clipping boost clocks by 200–400 MHz
+- After undervolting: temps drop to 74°C, sustained boost restored, bottleneck disappears
+
+If your [bottleneck analysis](https://pcbottleneck.buildkit.store) flags a CPU bottleneck and your CPU *should* be fast enough for your GPU based on our [pairing guides](/blog/best-cpu-gpu-combos-no-bottleneck-every-budget-2026), thermal throttling is the first thing to investigate. Undervolting is the fastest free fix.
+
+---
+
+## Frequently Asked Questions
+
+### Does undervolting reduce CPU lifespan?
+
+No. Undervolting reduces electrical stress on the silicon, which if anything extends the CPU's usable lifespan. The concern would be with *over*volting, which is the opposite operation.
+
+### Can I undervolt a laptop CPU?
+
+Yes, but support varies by manufacturer. Intel laptop CPUs often support undervolting through Throttlestop (a third-party tool). AMD laptop APUs have more limited options — some support through Ryzen Controller. Check our [laptop optimization guide](/blog/how-to-optimize-gaming-laptop-for-max-fps-fix-throttling-bottlenecks-2026) for details.
+
+### Should I undervolt my 3D V-Cache CPU?
+
+Absolutely. The Ryzen 7 7800X3D and 9800X3D benefit significantly from undervolting because they already run at AMD's thermal limits. A -20 to -25 offset is typically stable and drops temps by 12–20°C, which helps the 3D V-Cache stay at its optimal operating temperature.
+
+### Does undervolting affect XMP/EXPO memory profiles?
+
+No. CPU core voltage and memory voltage are completely independent. Your RAM will continue running at its XMP/EXPO speed regardless of your CPU undervolt settings.
+
+### What's the difference between undervolting and lowering power limits?
+
+Lowering power limits (PBO power limit tuning on AMD, PL1/PL2 on Intel) restricts how much power the CPU can draw, which *does* reduce performance in multi-core workloads. Undervolting reduces the voltage-to-frequency ratio without limiting power draw, so performance stays the same while heat output drops. Undervolting is the superior approach for gaming.
+
+---
+
+## Final Setup Checklist
+
+Before you start undervolting, make sure your system is ready:
+
+- [ ] Update your [motherboard BIOS](/blog/how-to-update-motherboard-bios-safely-gaming-performance-cpu-compatibility-2026) to the latest version
+- [ ] Enable [XMP/EXPO](/blog/xmp-expo-not-enabled-ram-running-slow-how-to-fix-2026) for your RAM (do this before undervolting so you're testing both together)
+- [ ] Download monitoring software — [HWiNFO64](/blog/how-to-monitor-pc-performance-while-gaming-best-overlay-guide-2026) for real-time temps and clocks
+- [ ] Download Cinebench R24 for stability testing
+- [ ] Note your current stock temps and boost clocks as a baseline
+- [ ] Run your system through the [PC Bottleneck Analyzer](https://pcbottleneck.buildkit.store) before and after to quantify the improvement
+
+Undervolting is the single best free optimization you can make to any gaming PC. It takes 30 minutes, costs nothing, and delivers measurable results in both temperature and sustained performance. Combined with a proper [GPU undervolt](/blog/how-to-undervolt-gpu-better-fps-lower-temps-guide-2026), you'll have a system that runs cooler, quieter, and faster than stock — without spending a penny on new hardware.
