@@ -118,6 +118,17 @@ export const blogPosts: BlogPost[] = [
     tags: ["motherboard", "bottleneck", "PCIe", "VRM", "PC upgrade", "gaming"],
     readingTime: "13 min read",
   },
+  {
+    slug: "1080p-vs-1440p-vs-4k-bottleneck",
+    title:
+      "1080p vs 1440p vs 4K Gaming: How Resolution Shifts Your PC's Bottleneck",
+    description:
+      "Why your CPU bottlenecks at 1080p but your GPU bottlenecks at 4K — how resolution changes which component limits your FPS, and how to pick the right resolution for your hardware in 2026.",
+    publishedAt: "2026-11-19",
+    author: "PC Bottleneck Analyzer Team",
+    tags: ["resolution", "1080p", "1440p", "4K", "CPU bottleneck", "GPU bottleneck", "gaming"],
+    readingTime: "12 min read",
+  },
 ];
 
 export function getAllPosts(): BlogPost[] {
