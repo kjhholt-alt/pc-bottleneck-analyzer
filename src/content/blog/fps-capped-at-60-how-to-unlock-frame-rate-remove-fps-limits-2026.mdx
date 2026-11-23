@@ -1,0 +1,246 @@
+---
+title: 'Why Is My FPS Capped at 60? How to Unlock Your Frame Rate and Remove Hidden FPS Limits (2026)'
+description: 'FPS stuck at 60 even with a powerful GPU? Learn every reason your frame rate is locked and how to unlock it — VSync, driver settings, monitor refresh rate, cables, and hidden Windows limiters explained with step-by-step fixes.'
+publishedAt: "2026-11-23"
+author: "PC Bottleneck Analyzer Team"
+tags: ["FPS cap", "unlock frame rate", "VSync", "60 FPS limit", "gaming performance", "monitor refresh rate", "frame rate"]
+readingTime: "12 min read"
+---
+
+# Why Is My FPS Capped at 60? How to Unlock Your Frame Rate and Remove Hidden FPS Limits (2026)
+
+You just installed a brand-new GPU. Benchmarks say it should push 200+ FPS in your favorite game. But when you fire it up, the counter sits stubbornly at 60 FPS — not 59, not 61, exactly 60. Something is artificially capping your frame rate, and your expensive hardware is coasting when it should be sprinting.
+
+This is one of the most common and most frustrating issues in PC gaming. The good news: a 60 FPS cap is almost never a hardware limitation. It is a software setting — sometimes buried three menus deep — that you can fix in minutes. The bad news: there are at least eight different places that setting can hide.
+
+This guide walks through every possible cause, from the obvious to the obscure, so you can find yours and unlock the frame rate your hardware is actually capable of delivering.
+
+---
+
+## Quick Checklist: Where to Look First
+
+Before diving into details, here is the fast version. Check these in order — most FPS caps come from the first three:
+
+| Priority | Setting | Where to Find It |
+|---|---|---|
+| 1 | VSync | In-game graphics settings |
+| 2 | In-game FPS limiter | In-game graphics or display settings |
+| 3 | GPU driver frame rate limit | NVIDIA Control Panel or AMD Adrenalin |
+| 4 | Monitor running at 60 Hz | Windows Display Settings &gt; Advanced display |
+| 5 | Wrong cable or port | Check if using HDMI 1.4 on a 144 Hz monitor |
+| 6 | Windows Game Bar / Xbox overlay | Windows Settings &gt; Gaming |
+| 7 | Power plan set to Balanced | Windows Settings &gt; Power &amp; sleep |
+| 8 | Laptop battery / GPU power saving | Laptop manufacturer software |
+
+If you already know which one is your culprit, jump to that section. Otherwise, start from the top.
+
+---
+
+## 1. VSync Is the Most Common Culprit
+
+**What it does:** Vertical Sync (VSync) locks your frame rate to your monitor's refresh rate to prevent screen tearing — those horizontal lines you see when the GPU sends a new frame while the monitor is still drawing the old one. If your monitor is 60 Hz, VSync caps you at 60 FPS. If it is 144 Hz, it caps at 144 FPS.
+
+**Why it is on by default:** Many games ship with VSync enabled because screen tearing looks bad and most players do not know what causes it. Some games label it differently: "Sync every frame," "vertical sync," or just "sync."
+
+### How to Disable VSync
+
+**In-game:** Open the game's graphics or display settings. Look for VSync, V-Sync, or Vertical Sync and set it to **Off**.
+
+**In NVIDIA Control Panel:**
+1. Right-click your desktop and select **NVIDIA Control Panel**
+2. Go to **Manage 3D Settings** &gt; **Global Settings**
+3. Find **Vertical sync** and set it to **Off** (or **Fast** if you want tear-free without the FPS cap)
+4. Click **Apply**
+
+**In AMD Adrenalin:**
+1. Open AMD Software: Adrenalin Edition
+2. Go to **Gaming** &gt; **Graphics**
+3. Set **Wait for Vertical Refresh** to **Always off**
+
+**Better alternative:** If you have a G-Sync or FreeSync monitor, disable VSync and enable G-Sync/FreeSync instead. You get tear-free gaming without an FPS cap. Check our [VSync vs G-Sync vs FreeSync guide](/blog/vsync-vs-gsync-vs-freesync-best-sync-for-gaming-2026) for the full breakdown.
+
+---
+
+## 2. In-Game FPS Limiters
+
+Many modern games include a built-in frame rate cap, sometimes set to 60 by default. This is separate from VSync — you can have VSync off and still be capped if the game's own limiter is active.
+
+**Where to find it:** Look in the game's graphics, display, or performance settings for:
+- "Frame rate limit" or "FPS limit"
+- "Max frame rate" or "Target frame rate"
+- "Framerate cap"
+- A slider or dropdown that says "60" or "Unlimited"
+
+**Common games that default to 60 FPS:**
+- Many Ubisoft titles (Assassin's Creed, Far Cry) default to VSync on
+- Some console ports ship locked to 60 FPS with no in-game toggle — check PCGamingWiki for per-game fixes
+- Older games may need an .ini file edit or launch argument to uncap
+
+**Fix:** Set the limiter to **Unlimited**, **Off**, or the highest value available. If the game does not have this setting, search for `[game name] unlock FPS` — there is usually a config file edit or community patch.
+
+---
+
+## 3. GPU Driver Frame Rate Limits
+
+Both NVIDIA and AMD drivers can impose a global or per-game frame rate limit that overrides in-game settings.
+
+### NVIDIA Control Panel
+
+1. Open **NVIDIA Control Panel** &gt; **Manage 3D Settings**
+2. Check both **Global Settings** and **Program Settings** (select your game)
+3. Find **Max Frame Rate** — if it is set to 60, change it to **Off** or your desired cap
+4. Also check **Background Max Frame Rate** — this caps FPS when the game is not in focus
+
+### AMD Adrenalin
+
+1. Open AMD Software &gt; **Gaming**
+2. Select the game profile or go to **Graphics**
+3. Check **Radeon Chill** — this dynamically limits FPS to save power. Disable it or set the max to your desired frame rate
+4. Check **Frame Rate Target Control (FRTC)** — set to **Disabled** or raise the cap
+
+---
+
+## 4. Windows Game Bar and Xbox Overlay
+
+Windows Game Bar can silently limit performance in some configurations. While Game Mode itself is generally fine in 2026, the overlay and background recording features can introduce frame rate issues.
+
+**How to check and disable:**
+
+1. Press **Win + I** to open Settings
+2. Go to **Gaming** &gt; **Game Bar** and toggle it **Off** if you do not use it
+3. Go to **Gaming** &gt; **Captures** and disable **Record in the background** — background recording encodes video constantly, consuming GPU resources
+4. Go to **Gaming** &gt; **Game Mode** — this one is usually fine to leave on, but if you are troubleshooting, try toggling it off temporarily
+
+**Xbox Game Bar overlay:** Press **Win + G** in a game. If the overlay appears, it is active. The overlay itself does not cap FPS, but the background recording feature can limit performance on weaker hardware. If you see `GameBar.exe` or `GameBarPresenceWriter.exe` in Task Manager using significant GPU, disable the Game Bar entirely.
+
+---
+
+## 5. Your Monitor Is Running at 60 Hz (Even Though It Supports More)
+
+This is the silent killer. You bought a 144 Hz or 165 Hz monitor, plugged it in, and assumed it would run at full speed. But **Windows defaults to 60 Hz** on many monitors, especially over HDMI.
+
+Your monitor's refresh rate is the absolute ceiling for your visible FPS. A 60 Hz monitor physically cannot display more than 60 unique frames per second, no matter what your GPU renders.
+
+### How to Check and Fix Your Refresh Rate
+
+1. Right-click your desktop &gt; **Display settings**
+2. Scroll down and click **Advanced display**
+3. Look at **Refresh rate** — if it says 60 Hz on a monitor that supports higher, change it
+4. If the higher refresh rate is not listed, your cable or port may be the bottleneck (see next section)
+
+**Also check in your monitor's OSD (on-screen display).** Some monitors have a setting like "Overclock" or "High refresh rate" that must be enabled in the monitor's own menu before Windows can see the higher rate.
+
+---
+
+## 6. Your Cable or Port Is Limiting Your Refresh Rate
+
+Not all cables and ports are equal. This is especially common with HDMI connections on high-refresh-rate monitors.
+
+| Cable/Port | Max Resolution at 60 Hz | Max at 144 Hz | Max at 240 Hz |
+|---|---|---|---|
+| HDMI 1.4 | 1080p | 1080p (some monitors) | No |
+| HDMI 2.0 | 4K | 1080p / 1440p | 1080p |
+| HDMI 2.1 | 4K | 4K | 4K |
+| DisplayPort 1.2 | 4K | 1440p | 1080p |
+| DisplayPort 1.4 | 4K (DSC) | 4K | 1440p |
+| DisplayPort 2.1 | 4K | 4K | 4K |
+
+**The fix:** If your monitor supports 144 Hz but Windows only shows 60 Hz, switch from HDMI to DisplayPort. Many monitors include a DisplayPort cable in the box. If yours did not, a [DisplayPort 1.4 cable](https://www.amazon.com/s?k=DisplayPort+1.4+cable+gaming&tag=bottleneck20-20) costs about $10 and is one of the highest-value upgrades you can make.
+
+For a deeper dive into cable limitations, see our [HDMI vs DisplayPort guide](/blog/hdmi-vs-displayport-gaming-does-cable-affect-fps-refresh-rate-2026).
+
+---
+
+## 7. Power Plan and Laptop Power Settings
+
+Windows power plans can throttle your CPU and GPU to save energy, which indirectly caps your FPS.
+
+### Desktop PCs
+
+1. Open **Control Panel** &gt; **Power Options**
+2. Select **High performance** or **Ultimate performance** (if available)
+3. Avoid **Balanced** or **Power saver** while gaming — these allow Windows to downclock your CPU
+
+If you do not see Ultimate Performance, open an admin Command Prompt and run:
+`powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61`
+
+### Laptops
+
+Laptops are especially prone to silent FPS caps because they aggressively manage power:
+
+- **Check your laptop manufacturer's software** (Lenovo Vantage, ASUS Armoury Crate, MSI Center, HP OMEN Hub) — these often have performance profiles. Switch to "Performance" or "Turbo" mode while gaming
+- **Make sure you are plugged in** — most gaming laptops cap GPU power on battery, sometimes to 30-40 FPS
+- **Check NVIDIA Optimus / AMD SmartShift** — some laptops route games through the integrated GPU by default. Force the dedicated GPU in your driver settings
+
+For more laptop-specific optimizations, see our [gaming laptop optimization guide](/blog/how-to-optimize-gaming-laptop-for-max-fps-fix-throttling-bottlenecks-2026).
+
+---
+
+## 8. Fullscreen vs. Borderless Windowed
+
+The display mode you use can affect your maximum FPS:
+
+- **Exclusive Fullscreen** gives your GPU direct control of the display output, bypassing the Windows compositor. This typically delivers the highest FPS and lowest input lag.
+- **Borderless Windowed** runs through the Windows Desktop Window Manager (DWM), which composites your game with other windows. On older versions of Windows 10, DWM enforced a form of VSync. Windows 11 has mostly fixed this, but some games still behave differently in borderless mode.
+
+**If your FPS is capped only in borderless windowed mode:** Try switching to exclusive fullscreen. If you need borderless for alt-tabbing, check that "Optimizations for windowed games" is enabled in Windows Settings &gt; Display &gt; Graphics.
+
+For the full comparison, see our [fullscreen vs borderless windowed guide](/blog/fullscreen-vs-borderless-windowed-best-display-mode-gaming-fps-2026).
+
+---
+
+## How to Verify Your FPS Is Actually Unlocked
+
+After making changes, you need to confirm they worked. Here are the best free tools to monitor your real-time FPS:
+
+**Steam Overlay (if using Steam):**
+1. Open Steam &gt; Settings &gt; In-Game
+2. Enable **In-game FPS counter**
+3. Pick a corner — it shows as a small number overlay
+
+**MSI Afterburner + RivaTuner Statistics Server:**
+The gold standard for monitoring. Shows FPS, frame times, CPU/GPU usage, temperatures, and clock speeds in a customizable overlay. We have a full setup walkthrough in our [MSI Afterburner bottleneck detection guide](/blog/how-to-use-msi-afterburner-detect-bottleneck-guide-2026).
+
+[Download MSI Afterburner](https://www.amazon.com/s?k=MSI+Afterburner+download&tag=bottleneck20-20) (free from MSI's website)
+
+**NVIDIA GeForce Experience / AMD Adrenalin built-in overlays:**
+Both drivers include FPS counters — press **Alt + R** (NVIDIA) or **Ctrl + Shift + O** (AMD) during gameplay.
+
+**What to look for:** Run a demanding game and watch the FPS counter. If it now goes above 60 and matches your monitor's refresh rate ceiling, you are unlocked. If it still caps at exactly 60 (or exactly 30, or exactly your monitor's Hz), you missed a setting — go back through the checklist.
+
+---
+
+## When You Should Actually Cap Your FPS
+
+Not every situation calls for unlimited FPS. There are legitimate reasons to use a frame rate limiter:
+
+- **Screen tearing without adaptive sync** — if you do not have G-Sync or FreeSync, capping FPS just below your refresh rate reduces tearing without VSync's input lag penalty
+- **Reducing heat, noise, and power draw** — running at 300 FPS in a menu screen wastes energy and heats up your GPU for no visual benefit
+- **Smoother frame pacing** — a stable 144 FPS feels smoother than 180 FPS that drops to 120 FPS during action scenes
+
+The key difference: a cap you chose is fine. A cap you did not know about is a problem. For more on when and how to use frame rate limiters effectively, see our [FPS cap and frame rate limiter guide](/blog/should-you-cap-fps-frame-rate-limiter-guide-2026).
+
+---
+
+## Still Stuck at Low FPS After Uncapping?
+
+If you removed every FPS cap and your frame rate is still lower than expected, the limit is not artificial — it is a real hardware bottleneck. Your CPU, GPU, RAM, or storage may be the actual limiting factor.
+
+This is where a bottleneck analysis helps. Run our free [PC Bottleneck Analyzer](/dashboard) to scan your hardware, identify which component is holding back your FPS, and get specific upgrade recommendations for your system. It takes two minutes and tells you exactly where your performance ceiling is — and what it would take to raise it.
+
+---
+
+## Summary
+
+A 60 FPS cap with capable hardware is almost always a settings issue, not a hardware problem. Work through the checklist from top to bottom:
+
+1. **Disable VSync** in-game and in your GPU driver
+2. **Remove in-game FPS limits** — set to Unlimited
+3. **Check GPU driver settings** for global frame rate caps
+4. **Disable Windows Game Bar** background recording
+5. **Set your monitor to its maximum refresh rate** in Windows Display Settings
+6. **Use DisplayPort** instead of HDMI for high refresh rates
+7. **Switch to High Performance power plan**
+8. **Try exclusive fullscreen** mode
+
+Once you have confirmed your FPS is unlocked, run a [free bottleneck scan](/dashboard) to make sure your hardware is keeping up with your new, uncapped frame rate. There is nothing worse than unlocking 240 Hz only to find out your CPU has been the real bottleneck all along.
